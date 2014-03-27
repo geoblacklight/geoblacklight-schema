@@ -2,8 +2,6 @@
 Solr schema
 ===========
 
-The schema XML is on Github here: https://github.com/sul-dlss/geohydra/blob/master/solr/kurma-app-test/conf/schema.xml.
-
 Primary key
 ----------
 
@@ -79,7 +77,7 @@ Example: "POLYGON((76.76 19.91705, 84.76618 19.91705, 84.76618 12.62309, 76.76 1
 Solr schema syntax
 ==================
 
-See complete schema on https://github.com/sul-dlss/geomdtk/blob/master/solr/kurma-app-test/conf/schema.xml
+The schema XML is on Github here: https://github.com/sul-dlss/geoblacklight-schema/blob/master/conf/schema.xml.
 
 Note on the types:
 
