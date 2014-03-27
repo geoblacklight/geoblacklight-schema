@@ -96,46 +96,46 @@ Note on the types:
 | `_geom` | Spatial shape as WKT |
 
 ```xml
-	<?xml version="1.0" encoding="UTF-8"?>
-	<schema name="GeoBlacklight" version="1.5">
-	  <uniqueKey>uuid</uniqueKey>
-	  <fields>
-	  ...
-	    <!-- Spatial field types:
-    
-	         Solr3:
-	           <field name="my_pt">83.1,-117.312</field> 
-	             as (y,x)
+<?xml version="1.0" encoding="UTF-8"?>
+<schema name="GeoBlacklight" version="1.5">
+  <uniqueKey>uuid</uniqueKey>
+  <fields>
+  ...
+    <!-- Spatial field types:
 
-	         Solr4:             
+         Solr3:
+           <field name="my_pt">83.1,-117.312</field> 
+             as (y,x)
 
-	           <field name="my_bbox">-117.312 83.1 -115.39 84.31</field> 
-	             as (W S E N)
+         Solr4:             
 
-	           <field name="my_geom">POLYGON((1 8, 1 9, 2 9, 2 8, 1 8))</field> 
-	             as WKT for point, linestring, polygon
+           <field name="my_bbox">-117.312 83.1 -115.39 84.31</field> 
+             as (W S E N)
 
-	      -->
-	    <dynamicField name="*_pt"     type="location"     stored="true" indexed="true"/>
-	    <dynamicField name="*_bbox"   type="location_rpt" stored="true" indexed="true"/>
-	    <dynamicField name="*_geom"   type="location_jts" stored="true" indexed="true"/>
-	  </fields>
-	  <types>
-	    ...
-	    <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_d"/>
-	    <fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
-	               distErrPct="0.025"
-	               maxDistErr="0.000009"
-	               units="degrees"
-	            />
-	    <fieldType name="location_jts" class="solr.SpatialRecursivePrefixTreeFieldType"
-	               spatialContextFactory="com.spatial4j.core.context.jts.JtsSpatialContextFactory"
-	               distErrPct="0.025"
-	               maxDistErr="0.000009"
-	               units="degrees"
-	            />
-	  </types>
-	</schema>
+           <field name="my_geom">POLYGON((1 8, 1 9, 2 9, 2 8, 1 8))</field> 
+             as WKT for point, linestring, polygon
+
+      -->
+    <dynamicField name="*_pt"     type="location"     stored="true" indexed="true"/>
+    <dynamicField name="*_bbox"   type="location_rpt" stored="true" indexed="true"/>
+    <dynamicField name="*_geom"   type="location_jts" stored="true" indexed="true"/>
+  </fields>
+  <types>
+    ...
+    <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_d"/>
+    <fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
+               distErrPct="0.025"
+               maxDistErr="0.000009"
+               units="degrees"
+            />
+    <fieldType name="location_jts" class="solr.SpatialRecursivePrefixTreeFieldType"
+               spatialContextFactory="com.spatial4j.core.context.jts.JtsSpatialContextFactory"
+               distErrPct="0.025"
+               maxDistErr="0.000009"
+               units="degrees"
+            />
+  </types>
+</schema>
 ```
 
 Solr queries
@@ -155,27 +155,27 @@ Search for point within 50 km of N40 W114
 Note: Solr `_bbox` uses circle with radius not rectangles.
 
 ```xml
-	<str name="d">50</str>
-	<str name="q">*:*</str>
-	<str name="sfield">solr_latlon</str>
-	<str name="pt">40,-114</str>
-	<str name="fq">{!geofilt}</str>
+<str name="d">50</str>
+<str name="q">*:*</str>
+<str name="sfield">solr_latlon</str>
+<str name="pt">40,-114</str>
+<str name="fq">{!geofilt}</str>
 ```
 
 Search for single point _within_ a bounding box of SW=40,-120 NE=50,-110
 -----------------------------------------------------------------------
 
 ```xml
-	<str name="q">*:*</str>
-	<str name="fq">solr_latlon:[40,-120 TO 50,-110]</str>
+<str name="q">*:*</str>
+<str name="fq">solr_latlon:[40,-120 TO 50,-110]</str>
 ```
 
 Search for bounding box _within_ a bounding box of SW=20,-160 NE=70,-70
 ----------------------------------------------------------------------
 
 ```xml
-	<str name="q">*:*</str>
-	<str name="fq">solr_sw_latlon:[20,-160 TO 70,-70] AND solr_ne_latlon:[20,-160 TO 70,-70]</str>
+<str name="q">*:*</str>
+<str name="fq">solr_sw_latlon:[20,-160 TO 70,-70] AND solr_ne_latlon:[20,-160 TO 70,-70]</str>
 ```
 
 Solr 4 Spatial -- non JTS
@@ -187,16 +187,16 @@ Search for point _within_ a bounding box of SW=20,-160 NE=70,-70
 ---------------------------------------------------------------
 
 ```xml
-	<str name="q">*:*</str>
-	<str name="fq">solr_pt:"Intersects(-160 20 -70 70)"</str>
+<str name="q">*:*</str>
+<str name="fq">solr_pt:"Intersects(-160 20 -70 70)"</str>
 ```
 
 Search for bounding box _within_ a bounding box of SW=20,-160 NE=70,-70
 -----------------------------------------------------------------------------
 
 ```xml
-	<str name="q">*:*</str>
-	<str name="fq">solr_sw_pt:[20,-160 TO 70,-70] AND solr_ne_pt:[20,-160 TO 70,-70]</str>
+<str name="q">*:*</str>
+<str name="fq">solr_sw_pt:[20,-160 TO 70,-70] AND solr_ne_pt:[20,-160 TO 70,-70]</str>
 ```
 
 
@@ -204,24 +204,24 @@ Solr 4: ... using polygon intersection
 -------------------------------------------
 
 ```xml
-	<str name="q">*:*</str>
-	<str name="fq">solr_bbox:"Intersects(-160 20 -70 70)"</str>
+<str name="q">*:*</str>
+<str name="fq">solr_bbox:"Intersects(-160 20 -70 70)"</str>
 ```
 
 Solr 4: ... using polygon containment
 -------------------------------------------
 
 ```xml
-	<str name="q">*:*</str>
-	<str name="fq">solr_bbox:"IsWithin(-160 20 -150 30)"</str>
+<str name="q">*:*</str>
+<str name="fq">solr_bbox:"IsWithin(-160 20 -150 30)"</str>
 ```
 
 Solr 4: ... using polygon containment for spatial relevancy
 ---------------------------------------------------------------------
 
 ```xml
-	<str name="q">solr_bbox:"IsWithin(-160 20 -150 30)"^10 railroads</str>
-	<str name="fq">solr_bbox:"Intersects(-160 20 -150 30)"</str>
+<str name="q">solr_bbox:"IsWithin(-160 20 -150 30)"^10 railroads</str>
+<str name="fq">solr_bbox:"Intersects(-160 20 -150 30)"</str>
 ```
 
 
@@ -238,8 +238,8 @@ Search for bbox _intersecting_ bounding box of SW=20,-160 NE=70,-70 using polygo
 ----------------------------------------------------------------------------------------------------
 
 ```xml
-	<str name="q">*:*</str>
-	<str name="fq">solr_bbox:"Intersects(POLYGON((-160 20, -160 70, -70 70, -70 20, -160 20)))"</str>
+<str name="q">*:*</str>
+<str name="fq">solr_bbox:"Intersects(POLYGON((-160 20, -160 70, -70 70, -70 20, -160 20)))"</str>
 ```
 
 
@@ -265,16 +265,16 @@ Facets
 ------------
 
 ```xml
-	<str name="facet.field">dct_spatial_sm</str>
-	<str name="facet.field">dc_format_s</str>
-	<str name="facet.field">dc_language_s</str>
-	<str name="facet.field">dc_publisher_s</str>
-	<str name="facet.field">dc_rights_s</str>
-	<str name="facet.field">dct_provenance_s</str>
-	<str name="facet.field">dc_subject_sm</str>
-	<str name="facet.field">dct_isPartOf_sm</str>
-	<str name="facet.field">layer_geom_type_s</str>
-	<str name="facet.field">solr_year_i</str>
+<str name="facet.field">dct_spatial_sm</str>
+<str name="facet.field">dc_format_s</str>
+<str name="facet.field">dc_language_s</str>
+<str name="facet.field">dc_publisher_s</str>
+<str name="facet.field">dc_rights_s</str>
+<str name="facet.field">dct_provenance_s</str>
+<str name="facet.field">dc_subject_sm</str>
+<str name="facet.field">dct_isPartOf_sm</str>
+<str name="facet.field">layer_geom_type_s</str>
+<str name="facet.field">solr_year_i</str>
 ```
 
 Solr example documents
@@ -285,72 +285,73 @@ See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
 These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO 19139.
 
 ```json
-	  "uuid": "http://purl.stanford.edu/zy658cr1728",
-	  "dc_description_s": "This point dataset shows village locations with socio-demographic and economic Census data f
-	or 2001 for the Union Territory of Andaman and Nicobar Islands, India linked to the 2001 Census. Includes village s
-	ocio-demographic and economic Census attribute data such as total population, population by sex, household, literac
-	y and illiteracy rates, and employment by industry. This layer is part of the VillageMap dataset which includes soc
-	io-demographic and economic Census data for 2001 at the village level for all the states of India. This data layer 
-	is sourced from secondary government sources, chiefly Survey of India, Census of India, Election Commission, etc. T
-	his map Includes data for 547 villages, 3 towns, 2 districts, and 1 union territory.; This dataset is intended for 
-	researchers, students, and policy makers for reference and mapping purposes, and may be used for village level demo
-	graphic analysis within basic applications to support graphical overlays and analysis with other spatial data.; ",
-	  "dc_format_s": "Shapefile",
-	  "dc_identifier_s": "http://purl.stanford.edu/zy658cr1728",
-	  "dc_language_s": "English",
-	  "dc_publisher_s": "ML InfoMap (Firm)",
-	  "dc_rights_s": "Restricted",
-	  "dc_subject_sm": [
-	    "Human settlements",
-	    "Villages",
-	    "Census",
-	    "Demography",
-	    "Population",
-	    "Sex ratio",
-	    "Housing",
-	    "Labor supply",
-	    "Caste",
-	    "Literacy",
-	    "Society",
-	    "",
-	    "Location"
-	  ],
-	  "dc_title_s": "Andaman and Nicobar, India: Village Socio-Demographic and Economic Census Data, 2001",
-	  "dc_type_s": "Dataset",
-	  "dct_isPartOf_sm": "My Collection",
-	  "dct_references_sm": [
-	    "scheme=\"urn:ogc:serviceType:WebFeatureService\" url=\"http://geowebservices-restricted.stanford.edu/geoserver/wfs\"",
-	    "scheme=\"urn:ogc:serviceType:WebMapService\" url=\"http://geowebservices-restricted.stanford.edu/geoserver/wms\"",
-	    "scheme=\"urn:iso:dataFormat:19139\" url=\"http://purl.stanford.edu/zy658cr1728.iso19139\"",
-	    "scheme=\"urn:x-osgeo:link:www\" url=\"http://purl.stanford.edu/zy658cr1728\"",
-	    "scheme=\"urn:loc:dataFormat:MODS\" url=\"http://purl.stanford.edu/zy658cr1728.mods\"",
-	    "scheme=\"urn:x-osgeo:link:www-thumbnail\", url=\"http://example.com/preview.jpg\""
-	  ],
-	  "dct_spatial_sm": [
-	    "Andaman and Nicobar Islands",
-	    "Andaman",
-	    "Nicobar",
-	    "Car Nicobar Island",
-	    "Port Blair",
-	    "Indira Point",
-	    "Diglipur",
-	    "Nancowry Island"
-	  ],
-	  "dct_temporal_sm": "2001-01-01T00:00:00Z",
-	  "dct_issued_dt": "2000-01-01T00:00:00Z",
-	  "dct_provenance_s": "Stanford",
-	  "georss_box_s": "6.761581 92.234924 13.637013 94.262535",
-	  "georss_polygon_s": "13.637013 92.234924 13.637013 94.262535 6.761581 94.262535 6.761581 92.234924 13.637013 92.234924",
-	  "layer_slug_s": "stanford-zy658cr1728",
-	  "layer_id_s": "druid:zy658cr1728",
-	  "layer_srs_s": "EPSG:4326",
-	  "layer_geom_type_s": "Point",
-	  "solr_bbox": "92.234924 6.761581 94.262535 13.637013",
-	  "solr_ne_pt": "13.637013,94.262535",
-	  "solr_sw_pt": "6.761581,92.234924",
-	  "solr_geom": "POLYGON((92.234924 13.637013, 94.262535 13.637013, 94.262535 6.761581, 92.234924 6.761581, 92.234924 13.637013))"
-	  "score": 1.6703978
-	}
+{
+  "uuid": "http://purl.stanford.edu/zy658cr1728",
+  "dc_description_s": "This point dataset shows village locations with socio-demographic and economic Census data f
+or 2001 for the Union Territory of Andaman and Nicobar Islands, India linked to the 2001 Census. Includes village s
+ocio-demographic and economic Census attribute data such as total population, population by sex, household, literac
+y and illiteracy rates, and employment by industry. This layer is part of the VillageMap dataset which includes soc
+io-demographic and economic Census data for 2001 at the village level for all the states of India. This data layer 
+is sourced from secondary government sources, chiefly Survey of India, Census of India, Election Commission, etc. T
+his map Includes data for 547 villages, 3 towns, 2 districts, and 1 union territory.; This dataset is intended for 
+researchers, students, and policy makers for reference and mapping purposes, and may be used for village level demo
+graphic analysis within basic applications to support graphical overlays and analysis with other spatial data.; ",
+  "dc_format_s": "Shapefile",
+  "dc_identifier_s": "http://purl.stanford.edu/zy658cr1728",
+  "dc_language_s": "English",
+  "dc_publisher_s": "ML InfoMap (Firm)",
+  "dc_rights_s": "Restricted",
+  "dc_subject_sm": [
+    "Human settlements",
+    "Villages",
+    "Census",
+    "Demography",
+    "Population",
+    "Sex ratio",
+    "Housing",
+    "Labor supply",
+    "Caste",
+    "Literacy",
+    "Society",
+    "",
+    "Location"
+  ],
+  "dc_title_s": "Andaman and Nicobar, India: Village Socio-Demographic and Economic Census Data, 2001",
+  "dc_type_s": "Dataset",
+  "dct_isPartOf_sm": "My Collection",
+  "dct_references_sm": [
+    "scheme=\"urn:ogc:serviceType:WebFeatureService\" url=\"http://geowebservices-restricted.stanford.edu/geoserver/wfs\"",
+    "scheme=\"urn:ogc:serviceType:WebMapService\" url=\"http://geowebservices-restricted.stanford.edu/geoserver/wms\"",
+    "scheme=\"urn:iso:dataFormat:19139\" url=\"http://purl.stanford.edu/zy658cr1728.iso19139\"",
+    "scheme=\"urn:x-osgeo:link:www\" url=\"http://purl.stanford.edu/zy658cr1728\"",
+    "scheme=\"urn:loc:dataFormat:MODS\" url=\"http://purl.stanford.edu/zy658cr1728.mods\"",
+    "scheme=\"urn:x-osgeo:link:www-thumbnail\", url=\"http://example.com/preview.jpg\""
+  ],
+  "dct_spatial_sm": [
+    "Andaman and Nicobar Islands",
+    "Andaman",
+    "Nicobar",
+    "Car Nicobar Island",
+    "Port Blair",
+    "Indira Point",
+    "Diglipur",
+    "Nancowry Island"
+  ],
+  "dct_temporal_sm": "2001-01-01T00:00:00Z",
+  "dct_issued_dt": "2000-01-01T00:00:00Z",
+  "dct_provenance_s": "Stanford",
+  "georss_box_s": "6.761581 92.234924 13.637013 94.262535",
+  "georss_polygon_s": "13.637013 92.234924 13.637013 94.262535 6.761581 94.262535 6.761581 92.234924 13.637013 92.234924",
+  "layer_slug_s": "stanford-zy658cr1728",
+  "layer_id_s": "druid:zy658cr1728",
+  "layer_srs_s": "EPSG:4326",
+  "layer_geom_type_s": "Point",
+  "solr_bbox": "92.234924 6.761581 94.262535 13.637013",
+  "solr_ne_pt": "13.637013,94.262535",
+  "solr_sw_pt": "6.761581,92.234924",
+  "solr_geom": "POLYGON((92.234924 13.637013, 94.262535 13.637013, 94.262535 6.761581, 92.234924 6.761581, 92.234924 13.637013))"
+  "score": 1.6703978
+}
 ```
 
 Links
