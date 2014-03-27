@@ -6,9 +6,9 @@ Primary key
 ----------
 
 - *uuid*: Unique Identifier. Examples:
-    - http://purl.stanford.edu/vr593vj7147,
-    - http://ark.cdlib.org/ark:/28722/bk0012h535q,
-    - urn:geodata.tufts.edu:Tufts.CambridgeGrid100_04.
+    - `http://purl.stanford.edu/vr593vj7147`
+    - `http://ark.cdlib.org/ark:/28722/bk0012h535q`
+    - `urn:geodata.tufts.edu:Tufts.CambridgeGrid100_04`
 
 Dublin Core
 ----------
@@ -23,8 +23,8 @@ of all of these fields. We're using both DC Elements and DC Terms
 - *dct_issued_dt*: Date in Solr syntax. Example: "2001-01-01T00:00:00Z".
 - *dc_description_s*: Description.
 - *dc_format_s*: File format (not MIME types). Valid values:
-    - "Shapefile"
-    - "GeoTIFF"
+    - `Shapefile`
+    - `GeoTIFF`
 - *dc_identifier_s*: Unique identifier. Same as UUID.
 - *dc_language_s*: Language. Example: "English".
 - *dc_publisher_s*: Publisher. Example: "ML InfoMap (Firm)".
@@ -32,8 +32,8 @@ of all of these fields. We're using both DC Elements and DC Terms
 scheme="urn:ogc:serviceType:WebFeatureService" url="http://geowebservices-restricted.stanford.edu/geoserver
 /wfs"
 - *dc_rights_s*: Rights for access. Valid values:
-    - "Restricted"
-    - "Public"
+    - `Restricted`
+    - `Public`
 - *dct_provenance_s*: Source institution: Examples:
     - Berkeley
     - Harvard
@@ -51,7 +51,7 @@ GeoRSS metadata
 ===============
 
 - *georss_point_s*: Point representation for layer -- i.e., centroid?
-- *georss_box_s*: Bounding box as maximum values for S W N E. Example: "12.62309 76.76 19.91705 84.76618"
+- *georss_box_s*: Bounding box as maximum values for S W N E. Example: `12.62309 76.76 19.91705 84.76618`
 - *georss_polygon_s*: Shape of the layer as a Polygon.
 Example: "n w n e s e s w n w"
 
@@ -59,20 +59,20 @@ Layer-specific metadata
 =======================
 
 - *layer_slug_s*. Unique identifier visible to the user, used for Permalinks.
-- Example: stanford-vr593vj7147.
+- Example: `stanford-vr593vj7147`.
 - *layer_id_s*. The complete identifier for the WMS/WFS/WCS layer.
-Example: "druid:vr593vj7147",
-- *layer_geom_type_s*. Valid values are: "Point", "Line", "Polygon", and "Raster".
+Example: `druid:vr593vj7147`
+- *layer_geom_type_s*. Valid values are: `Point`, `Line`, `Polygon`, and `Raster`.
 
 Derived metadata used by Solr index
 ===================================
 
-- *solr_bbox*: Bounding box as maximum values for W S E N. Example: "76.76 12.62309 84.76618 19.91705"
+- *solr_bbox*: Bounding box as maximum values for W S E N. Example: `76.76 12.62309 84.76618 19.91705`
 - *solr_geom*: Shape of the layer as a Point, LineString, or Polygon WKT.
-Example: "POLYGON((76.76 19.91705, 84.76618 19.91705, 84.76618 12.62309, 76.76 12.62309, 76.76 19.91705))"
-- *solr_ne_pt* (from solr_bbox). North-eastern most point of the bounding box, as (y, x). Example: "83.1,-128.5"
-- *solr_sw_pt* (from solr_bbox). South-western most point of the bounding box, as (y, x). Example: "81.2,-130.1"
-- *solr_year_i* (from dc_coverage_temporal_sm): Year for which layer is valid. Example: 2012.
+Example: `POLYGON((76.76 19.91705, 84.76618 19.91705, 84.76618 12.62309, 76.76 12.62309, 76.76 19.91705))`
+- *solr_ne_pt* (from `solr_bbox`). North-eastern most point of the bounding box, as (y, x). Example: `83.1,-128.5`
+- *solr_sw_pt* (from `solr_bbox`). South-western most point of the bounding box, as (y, x). Example: `81.2,-130.1`
+- *solr_year_i* (from `dc_coverage_temporal_sm`): Year for which layer is valid. Example: `2012`.
 
 Solr schema syntax
 ==================
@@ -347,7 +347,7 @@ graphic analysis within basic applications to support graphical overlays and ana
   "solr_bbox": "92.234924 6.761581 94.262535 13.637013",
   "solr_ne_pt": "13.637013,94.262535",
   "solr_sw_pt": "6.761581,92.234924",
-  "solr_geom": "POLYGON((92.234924 13.637013, 94.262535 13.637013, 94.262535 6.761581, 92.234924 6.761581, 92.234924 13.637013))"
+  "solr_geom": "POLYGON((92.234924 13.637013, 94.262535 13.637013, 94.262535 6.761581, 92.234924 6.761581, 92.234924 13.637013))",
   "score": 1.6703978
 }
 ```
