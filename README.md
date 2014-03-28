@@ -28,7 +28,7 @@ of all of these fields. We're using both DC Elements and DC Terms
 - *dc_identifier_s*: Unique identifier. Same as UUID.
 - *dc_language_s*: Language. Example: "English".
 - *dc_publisher_s*: Publisher. Example: "ML InfoMap (Firm)".
-- *dct_references_sm*: URLs to referenced resources. Used scheme and url parameters. scheme values are based on [CatInterop|https://github.com/OSGeo/Cat-Interop/blob/master/link_types.csv] Multiple values allowed. Example:
+- *dct_references_sm*: URLs to referenced resources. Used scheme and url parameters. scheme values are based on [CatInterop](https://github.com/OSGeo/Cat-Interop/blob/master/link_types.csv) Multiple values allowed. Example:
 scheme="urn:ogc:serviceType:WebFeatureService" url="http://geowebservices-restricted.stanford.edu/geoserver
 /wfs"
 - *dc_rights_s*: Rights for access. Valid values:
