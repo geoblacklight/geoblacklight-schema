@@ -128,18 +128,18 @@
   </types>
 
   <!-- for scoring formula -->
-  <copyField source="dct_spatial_sm"     dest="dct_spatial_tmi" maxChars="10000"/>
-  <copyField source="dct_temporal_sm"    dest="dct_temporal_tmi" maxChars="10000"/>
+  <copyField source="dct_spatial_sm"     dest="dct_spatial_tmi"     maxChars="10000"/>
+  <copyField source="dct_temporal_sm"    dest="dct_temporal_tmi"    maxChars="10000"/>
   <copyField source="dc_creator_sm"      dest="dc_creator_tmi"      maxChars="1000"/>
   <copyField source="dc_description_s"   dest="dc_description_ti"   maxChars="10000"/>
   <copyField source="dc_format_s"        dest="dc_format_ti"        maxChars="100"/>  
   <copyField source="dc_identifier_s"    dest="dc_identifier_ti"    maxChars="100"/>
   <copyField source="dc_publisher_s"     dest="dc_publisher_ti"     maxChars="1000"/>
   <copyField source="dc_rights_s"        dest="dc_rights_ti"        maxChars="100"/>
-  <copyField source="dct_provenance_s"   dest="dct_provenance_ti"    maxChars="1000"/>
+  <copyField source="dct_provenance_s"   dest="dct_provenance_ti"   maxChars="1000"/>
   <copyField source="dc_subject_sm"      dest="dc_subject_tmi"      maxChars="10000"/>
   <copyField source="dc_title_s"         dest="dc_title_ti"         maxChars="1000"/>
-  <copyField source="layer_collection_s" dest="layer_collection_ti" maxChars="1000"/>
+  <copyField source="dct_isPartOf_sm"    dest="dct_isPartOf_tmi"    maxChars="1000"/>
   <copyField source="layer_geom_type_s"  dest="layer_geom_type_ti"  maxChars="100"/>
   <copyField source="layer_slug_s"       dest="layer_slug_ti"       maxChars="100"/>
 
@@ -150,7 +150,6 @@
   <!-- for sorting text fields -->
   <copyField source="dc_title_s"         dest="dc_title_sort"/>
   <copyField source="dc_publisher_s"     dest="dc_publisher_sort"/>
-  <copyField source="layer_collection_s" dest="layer_collection_sort"/>
 
 </schema>
 
