@@ -344,24 +344,32 @@ See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
 ```xml
 <doc>
     <str name="uuid">http://purl.stanford.edu/qb767ss4042</str>
-    <str name="dc_description_s">This polygon dataset shows pre-delimitation state Legislative Assembly constituency boundaries and data relating to the 2007 Assembly elections for the State of Uttar Pradesh, India. Map includes data for 403 constituencies. Includes attribute data on election parties, candidates, voters, and results. This layer is part of the Poll Map of India which includes parliamentary constituency boundaries for India, Assembly constituency boundaries for all states, and data relating to the past national elections for each State of India.; This data can be used for election analysis, forecasting, and mapping: Enables profiling of individual constituencies, permits historical analysis of the data, and helps predictive estimate of the impact of regional and state-wise electorate swings on the performance of political parties. These data are intended for researchers, students, and policy makers for reference and mapping purposes, and may be used for basic applications such as viewing, querying, and map output production.; </str>
+    <str name="dc_description_s">This polygon dataset shows pre-delimitation state Legislative Assembly constituency boundaries and
+    data relating to the 2007 Assembly elections for the State of Uttar Pradesh, India. Map includes data for 403 constituencies.
+    Includes attribute data on election parties, candidates, voters, and results. This layer is part of the Poll Map of India which
+    includes parliamentary constituency boundaries for India, Assembly constituency boundaries for all states, and data relating to
+    the past national elections for each State of India.; This data can be used for election analysis, forecasting, and mapping:
+    Enables profiling of individual constituencies, permits historical analysis of the data, and helps predictive estimate of the
+    impact of regional and state-wise electorate swings on the performance of political parties. These data are intended for
+    researchers, students, and policy makers for reference and mapping purposes, and may be used for basic applications such as
+    viewing, querying, and map output production.; </str>
     <str name="dc_format_s">Shapefile</str>
     <str name="dc_identifier_s">http://purl.stanford.edu/qb767ss4042</str>
     <str name="dc_language_s">English</str>
     <str name="dc_publisher_s">ML InfoMap (Firm)</str>
     <str name="dc_rights_s">Restricted</str>
     <arr name="dc_subject_sm">
+      <str>Boundaries</str>
       <str>Elections</str>
       <str>Political Parties</str>
-      <str>Voting</str>
       <str>Politics and government</str>
-      <str>Boundaries</str>
       <str>Society</str>
+      <str>Voting</str>
     </arr>
     <str name="dc_title_s">Uttar Pradesh, India: Pre Delimitation State Assembly Constituency Boundaries and Election Data, 2007</str>
     <str name="dc_type_s">Dataset</str>
     <arr name="dct_isPartOf_sm">
-      <str>My Collection</str>
+      <str>PollMap of India</str>
     </arr>
     <arr name="dct_references_sm">
       <str><xlink type="simple" role="urn:ogc:serviceType:WebFeatureService" href="http://geowebservices-restricted.stanford.edu/geoserver/wfs"/></str>
@@ -369,32 +377,35 @@ See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
       <str><xlink type="simple" role="urn:iso:dataFormat:19139" href="http://purl.stanford.edu/qb767ss4042.iso19139"/></str>
       <str><xlink type="simple" role="urn:x-osgeo:link:www" href="http://purl.stanford.edu/qb767ss4042"/></str>
       <str><xlink type="simple" role="urn:loc:dataFormat:MODS" href="http://purl.stanford.edu/qb767ss4042.mods"/></str>
-      <str><xlink type="simple" role="urn:x-osgeo:link:www-thumbnail", href="http://example.com/preview.jpg"/></str>
+      <str><xlink type="simple" role="urn:x-osgeo:link:www-thumbnail" href="http://example.com/preview.jpg"/></str>
     </arr>
     <arr name="dct_spatial_sm">
-      <str>Uttar Pradesh</str>
       <str>Agra</str>
       <str>Ghāziābād</str>
+      <str>Khatauli</str>
+      <str>Kushinagar</str>
+      <str>Lucknow</str>
       <str>Meerut</str>
+      <str>Muzaffarnagar</str>
       <str>Rāmpur</str>
       <str>Sahāranpur</str>
+      <str>Uttar Pradesh</str>
       <str>Vārānasi</str>
-      <str>Lucknow</str>
-      <str>Kushinagar</str>
-      <str>Khatauli</str>
-      <str>Muzaffarnagar</str>
     </arr>
     <arr name="dct_temporal_sm">
       <str>2007-01-01T00:00:00Z</str>
     </arr>
     <date name="dct_issued_dt">2000-01-01T00:00:00Z</date>
     <str name="dct_provenance_s">Stanford</str>
-    <str name="georss_box_s">23.87022 77.08887 30.40547 84.63575</str>
+    
+	<str name="georss_box_s">23.87022 77.08887 30.40547 84.63575</str>
     <str name="georss_polygon_s">30.40547 77.08887 30.40547 84.63575 23.87022 84.63575 23.87022 77.08887 30.40547 77.08887</str>
+	
     <str name="layer_slug_s">stanford-qb767ss4042</str>
     <str name="layer_id_s">druid:qb767ss4042</str>
     <str name="layer_srs_s">EPSG:4326</str>
     <str name="layer_geom_type_s">Polygon</str>
+	
     <str name="solr_bbox">77.08887 23.87022 84.63575 30.40547</str>
     <double name="solr_ne_pt_0_d">30.40547</double>
     <double name="solr_ne_pt_1_d">84.63575</double>
