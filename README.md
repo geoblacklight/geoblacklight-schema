@@ -165,7 +165,7 @@ Note on the types:
 | `_pt` | Spatial point as (y,x) | `solr.LatLonType` |
 | `_geom` | Spatial shape as WKT | *JTS* version of `solr.SpatialRecursivePrefixTreeFieldType` |
 
-```
+```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <schema name="GeoBlacklight" version="1.5">
   <uniqueKey>uuid</uniqueKey>
@@ -214,48 +214,47 @@ We provide a set of example Solr queries against this schema.
 
 ### Solr 3: Pseudo-spatial using `solr.LatLon`
 
-`solr.LatLonType` does not correctly work across the international dateline in these queries. `_latlon` in these examples are assumed to be solr.LatLonType.
+`solr.LatLonType` does not correctly work across the international dateline in these queries. `_pt` in these examples are assumed
+to be `solr.LatLonType`.
 
 #### Search for point within 50 km of N40 W114
 
-Note: Solr `_bbox` uses circle with radius not rectangles.
+Note: Solr `_bbox` uses circle with radius (not rectangles).
 
-```
+```xml
 <str name="d">50</str>
 <str name="q">*:*</str>
-<str name="sfield">solr_latlon</str>
+<str name="sfield">solr_pt</str>
 <str name="pt">40,-114</str>
 <str name="fq">{!geofilt}</str>
 ```
 
 #### Search for single point _within_ a bounding box of SW=40,-120 NE=50,-110
 
-```
+```xml
 <str name="q">*:*</str>
-<str name="fq">solr_latlon:[40,-120 TO 50,-110]</str>
+<str name="fq">solr_pt:[40,-120 TO 50,-110]</str>
 ```
 
 #### Search for bounding box _within_ a bounding box of SW=20,-160 NE=70,-70
 
-```
+```xml
 <str name="q">*:*</str>
-<str name="fq">solr_sw_latlon:[20,-160 TO 70,-70] AND solr_ne_latlon:[20,-160 TO 70,-70]</str>
+<str name="fq">solr_sw_pt:[20,-160 TO 70,-70] AND solr_ne_pt:[20,-160 TO 70,-70]</str>
 ```
 
 ### Solr 4 Spatial
 
-`_pt` and `_bbox` in these examples are assumed to be `solr.SpatialRecursivePrefixTreeFieldType`.
-
 #### Search for point _within_ a bounding box of SW=20,-160 NE=70,-70
 
-```
+```xml
 <str name="q">*:*</str>
 <str name="fq">solr_pt:"Intersects(-160 20 -70 70)"</str>
 ```
 
 #### Search for bounding box _within_ a bounding box of SW=20,-160 NE=70,-70
 
-```
+```xml
 <str name="q">*:*</str>
 <str name="fq">solr_sw_pt:[20,-160 TO 70,-70] AND solr_ne_pt:[20,-160 TO 70,-70]</str>
 ```
@@ -263,14 +262,14 @@ Note: Solr `_bbox` uses circle with radius not rectangles.
 
 #### ... using polygon intersection
 
-```
+```xml
 <str name="q">*:*</str>
 <str name="fq">solr_bbox:"Intersects(-160 20 -70 70)"</str>
 ```
 
 #### ... using polygon containment
 
-```
+```xml
 <str name="q">*:*</str>
 <str name="fq">solr_bbox:"IsWithin(-160 20 -150 30)"</str>
 ```
@@ -280,7 +279,7 @@ Note: Solr `_bbox` uses circle with radius not rectangles.
 This is the **primary** query used by GeoBlacklight. In this example, we score containment by
 10x and issue a text query, then filter the results via intersection.
 
-```
+```xml
 <str name="q">solr_bbox:"IsWithin(-160 20 -150 30)"^10 railroads</str>
 <str name="fq">solr_bbox:"Intersects(-160 20 -150 30)"</str>
 ```
@@ -294,7 +293,7 @@ for the `solr.SpatialRecursivePrefixTreeFieldType` field class.
 
 #### Search for bbox _intersecting_ bounding box of SW=20,-160 NE=70,-70 using polygon intersection
 
-```
+```xml
 <str name="q">*:*</str>
 <str name="fq">solr_bbox:"Intersects(POLYGON((-160 20, -160 70, -70 70, -70 20, -160 20)))"</str>
 ```
