@@ -397,22 +397,22 @@ See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
     <date name="dct_issued_dt">2000-01-01T00:00:00Z</date>
     <str name="dct_provenance_s">Stanford</str>
     
-	<str name="georss_box_s">23.87022 77.08887 30.40547 84.63575</str>
-    <str name="georss_polygon_s">30.40547 77.08887 30.40547 84.63575 23.87022 84.63575 23.87022 77.08887 30.40547 77.08887</str>
+	<str name="georss_box_s"><georss:box>23.9 77.1 30.4 84.6</georss:box></str>
+    <str name="georss_polygon_s"><georss:polygon>30.4 77.1 30.4 84.6 23.9 84.6 23.9 77.1 30.4 77.1</georss:polygon></str>
 	
     <str name="layer_slug_s">stanford-qb767ss4042</str>
     <str name="layer_id_s">druid:qb767ss4042</str>
     <str name="layer_srs_s">EPSG:4326</str>
     <str name="layer_geom_type_s">Polygon</str>
 	
-    <str name="solr_bbox">77.08887 23.87022 84.63575 30.40547</str>
-    <double name="solr_ne_pt_0_d">30.40547</double>
-    <double name="solr_ne_pt_1_d">84.63575</double>
-    <str name="solr_ne_pt">30.40547,84.63575</str>
-    <double name="solr_sw_pt_0_d">23.87022</double>
-    <double name="solr_sw_pt_1_d">77.08887</double>
-    <str name="solr_sw_pt">23.87022,77.08887</str>
-    <str name="solr_geom">POLYGON((77.08887 30.40547, 84.63575 30.40547, 84.63575 23.87022, 77.08887 23.87022, 77.08887 30.40547))</str>
+    <str name="solr_bbox">77.1 23.9 84.6 30.4</str>
+    <double name="solr_ne_pt_0_d">30.4</double>
+    <double name="solr_ne_pt_1_d">84.6</double>
+    <str name="solr_ne_pt">30.4,84.6</str>
+    <double name="solr_sw_pt_0_d">23.9</double>
+    <double name="solr_sw_pt_1_d">77.1</double>
+    <str name="solr_sw_pt">23.9,77.1</str>
+    <str name="solr_geom">POLYGON((77.1 30.4, 84.6 30.4, 84.6 23.9, 77.1 23.9, 77.1 30.4))</str>
     <long name="_version_">1464112144206266368</long>
     <date name="timestamp">2014-03-31T17:15:48.267Z</date>
     <float name="score">3.2848911</float>
