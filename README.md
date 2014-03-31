@@ -16,6 +16,8 @@ schema into a Solr 4 instance, then upload the documents.
 
 #  Schema for GeoBlacklight
 
+Note that the suffixes in the schema attribute names are used by the Solr schema implementation.
+
 ### Primary key
 
 - *uuid*: Unique Identifier. Examples:
@@ -149,9 +151,8 @@ properties.
 
 ## Solr4 schema implementation
 
-The [schema.xml](https://github.com/sul-dlss/geoblacklight-schema/blob/master/conf/schema.xml) is on Github.
-
-Note on the types:
+The [schema.xml](https://github.com/sul-dlss/geoblacklight-schema/blob/master/conf/schema.xml) is on Github. The
+schema makes heavy use of the `dynamicField` feature of Solr. Here are the suffixes to yield the datatype.
 
 | Suffix | Solr data type using *dynamicField* | Solr *fieldType* Class |
 | ------ | --------------------------------- | --------------------- |
@@ -165,32 +166,23 @@ Note on the types:
 | `_pt` | Spatial point as (y,x) | `solr.LatLonType` |
 | `_geom` | Spatial shape as WKT | *JTS* version of `solr.SpatialRecursivePrefixTreeFieldType` |
 
+Here is an example of the schema implementation for the spatial types:
+
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
 <schema name="GeoBlacklight" version="1.5">
   <uniqueKey>uuid</uniqueKey>
   <fields>
-  ...
-    <!-- Spatial field types:
-
-         Solr3:
-           <field name="my_pt">83.1,-117.312</field> 
-             as (y,x)
-
-         Solr4:             
-
-           <field name="my_bbox">-117.312 83.1 -115.39 84.31</field> 
-             as (W S E N)
-
-           <field name="my_geom">POLYGON((1 8, 1 9, 2 9, 2 8, 1 8))</field> 
-             as WKT for point, linestring, polygon
-
-      -->
+    ...
+    <dynamicField name="*_d"    type="double"  stored="true"  indexed="true"/>
+    ...
     <dynamicField name="*_pt"     type="location"     stored="true" indexed="true"/>
     <dynamicField name="*_bbox"   type="location_rpt" stored="true" indexed="true"/>
     <dynamicField name="*_geom"   type="location_jts" stored="true" indexed="true"/>
   </fields>
   <types>
+	...
+    <fieldType name="double" class="solr.TrieDoubleField"  precisionStep="8" positionIncrementGap="0"/>
     ...
     <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_d"/>
     <fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
@@ -415,6 +407,7 @@ These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO 
     <double name="solr_sw_pt_1_d">77.1</double>
     <str name="solr_geom">POLYGON((77.1 30.4, 84.6 30.4, 84.6 23.9, 77.1 23.9, 77.1 30.4))</str>
     <int name="solr_year_i">2007</int>
+	
     <long name="_version_">1464112144206266368</long>
     <date name="timestamp">2014-03-31T17:15:48.267Z</date>
     <float name="score">3.2848911</float>
