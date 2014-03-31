@@ -146,7 +146,7 @@ properties.
 
 ## Solr4 schema implementation
 
-The schema XML is on Github here: https://github.com/sul-dlss/geoblacklight-schema/blob/master/conf/schema.xml.
+The [schema.xml](https://github.com/sul-dlss/geoblacklight-schema/blob/master/conf/schema.xml) is on Github.
 
 Note on the types:
 
@@ -208,9 +208,6 @@ Note on the types:
 # Solr queries
 
 We provide a set of example Solr queries against this schema.
-
-- Use the Solr query interface with LatLon data on [sul-solr-a](http://sul-solr-a/solr/#/) to try these using ogp core.
-- For the polygon or JTS queries use [ogpapp-test](http://localhost:8983/solr/#/) via ssh tunnel to jetty 8983.
 
 ### Solr 3: Pseudo-spatial using `solr.LatLon`
 
