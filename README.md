@@ -341,74 +341,72 @@ These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO 
 
 See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
 
-```json
-	{
-	  "uuid": "http://purl.stanford.edu/zy658cr1728",
-	  "dc_description_s": "This point dataset shows village locations with socio-demographic and economic Census data for 2001 for the
-	  Union Territory of Andaman and Nicobar Islands, India linked to the 2001 Census. Includes village s ocio-demographic and economic
-	  Census attribute data such as total population, population by sex, household, literacy and illiteracy rates, and employment by
-	  industry. This layer is part of the VillageMap dataset which includes soc io-demographic and economic Census data for 2001 at the
-	  village level for all the states of India. This data layer is sourced from secondary government sources, chiefly Survey of India,
-	  Census of India, Election Commission, etc. This map Includes data for 547 villages, 3 towns, 2 districts, and 1 union territory.;
-	  This dataset is intended for researchers, students, and policy makers for reference and mapping purposes, and may be used for
-	  village level demo graphic analysis within basic applications to support graphical overlays and analysis with other spatial
-	  data.; ",
-	  "dc_format_s": "Shapefile",
-	  "dc_identifier_s": "http://purl.stanford.edu/zy658cr1728",
-	  "dc_language_s": "English",
-	  "dc_publisher_s": "ML InfoMap (Firm)",
-	  "dc_rights_s": "Restricted",
-	  "dc_subject_sm": [
-	    "Human settlements",
-	    "Villages",
-	    "Census",
-	    "Demography",
-	    "Population",
-	    "Sex ratio",
-	    "Housing",
-	    "Labor supply",
-	    "Caste",
-	    "Literacy",
-	    "Society",
-	    "",
-	    "Location"
-	  ],
-	  "dc_title_s": "Andaman and Nicobar, India: Village Socio-Demographic and Economic Census Data, 2001",
-	  "dc_type_s": "Dataset",
-	  "dct_isPartOf_sm": "My Collection",
-	  "dct_references_sm": [
-	    "scheme=\"urn:ogc:serviceType:WebFeatureService\" url=\"http://geowebservices-restricted.stanford.edu/geoserver/wfs\"",
-	    "scheme=\"urn:ogc:serviceType:WebMapService\" url=\"http://geowebservices-restricted.stanford.edu/geoserver/wms\"",
-	    "scheme=\"urn:iso:dataFormat:19139\" url=\"http://purl.stanford.edu/zy658cr1728.iso19139\"",
-	    "scheme=\"urn:x-osgeo:link:www\" url=\"http://purl.stanford.edu/zy658cr1728\"",
-	    "scheme=\"urn:loc:dataFormat:MODS\" url=\"http://purl.stanford.edu/zy658cr1728.mods\"",
-	    "scheme=\"urn:x-osgeo:link:www-thumbnail\", url=\"http://example.com/preview.jpg\""
-	  ],
-	  "dct_spatial_sm": [
-	    "Andaman and Nicobar Islands",
-	    "Andaman",
-	    "Nicobar",
-	    "Car Nicobar Island",
-	    "Port Blair",
-	    "Indira Point",
-	    "Diglipur",
-	    "Nancowry Island"
-	  ],
-	  "dct_temporal_sm": "2001-01-01T00:00:00Z",
-	  "dct_issued_dt": "2000-01-01T00:00:00Z",
-	  "dct_provenance_s": "Stanford",
-	  "georss_box_s": "6.761581 92.234924 13.637013 94.262535",
-	  "georss_polygon_s": "13.637013 92.234924 13.637013 94.262535 6.761581 94.262535 6.761581 92.234924 13.637013 92.234924",
-	  "layer_slug_s": "stanford-zy658cr1728",
-	  "layer_id_s": "druid:zy658cr1728",
-	  "layer_srs_s": "EPSG:4326",
-	  "layer_geom_type_s": "Point",
-	  "solr_bbox": "92.234924 6.761581 94.262535 13.637013",
-	  "solr_ne_pt": "13.637013,94.262535",
-	  "solr_sw_pt": "6.761581,92.234924",
-	  "solr_geom": "POLYGON((92.234924 13.637013, 94.262535 13.637013, 94.262535 6.761581, 92.234924 6.761581, 92.234924 13.637013))",
-	  "score": 1.6703978
-	}
+```xml
+<doc>
+    <str name="uuid">http://purl.stanford.edu/qb767ss4042</str>
+    <str name="dc_description_s">This polygon dataset shows pre-delimitation state Legislative Assembly constituency boundaries and data relating to the 2007 Assembly elections for the State of Uttar Pradesh, India. Map includes data for 403 constituencies. Includes attribute data on election parties, candidates, voters, and results. This layer is part of the Poll Map of India which includes parliamentary constituency boundaries for India, Assembly constituency boundaries for all states, and data relating to the past national elections for each State of India.; This data can be used for election analysis, forecasting, and mapping: Enables profiling of individual constituencies, permits historical analysis of the data, and helps predictive estimate of the impact of regional and state-wise electorate swings on the performance of political parties. These data are intended for researchers, students, and policy makers for reference and mapping purposes, and may be used for basic applications such as viewing, querying, and map output production.; </str>
+    <str name="dc_format_s">Shapefile</str>
+    <str name="dc_identifier_s">http://purl.stanford.edu/qb767ss4042</str>
+    <str name="dc_language_s">English</str>
+    <str name="dc_publisher_s">ML InfoMap (Firm)</str>
+    <str name="dc_rights_s">Restricted</str>
+    <arr name="dc_subject_sm">
+      <str>Elections</str>
+      <str>Political Parties</str>
+      <str>Voting</str>
+      <str>Politics and government</str>
+      <str>Boundaries</str>
+      <str>Society</str>
+    </arr>
+    <str name="dc_title_s">Uttar Pradesh, India: Pre Delimitation State Assembly Constituency Boundaries and Election Data, 2007</str>
+    <str name="dc_type_s">Dataset</str>
+    <arr name="dct_isPartOf_sm">
+      <str>My Collection</str>
+    </arr>
+    <arr name="dct_references_sm">
+      <str><xlink type="simple" role="urn:ogc:serviceType:WebFeatureService" href="http://geowebservices-restricted.stanford.edu/geoserver/wfs"/></str>
+      <str><xlink type="simple" role="urn:ogc:serviceType:WebMapService" href="http://geowebservices-restricted.stanford.edu/geoserver/wms"/></str>
+      <str><xlink type="simple" role="urn:iso:dataFormat:19139" href="http://purl.stanford.edu/qb767ss4042.iso19139"/></str>
+      <str><xlink type="simple" role="urn:x-osgeo:link:www" href="http://purl.stanford.edu/qb767ss4042"/></str>
+      <str><xlink type="simple" role="urn:loc:dataFormat:MODS" href="http://purl.stanford.edu/qb767ss4042.mods"/></str>
+      <str><xlink type="simple" role="urn:x-osgeo:link:www-thumbnail", href="http://example.com/preview.jpg"/></str>
+    </arr>
+    <arr name="dct_spatial_sm">
+      <str>Uttar Pradesh</str>
+      <str>Agra</str>
+      <str>Ghāziābād</str>
+      <str>Meerut</str>
+      <str>Rāmpur</str>
+      <str>Sahāranpur</str>
+      <str>Vārānasi</str>
+      <str>Lucknow</str>
+      <str>Kushinagar</str>
+      <str>Khatauli</str>
+      <str>Muzaffarnagar</str>
+    </arr>
+    <arr name="dct_temporal_sm">
+      <str>2007-01-01T00:00:00Z</str>
+    </arr>
+    <date name="dct_issued_dt">2000-01-01T00:00:00Z</date>
+    <str name="dct_provenance_s">Stanford</str>
+    <str name="georss_box_s">23.87022 77.08887 30.40547 84.63575</str>
+    <str name="georss_polygon_s">30.40547 77.08887 30.40547 84.63575 23.87022 84.63575 23.87022 77.08887 30.40547 77.08887</str>
+    <str name="layer_slug_s">stanford-qb767ss4042</str>
+    <str name="layer_id_s">druid:qb767ss4042</str>
+    <str name="layer_srs_s">EPSG:4326</str>
+    <str name="layer_geom_type_s">Polygon</str>
+    <str name="solr_bbox">77.08887 23.87022 84.63575 30.40547</str>
+    <double name="solr_ne_pt_0_d">30.40547</double>
+    <double name="solr_ne_pt_1_d">84.63575</double>
+    <str name="solr_ne_pt">30.40547,84.63575</str>
+    <double name="solr_sw_pt_0_d">23.87022</double>
+    <double name="solr_sw_pt_1_d">77.08887</double>
+    <str name="solr_sw_pt">23.87022,77.08887</str>
+    <str name="solr_geom">POLYGON((77.08887 30.40547, 84.63575 30.40547, 84.63575 23.87022, 77.08887 23.87022, 77.08887 30.40547))</str>
+    <long name="_version_">1464112144206266368</long>
+    <date name="timestamp">2014-03-31T17:15:48.267Z</date>
+    <float name="score">3.2848911</float>
+</doc>
 ```
 
 # Links
