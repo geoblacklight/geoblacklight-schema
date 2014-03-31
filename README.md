@@ -31,46 +31,46 @@ See the [Dublin Core Elements
 Guide](http://dublincore.org/documents/dcmi-terms/) for semantic descriptions
 of all of these fields. We're using both DC Elements and DC Terms.
 
-*dct_spatial_sm*
+**dct_spatial_sm**
 :	Coverage, placenames. Multiple values allowed. Example: `Paris, France`.
 
-*dct_temporal_sm*
+**dct_temporal_sm**
 :	Coverage, years. Multiple values allowed. Example: `2010`
 
-*dc_creator_sm*
+**dc_creator_sm**
 :	Author(s). Example: `Washington, George`.
 
-*dct_issued_dt*
+**dct_issued_dt**
 :	Date in Solr syntax. Example: `2001-01-01T00:00:00Z`.
 
-*dc_description_s*
+**dc_description_s**
 : 	Description.
 
-*dc_format_s*
+**dc_format_s**
 :	File format (not MIME types). Valid values:
     `Shapefile`,
     `GeoTIFF`
 	
-*dc_identifier_s*
+**dc_identifier_s**
 :	Unique identifier. Same as UUID.
 
-*dc_language_s*
+**dc_language_s**
 : 	Language. Example: `English`.
 
-*dc_publisher_s*
+**dc_publisher_s**
 : 	Publisher. Example: `ML InfoMap (Firm)`.
 
-*dct_references_sm*
+**dct_references_sm**
 : 	URLs to referenced resources using XLink. 
 	Role values are based on [CatInterop](https://github.com/OSGeo/Cat-Interop/blob/master/link_types.csv) Multiple values allowed. 
 	Example: `<xlink link="simple" role="urn:ogc:serviceType:WebFeatureService" href="http://geowebservices-restricted.stanford.edu/geoserver/wfs"/>`
 
-*dc_rights_s*
+**dc_rights_s**
 : 	Rights for access. Valid values:
     `Restricted`
     `Public`
 	
-*dct_provenance_s*: Source institution: Examples:
+**dct_provenance_s**: Source institution: Examples:
 :    Berkeley
 :    Harvard
 :    MassGIS
@@ -78,21 +78,21 @@ of all of these fields. We're using both DC Elements and DC Terms.
 :    Stanford
 :    Tufts
 
-*dc_subject_sm*
+**dc_subject_sm**
 : 	Subject. Multiple values allowed. Example: `Human settlements, Census`
 
-*dc_title_s*
+**dc_title_s**
 : 	Title.
 
-*dc_type_s* 
+**dc_type_s** 
 : 	Resource type. dc:type=Dataset for georectified images, dc:type=Image for
 :	digitaized, non-georectified images, or dc:type=PhysicalObject for paper maps (no
 :	digitization).
 
-*dct_isPartOf_sm*
+**dct_isPartOf_sm**
 : 	Collection to which the layer belongs.
 
-*dct_available_sm*
+**dct_available_sm**
 : 	Date range for when the data are available.
 
 ### GeoRSS
@@ -100,13 +100,13 @@ of all of these fields. We're using both DC Elements and DC Terms.
 We use [GeoRSS](http://georss.org) for geometry encoding. Note that all data are in WGS84
 (EPSG:4326 projection). Depending on your usage, only the bounding box field is required.
 
-*georss_point_s*
+**georss_point_s**
 : 	Point representation for layer -- i.e., centroid?
 
-*georss_box_s*
+**georss_box_s**
 : 	Bounding box as maximum values for S W N E. Example: `12.62309 76.76 19.91705 84.76618`
 
-*georss_polygon_s*
+**georss_polygon_s**
 : 	Shape of the layer as a Polygon.
 :	Example: "n w n e s e s w n w"
 
@@ -114,15 +114,15 @@ We use [GeoRSS](http://georss.org) for geometry encoding. Note that all data are
 
 A variety of attributes are required for the discovery application. These are all layer-specific.
 
-*layer_slug_s*
+**layer_slug_s**
 :	Unique identifier visible to the user, used for Permalinks.
 :	Example: `stanford-vr593vj7147`.
 
-*layer_id_s*
+**layer_id_s**
 : 	The complete identifier for the WMS/WFS/WCS layer.
 :	Example: `druid:vr593vj7147`
 
-*layer_geom_type_s*
+**layer_geom_type_s**
 :	Valid values are: `Point`, `Line`, `Polygon`, and `Raster`.
 
 ### Derived metadata used by Solr index
@@ -130,23 +130,23 @@ A variety of attributes are required for the discovery application. These are al
 For the Solr 4 implementation, we derive a few Solr-specific fields from other schema
 properties.
 
-*solr_pt*
+**solr_pt**
 : 	(from `georss_point_s` using `solr.LatLonType`). Point in y,x. Example: `12.62309,84.76618`
 
-*solr_bbox*
+**solr_bbox**
 : 	(from `georss_box_s` using `solr.SpatialRecursivePrefixTreeFieldType`). Bounding box as maximum values for W S E N. Example: `76.76 12.62309 84.76618 19.91705`
 
-*solr_geom*
-: 	(from `georss_polygon_s` using *JTS* version of `solr.SpatialRecursivePrefixTreeFieldType`). Shape of the layer as a Point, LineString, or Polygon WKT.
+**solr_geom**
+: 	(from `georss_polygon_s` using **JTS** version of `solr.SpatialRecursivePrefixTreeFieldType`). Shape of the layer as a Point, LineString, or Polygon WKT.
 :	Example: `POLYGON((76.76 19.91705, 84.76618 19.91705, 84.76618 12.62309, 76.76 12.62309, 76.76 19.91705))`
 
-*solr_ne_pt*
+**solr_ne_pt**
 : 	(from `solr_bbox` using `solr.LatLonType`). North-eastern most point of the bounding box, as (y, x). Example: `83.1,-128.5`
 
-*solr_sw_pt*
+**solr_sw_pt**
 : 	(from `solr_bbox` using `solr.LatLonType`). South-western most point of the bounding box, as (y, x). Example: `81.2,-130.1`
 
-*solr_year_i*
+**solr_year_i**
 : 	(from `dct_temporal_sm` using `solr.TrieIntField`): Year for which layer is valid. Example: `2012`.
 
 ## Solr4 schema implementation
