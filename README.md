@@ -1,17 +1,14 @@
 
-Solr schema
-===========
+# Solr schema
 
-Primary key
-----------
+### Primary key
 
 - *uuid*: Unique Identifier. Examples:
     - `http://purl.stanford.edu/vr593vj7147`
     - `http://ark.cdlib.org/ark:/28722/bk0012h535q`
     - `urn:geodata.tufts.edu:Tufts.CambridgeGrid100_04`
 
-Dublin Core
-----------
+### Dublin Core
 
 See the [Dublin Core Elements
 Guide](http://dublincore.org/documents/dcmi-terms/) for semantic descriptions
@@ -81,8 +78,7 @@ of all of these fields. We're using both DC Elements and DC Terms
 *dct_available_sm*
 : 	Date range for when the data are available.
 
-GeoRSS metadata
-===============
+### GeoRSS metadata
 
 *georss_point_s*
 : 	Point representation for layer -- i.e., centroid?
@@ -94,8 +90,7 @@ GeoRSS metadata
 : 	Shape of the layer as a Polygon.
 :	Example: "n w n e s e s w n w"
 
-Layer-specific metadata
-=======================
+### Layer-specific metadata
 
 *layer_slug_s*
 :	Unique identifier visible to the user, used for Permalinks.
@@ -108,8 +103,7 @@ Layer-specific metadata
 *layer_geom_type_s*
 :	Valid values are: `Point`, `Line`, `Polygon`, and `Raster`.
 
-Derived metadata used by Solr index
-===================================
+### Derived metadata used by Solr index
 
 *solr_bbox*
 : 	Bounding box as maximum values for W S E N. Example: `76.76 12.62309 84.76618 19.91705`
@@ -127,8 +121,7 @@ Derived metadata used by Solr index
 *solr_year_i*
 : 	(from `dc_coverage_temporal_sm`): Year for which layer is valid. Example: `2012`.
 
-Solr schema syntax
-==================
+## Solr schema syntax
 
 The schema XML is on Github here: https://github.com/sul-dlss/geoblacklight-schema/blob/master/conf/schema.xml.
 
@@ -189,19 +182,17 @@ Note on the types:
 </schema>
 ```
 
-Solr queries
-============
+# Solr queries
+
 
 - Use the Solr query interface with LatLon data on [sul-solr-a](http://sul-solr-a/solr/#/) to try these using ogp core.
 - For the polygon or JTS queries use [ogpapp-test](http://localhost:8983/solr/#/) via ssh tunnel to jetty 8983.
 
-Solr 3: Pseudo-spatial using `solr.LatLon`
-==========================================
+### Solr 3: Pseudo-spatial using `solr.LatLon`
 
 `solr.LatLonType` does not correctly work across the international dateline in these queries. `_latlon` in these examples are assumed to be solr.LatLonType.
 
-Search for point within 50 km of N40 W114
-----------------------------------------
+#### Search for point within 50 km of N40 W114
 
 Note: Solr `_bbox` uses circle with radius not rectangles.
 
@@ -213,37 +204,32 @@ Note: Solr `_bbox` uses circle with radius not rectangles.
 <str name="fq">{!geofilt}</str>
 ```
 
-Search for single point _within_ a bounding box of SW=40,-120 NE=50,-110
------------------------------------------------------------------------
+#### Search for single point _within_ a bounding box of SW=40,-120 NE=50,-110
 
 ```xml
 <str name="q">*:*</str>
 <str name="fq">solr_latlon:[40,-120 TO 50,-110]</str>
 ```
 
-Search for bounding box _within_ a bounding box of SW=20,-160 NE=70,-70
-----------------------------------------------------------------------
+#### Search for bounding box _within_ a bounding box of SW=20,-160 NE=70,-70
 
 ```xml
 <str name="q">*:*</str>
 <str name="fq">solr_sw_latlon:[20,-160 TO 70,-70] AND solr_ne_latlon:[20,-160 TO 70,-70]</str>
 ```
 
-Solr 4 Spatial -- non JTS
-=========================
+### Solr 4 Spatial -- non JTS
 
 `_pt` and `_bbox` in these examples are assumed to be `solr.SpatialRecursivePrefixTreeFieldType`.
 
-Search for point _within_ a bounding box of SW=20,-160 NE=70,-70
----------------------------------------------------------------
+#### Search for point _within_ a bounding box of SW=20,-160 NE=70,-70
 
 ```xml
 <str name="q">*:*</str>
 <str name="fq">solr_pt:"Intersects(-160 20 -70 70)"</str>
 ```
 
-Search for bounding box _within_ a bounding box of SW=20,-160 NE=70,-70
------------------------------------------------------------------------------
+#### Search for bounding box _within_ a bounding box of SW=20,-160 NE=70,-70
 
 ```xml
 <str name="q">*:*</str>
@@ -251,24 +237,21 @@ Search for bounding box _within_ a bounding box of SW=20,-160 NE=70,-70
 ```
 
 
-Solr 4: ... using polygon intersection
--------------------------------------------
+#### Solr 4: ... using polygon intersection
 
 ```xml
 <str name="q">*:*</str>
 <str name="fq">solr_bbox:"Intersects(-160 20 -70 70)"</str>
 ```
 
-Solr 4: ... using polygon containment
--------------------------------------------
+#### Solr 4: ... using polygon containment
 
 ```xml
 <str name="q">*:*</str>
 <str name="fq">solr_bbox:"IsWithin(-160 20 -150 30)"</str>
 ```
 
-Solr 4: ... using polygon containment for spatial relevancy
----------------------------------------------------------------------
+#### Solr 4: ... using polygon containment for spatial relevancy
 
 ```xml
 <str name="q">solr_bbox:"IsWithin(-160 20 -150 30)"^10 railroads</str>
@@ -276,8 +259,7 @@ Solr 4: ... using polygon containment for spatial relevancy
 ```
 
 
-Solr 4 Spatial -- JTS
-=====================
+### Solr 4 Spatial -- JTS
 
 This query requires [JTS](http://tsusiatsoftware.net/jts/main.html) installed in
 Solr 4, where the
@@ -285,8 +267,7 @@ Solr 4, where the
 for the `solr.SpatialRecursivePrefixTreeFieldType` field class.
 
 
-Search for bbox _intersecting_ bounding box of SW=20,-160 NE=70,-70 using polygon intersection
-----------------------------------------------------------------------------------------------------
+#### Search for bbox _intersecting_ bounding box of SW=20,-160 NE=70,-70 using polygon intersection
 
 ```xml
 <str name="q">*:*</str>
@@ -294,8 +275,7 @@ Search for bbox _intersecting_ bounding box of SW=20,-160 NE=70,-70 using polygo
 ```
 
 
-Scoring formula
----------------------
+### Scoring formula
 
 	text^1
 	dc_description_ti^2
@@ -312,8 +292,7 @@ Scoring formula
 	layer_slug_ti^10
 	dc_identifier_ti^10
 
-Facets
-------------
+### Facets
 
 ```xml
 <str name="facet.field">dct_spatial_sm</str>
@@ -328,8 +307,7 @@ Facets
 <str name="facet.field">solr_year_i</str>
 ```
 
-Solr example documents
-======================
+# Solr example documents
 
 See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
 
@@ -405,8 +383,7 @@ graphic analysis within basic applications to support graphical overlays and ana
 }
 ```
 
-Links
-=====
+# Links
 
 - Solr 4: http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4
 - Solr 3: http://wiki.apache.org/solr/SpatialSearch
