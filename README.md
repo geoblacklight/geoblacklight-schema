@@ -420,3 +420,244 @@ These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO 
 	- Old Solr 4: http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4
 	- Old Solr 3: http://wiki.apache.org/solr/SpatialSearch
 - JTS: http://tsusiatsoftware.net/jts/main.html
+
+
+# MODS geo extension
+
+#### Lack of best practice standard
+
+The [MODS v3 specification](http://www.loc.gov/standards/mods/userguide/subject.html#coordinates) is vague in how coordinates
+should be formatted, and in practice there doesn't seem to be a standard format. It claims:
+
+
+> One or more statements may be supplied. If one is supplied, it is a point (i.e., a single location); if two, it is a line; if more than two, it is an n-sided polygon where n=number of coordinates assigned. No three points should be co-linear, and coordinates should be supplied in polygon-traversal order.
+
+We have some [MODS Guidelines](https://consul.stanford.edu/display/chimera/MODS+display+rules) here in DLSS but they do not have a
+normative recommendation for coordinates other than [MARC 034](http://www.loc.gov/marc/bibliographic/concise/bd034.html) and [MARC
+255](http://www.loc.gov/marc/bibliographic/concise/bd255.html), which all have multiple representations.
+
+
+#### Design Alternatives
+
+Goals:
+* Include human- and machine-readable encodings for geospatial coordinates for MODS without requiring a _geoMetadata_ datastream (e.g., paper maps vs. GIS data)
+* Clean, simple for MODS display logic
+* Pass XML validation for [MODS 3.4+ schema](http://www.loc.gov/standards/mods/mods.xsd)
+* Support point and bounding box coordinates for geospatial indexing, in multiple projections
+* Compatible with MARC034 and MARC255 formats
+
+The human-readable data would be in MODS as usual in subject/cartographics/coordinates, but the machine-readable data would be in a MODS geo extension using an existing geospatial standard.
+
+Using GML and RDF we can support arbitrary projections for bounding boxes, and using Dublin Core we can define spatial facets like the format (e.g., a Shapefile) and type (e.g., a Dataset with point data), and associated place names.
+
+```xml
+    <mods>
+      ...
+      <titleInfo>
+        <title>Oil and Gas Fields in the United States, 2011</title>
+      </titleInfo>
+      ...
+      <subject>
+        <cartographics>
+          <scale>Scale not given.</scale>
+          <projection>North American Datum 1983 (NAD83)</projection>
+          <coordinates>(W 151°28ʹ46ʺ--W 78°5ʹ6ʺ/N 69°25ʹ57ʺ--N 26°4ʹ18ʺ)</coordinates>
+        </cartographics>
+      </subject>
+      ...
+      <!-- RDF encoding for XPath of /mods/extension[@displayLabel='geo'] -->
+      <extension xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" displayLabel="geo">
+        <rdf:RDF xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+          <rdf:Description rdf:about="http://purl.stanford.edu/cs838pw3418">
+            <dc:format>application/x-esri-shapefile</dc:format>
+            <dc:type>Dataset#point</dc:type>
+            <gml:boundedBy>
+              <gml:Envelope gml:srsName="EPSG:4269">
+                <gml:lowerCorner>-151.479444 26.071745</gml:lowerCorner>
+                <gml:upperCorner>-78.085007 69.4325</gml:upperCorner>
+              </gml:Envelope>
+            </gml:boundedBy>
+            <dc:coverage rdf:resource="http://geonames.org/6252001" dc:language="eng" dc:title="United States"/>
+            <dc:coverage rdf:resource="http://geonames.org/5332921" dc:language="eng" dc:title="California"/>
+          </rdf:Description>
+        </rdf:RDF>
+      </extension>
+    </mods>
+```
+
+the bounding box can optionally include the valid time period:
+
+```xml
+    <gml:boundedBy>
+      <gml:EnvelopeWithTimePeriod gml:srsName="EPSG:4269">
+        <gml:lowerCorner>-151.479444 26.071745</gml:lowerCorner>
+        <gml:upperCorner>-78.085007 69.4325</gml:upperCorner>
+        <gml:beginPosition>2008</gml:beginPosition>
+        <gml:endPosition>2008</gml:endPosition>
+      </gml:EnvelopeWithTimePeriod>
+    </gml:boundedBy>
+```
+
+The placenames are a 0..n mapping:
+
+```xml
+  <extension xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" displayLabel="geo">
+    <rdf:RDF xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:dc="http://purl.org/dc/elements/1.1/">
+      <rdf:Description rdf:about="http://purl-test.stanford.edu/dg850pt1796">
+        <dc:format>application/x-esri-shapefile</dc:format>
+        <dc:type>Dataset#polygon</dc:type>
+        <gml:boundedBy>
+          <gml:Envelope gml:srsName="EPSG:4326">
+            <gml:lowerCorner>68.110092 6.755698</gml:lowerCorner>
+            <gml:upperCorner>97.409103 37.050301</gml:upperCorner>
+          </gml:Envelope>
+        </gml:boundedBy>
+        <dc:coverage rdf:resource="http://geonames.org/1269750" dc:language="eng" dc:title="India"/>
+        <dc:coverage rdf:resource="http://geonames.org/1269320" dc:language="eng" dc:title="Jammu and Kashmir"/>
+        <dc:coverage rdf:resource="http://geonames.org/1270101" dc:language="eng" dc:title="Himachal Pradesh"/>
+        <dc:coverage rdf:resource="http://geonames.org/1259223" dc:language="eng" dc:title="Punjab"/>
+        <dc:coverage rdf:resource="http://geonames.org/1260108" dc:language="eng" dc:title="Patiala"/>
+        <dc:coverage rdf:resource="http://geonames.org/1275638" dc:language="eng" dc:title="Bilaspur"/>
+        <dc:coverage rdf:resource="http://geonames.org/1253626" dc:language="eng" dc:title="Uttar Pradesh"/>
+        <dc:coverage rdf:resource="http://geonames.org/1258899" dc:language="eng" dc:title="Rajasthan"/>
+        <dc:coverage rdf:resource="http://geonames.org/1278253" dc:language="eng" dc:title="Assam"/>
+        <dc:coverage rdf:resource="http://geonames.org/1273293" dc:language="eng" dc:title="Delhi"/>
+        <dc:coverage rdf:resource="http://geonames.org/1256312" dc:language="eng" dc:title="Sikkim"/>
+        <dc:coverage rdf:resource="http://geonames.org/1275715" dc:language="eng" dc:title="Bihar"/>
+        <dc:coverage rdf:resource="http://geonames.org/1252881" dc:language="eng" dc:title="West Bengal"/>
+        <dc:coverage rdf:resource="http://geonames.org/1279160" dc:language="eng" dc:title="Ajmer"/>
+        <dc:coverage rdf:resource="http://geonames.org/1263706" dc:language="eng" dc:title="Manipur"/>
+        <dc:coverage rdf:resource="http://geonames.org/1275339" dc:language="eng" dc:title="Bombay"/>
+        <dc:coverage rdf:resource="http://geonames.org/1268731" dc:language="eng" dc:title="Kutch"/>
+        <dc:coverage rdf:resource="http://geonames.org/1254169" dc:language="eng" dc:title="Tripura"/>
+        <dc:coverage rdf:resource="http://geonames.org/1264542" dc:language="eng" dc:title="Madhya Pradesh"/>
+      </rdf:Description>
+    </rdf:RDF>
+  </extension>
+```
+
+##### Schema
+
+!sample_schema.png|width=800!
+
+##### RDF Triples for Format and Type
+
+!servlet_3266409606106675285.png|width=800!
+
+##### RDF Triples for Bounding Box
+
+!servlet_5082135491669855390.png|width=800!
+
+##### RDF Triples for Placenames
+
+!servlet_6294733788115196033.png|width=800!
+
+
+#### Example encodings for coordinate data
+
+There are several open standards for encoding bounding boxes:
+
+* [ISO 19139](https://consul.stanford.edu/display/SULAIRGIS/Metadata+Creation+for+GIS+Data)
+* [OGC WKT](http://portal.opengeospatial.org/files/?artifact_id=25355)
+* [OGC WMS](http://portal.opengeospatial.org/files/?artifact_id=14416)
+* [OGC GML](http://portal.opengeospatial.org/files/?artifact_id=20509)
+* [GeoRSS Simple](http://georss.org/simple)
+* [MARC 034](http://www.loc.gov/marc/bibliographic/bd034.html)
+* [MARC 255](http://www.loc.gov/marc/bibliographic/bd255.html)
+
+The XML namespaces are:
+
+* xmlns:wms="http://www.opengis.net/wms" 
+* xmlns:gml="http://www.opengis.net/gml/3.2"
+* xmlns:georss="http://www.georss.org/georss"
+
+*TODO: Check on how to do datum encoding*
+
+###### ISO 19139
+
+```xml
+    <gmd:EX_GeographicBoundingBox>
+      <gmd:westBoundLongitude>
+        <gco:Decimal>-151.479444</gco:Decimal>
+      </gmd:westBoundLongitude>
+      <gmd:eastBoundLongitude>
+        <gco:Decimal>-78.085007</gco:Decimal>
+      </gmd:eastBoundLongitude>
+      <gmd:southBoundLatitude>
+        <gco:Decimal>26.071745</gco:Decimal>
+      </gmd:southBoundLatitude>
+      <gmd:northBoundLatitude>
+        <gco:Decimal>69.4325</gco:Decimal>
+      </gmd:northBoundLatitude>
+    </gmd:EX_GeographicBoundingBox>
+```
+
+###### OGC WKT
+
+*TODO: Check on how to do datum encoding*
+
+```
+    POINT(-151.479444 26.071745)
+
+    POLYGON((-151.479444 26.071745, 
+             -151.479444 69.4325, 
+             -78.085007 69.4325, 
+             -78.085007 26.071745, 
+             -151.479444 26.071745))
+```
+
+###### OGC WMS
+
+```xml
+    <wms:BoundingBox wms:CRS="EPSG:4269" 
+      wms:minx="-151.479444" wms:miny="26.071745" 
+      wms:maxx="-78.085007"  wms:maxy="69.4325"/>
+```
+
+###### OGC GML
+
+```xml
+    <gml:Point gml:srsName="EPSG:4269">-151.479444 26.071745</gml:Point>
+
+    <gml:Envelope gml:srsName="EPSG:4269">
+      <gml:lowerCorner>-151.479444 26.071745</gml:lowerCorner>
+      <gml:upperCorner>-78.085007 69.4325</gml:upperCorner>
+    </gml:Envelope>
+```
+
+###### GeoRSS Simple
+
+GeoRSS requires all coordinates to be in WGS84 projection.
+
+```xml
+    <georss:point>26.071745 -151.479444</georss:point>
+
+    <georss:box>
+      26.071745 -151.479444 69.4325 -78.085007
+    </georss:box>
+```
+
+###### MARC 034:
+
+```
+    $d W1512846 $e W0780506 $f N0692557 $g N0260418
+```
+
+
+> For digital items, the coordinates can represent a bounding rectangle, the outline of the area covered and/or the outline of an interior area not covered. [...] There should be an 034 field corresponding to each 255 field in a record.
+
+###### MARC 255$c:
+
+```
+    $b North American Datum 1983 (NAD83)
+    $c (W 151°28ʹ46ʺ--W 78°5ʹ6ʺ/N 69°25ʹ57ʺ--N 26°4ʹ18ʺ)
+
+```
+
+
+> Coordinates are recorded in the order of westernmost longitude, easternmost longitude, northernmost latitude, and southernmost latitude. In records formulated according to ISBD principles, subfield `$c` data are enclosed in parentheses. The two longitude statements and the two latitude statements are each separated by two hyphens ( `--` ). The longitude is separated from the latitude by a slash ( `/` ).
+
+#### XSLT on ISO 19139
+
+Here is an [XSLT implementation](https://github.com/sul-dlss/dor-services/blob/geoMetadata/lib/dor/datastreams/geo2mods.xsl) for converting into the MODS formats shown above.
+See XSLT's [format-number](http://www.w3.org/TR/1999/REC-xslt-19991116#format-number)
