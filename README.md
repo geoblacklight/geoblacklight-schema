@@ -17,62 +17,115 @@ See the [Dublin Core Elements
 Guide](http://dublincore.org/documents/dcmi-terms/) for semantic descriptions
 of all of these fields. We're using both DC Elements and DC Terms
 
-- *dct_spatial_sm*: Coverage, placenames. Multiple values allowed. Example: "Paris, France".
-- *dct_temporal_sm*: Coverage, years. Multiple values allowed. Example: "2010".
-- *dc_creator_sm*: Author(s). Example: "Washington, George".
-- *dct_issued_dt*: Date in Solr syntax. Example: "2001-01-01T00:00:00Z".
-- *dc_description_s*: Description.
-- *dc_format_s*: File format (not MIME types). Valid values:
-    - `Shapefile`
-    - `GeoTIFF`
-- *dc_identifier_s*: Unique identifier. Same as UUID.
-- *dc_language_s*: Language. Example: "English".
-- *dc_publisher_s*: Publisher. Example: "ML InfoMap (Firm)".
-- *dct_references_sm*: URLs to referenced resources. Used scheme and url parameters. scheme values are based on [CatInterop](https://github.com/OSGeo/Cat-Interop/blob/master/link_types.csv) Multiple values allowed. Example:
-scheme="urn:ogc:serviceType:WebFeatureService" url="http://geowebservices-restricted.stanford.edu/geoserver
-/wfs"
-- *dc_rights_s*: Rights for access. Valid values:
-    - `Restricted`
-    - `Public`
-- *dct_provenance_s*: Source institution: Examples:
-    - Berkeley
-    - Harvard
-    - MassGIS
-    - MIT
-    - Stanford
-    - Tufts
-- *dc_subject_sm*: Subject. Multiple values allowed. Example: "Human settlements", "Census".
-- *dc_title_s*: Title.
-- *dc_type_s*: Resource type. dc:type=Dataset for georectified images, dc:type=Image for digitaized, non-georectified images, or dc:type=PhysicalObject for paper maps (no digitization).
-- *dct_isPartOf_sm*: Collection to which the layer belongs.
-- *dct_available_sm*: Date range for when the data are available.
+*dct_spatial_sm*
+:	Coverage, placenames. Multiple values allowed. Example: `Paris, France`.
+
+*dct_temporal_sm*
+:	Coverage, years. Multiple values allowed. Example: `2010`
+
+*dc_creator_sm*
+:	Author(s). Example: `Washington, George`.
+
+*dct_issued_dt*
+:	Date in Solr syntax. Example: `2001-01-01T00:00:00Z`.
+
+*dc_description_s*
+: 	Description.
+
+*dc_format_s*
+:	File format (not MIME types). Valid values:
+    `Shapefile`,
+    `GeoTIFF`
+	
+*dc_identifier_s*
+:	Unique identifier. Same as UUID.
+
+*dc_language_s*
+: 	Language. Example: `English`.
+
+*dc_publisher_s*
+: 	Publisher. Example: `ML InfoMap (Firm)`.
+
+*dct_references_sm*
+: 	URLs to referenced resources using XLink. 
+	Role values are based on [CatInterop](https://github.com/OSGeo/Cat-Interop/blob/master/link_types.csv) Multiple values allowed. 
+	Example: `<xlink link="simple" role="urn:ogc:serviceType:WebFeatureService" href="http://geowebservices-restricted.stanford.edu/geoserver/wfs"/>`
+
+*dc_rights_s*
+: 	Rights for access. Valid values:
+    `Restricted`
+    `Public`
+	
+*dct_provenance_s*: Source institution: Examples:
+:    Berkeley
+:    Harvard
+:    MassGIS
+:    MIT
+:    Stanford
+:    Tufts
+
+*dc_subject_sm*
+: 	Subject. Multiple values allowed. Example: `Human settlements, Census`
+
+*dc_title_s*
+: 	Title.
+
+*dc_type_s* 
+: 	Resource type. dc:type=Dataset for georectified images, dc:type=Image for
+:	digitaized, non-georectified images, or dc:type=PhysicalObject for paper maps (no
+:	digitization).
+
+*dct_isPartOf_sm*
+: 	Collection to which the layer belongs.
+
+*dct_available_sm*
+: 	Date range for when the data are available.
 
 GeoRSS metadata
 ===============
 
-- *georss_point_s*: Point representation for layer -- i.e., centroid?
-- *georss_box_s*: Bounding box as maximum values for S W N E. Example: `12.62309 76.76 19.91705 84.76618`
-- *georss_polygon_s*: Shape of the layer as a Polygon.
-Example: "n w n e s e s w n w"
+*georss_point_s*
+: 	Point representation for layer -- i.e., centroid?
+
+*georss_box_s*
+: 	Bounding box as maximum values for S W N E. Example: `12.62309 76.76 19.91705 84.76618`
+
+*georss_polygon_s*
+: 	Shape of the layer as a Polygon.
+:	Example: "n w n e s e s w n w"
 
 Layer-specific metadata
 =======================
 
-- *layer_slug_s*. Unique identifier visible to the user, used for Permalinks.
-- Example: `stanford-vr593vj7147`.
-- *layer_id_s*. The complete identifier for the WMS/WFS/WCS layer.
-Example: `druid:vr593vj7147`
-- *layer_geom_type_s*. Valid values are: `Point`, `Line`, `Polygon`, and `Raster`.
+*layer_slug_s*
+:	Unique identifier visible to the user, used for Permalinks.
+:	Example: `stanford-vr593vj7147`.
+
+*layer_id_s*
+: 	The complete identifier for the WMS/WFS/WCS layer.
+:	Example: `druid:vr593vj7147`
+
+*layer_geom_type_s*
+:	Valid values are: `Point`, `Line`, `Polygon`, and `Raster`.
 
 Derived metadata used by Solr index
 ===================================
 
-- *solr_bbox*: Bounding box as maximum values for W S E N. Example: `76.76 12.62309 84.76618 19.91705`
-- *solr_geom*: Shape of the layer as a Point, LineString, or Polygon WKT.
-Example: `POLYGON((76.76 19.91705, 84.76618 19.91705, 84.76618 12.62309, 76.76 12.62309, 76.76 19.91705))`
-- *solr_ne_pt* (from `solr_bbox`). North-eastern most point of the bounding box, as (y, x). Example: `83.1,-128.5`
-- *solr_sw_pt* (from `solr_bbox`). South-western most point of the bounding box, as (y, x). Example: `81.2,-130.1`
-- *solr_year_i* (from `dc_coverage_temporal_sm`): Year for which layer is valid. Example: `2012`.
+*solr_bbox*
+: 	Bounding box as maximum values for W S E N. Example: `76.76 12.62309 84.76618 19.91705`
+
+*solr_geom*
+: 	Shape of the layer as a Point, LineString, or Polygon WKT.
+:	Example: `POLYGON((76.76 19.91705, 84.76618 19.91705, 84.76618 12.62309, 76.76 12.62309, 76.76 19.91705))`
+
+*solr_ne_pt*
+: 	(from `solr_bbox`). North-eastern most point of the bounding box, as (y, x). Example: `83.1,-128.5`
+
+*solr_sw_pt*
+: 	(from `solr_bbox`). South-western most point of the bounding box, as (y, x). Example: `81.2,-130.1`
+
+*solr_year_i*
+: 	(from `dc_coverage_temporal_sm`): Year for which layer is valid. Example: `2012`.
 
 Solr schema syntax
 ==================
