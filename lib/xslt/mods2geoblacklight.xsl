@@ -18,9 +18,10 @@
 
        - geoserver_root - URL prefix to the geoserver
        - purl - complete URL with aa111bb1111 (len = 11)
+         XXX: should be able to extract the PURL from the MODS geo extension
 
      -->
-<xsl:stylesheet xmlns="http://lucene.apache.org/solr/4/document" xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:georss="http://www.georss.org/georss" version="1.0" exclude-result-prefixes="gml mods georss rdf xsl">
+<xsl:stylesheet xmlns="http://lucene.apache.org/solr/4/document" xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:georss="http://www.georss.org/georss" version="1.0" exclude-result-prefixes="georss gml mods georss rdf xsl">
   <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
   <xsl:strip-space elements="*"/>
   <xsl:template match="/mods:mods">
@@ -33,9 +34,11 @@
         <field name="dc_identifier_s">
           <xsl:value-of select="$purl"/>
         </field>
-        <field name="dct_isPartOf_sm">
-          <xsl:value-of select="mods:relatedItem/mods:titleInfo/mods:title"/>
-        </field>
+				<xsl:for-each select="mods:relatedItem/mods:titleInfo/mods:title">
+				  <field name="dct_isPartOf_sm">
+				    <xsl:value-of select="."/>
+				  </field>
+				</xsl:for-each>
         <field name="dc_format_s">
           <xsl:text>Shapefile</xsl:text>
         </field>
@@ -101,14 +104,11 @@
         <field name="dc_publisher_s">
           <xsl:value-of select="mods:originInfo/mods:publisher"/>
         </field>
-        <field name="dc_creator_s">
-          <xsl:for-each select="mods:name">
+        <xsl:for-each select="mods:name">
+          <field name="dc_creator_sm">
             <xsl:value-of select="mods:namePart"/>
-            <xsl:if test="position()!=last()">
-              <xsl:text>; </xsl:text>
-            </xsl:if>
-          </xsl:for-each>
-        </field>
+          </field>
+        </xsl:for-each>
         <field name="dc_description_s">
           <xsl:for-each select="mods:abstract[@displayLabel='Abstract' or @displayLabel='Purpose']/text()">
             <xsl:value-of select="."/>
@@ -131,11 +131,58 @@
             <xsl:value-of select="text()"/>
           </field>
         </xsl:for-each>
-        <xsl:for-each select="mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/gml:boundedBy/gml:Envelope">
-          <xsl:variable name="x2" select="number(substring-before(gml:upperCorner/text(), ' '))"/>
-          <xsl:variable name="x1" select="number(substring-before(gml:lowerCorner/text(), ' '))"/>
-          <xsl:variable name="y2" select="number(substring-after(gml:upperCorner/text(), ' '))"/>
-          <xsl:variable name="y1" select="number(substring-after(gml:lowerCorner/text(), ' '))"/>
+		<field name="dct_references_sm">
+			<xlink type="simple" role="urn:ogc:serviceType:WebMapService">
+				<xsl:attribute name="href">
+					<xsl:value-of select="$geoserver_root"/>
+	        <xsl:text>/wms</xsl:text>
+				</xsl:attribute>
+			</xlink>
+		</field>
+		<field name="dct_references_sm">
+			<xlink type="simple" role="urn:ogc:serviceType:WebFeatureService">
+				<xsl:attribute name="href">
+					<xsl:value-of select="$geoserver_root"/>
+	        <xsl:text>/wfs</xsl:text>
+				</xsl:attribute>
+			</xlink>
+		</field>
+		<field name="dct_references_sm">
+			<xlink type="simple" role="urn:iso:dataFormat:ISO19139">
+				<xsl:attribute name="href">
+					<xsl:value-of select="$purl"/>
+	        <xsl:text>.iso19139</xsl:text>
+				</xsl:attribute>
+			</xlink>
+		</field>
+		<field name="dct_references_sm">
+			<xlink type="simple" role="urn:loc:dataFormat:MODS">
+				<xsl:attribute name="href">
+					<xsl:value-of select="$purl"/>
+          <xsl:text>.mods</xsl:text>
+				</xsl:attribute>
+			</xlink>
+		</field>
+		<field name="dct_references_sm">
+			<xlink type="simple" role="urn:x-osgeo:link:www">
+				<xsl:attribute name="href">
+					<xsl:value-of select="$purl"/>
+				</xsl:attribute>
+			</xlink>
+		</field>
+		<field name="dct_references_sm">
+			<xlink type="simple" role="urn:x-osgeo:link:www-thumbnail">
+				<xsl:attribute name="href">
+					<xsl:value-of select="$purl"/>
+          <xsl:text>.jpg</xsl:text>
+				</xsl:attribute>
+			</xlink>
+		</field>
+    <xsl:for-each select="mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/gml:boundedBy/gml:Envelope">
+      <xsl:variable name="x2" select="number(substring-before(gml:upperCorner/text(), ' '))"/>
+      <xsl:variable name="x1" select="number(substring-before(gml:lowerCorner/text(), ' '))"/>
+      <xsl:variable name="y2" select="number(substring-after(gml:upperCorner/text(), ' '))"/>
+      <xsl:variable name="y1" select="number(substring-after(gml:lowerCorner/text(), ' '))"/>
 		  <field name="georss_box_s">
 			  <georss:box>
 	              <xsl:value-of select="$y1"/>
@@ -190,22 +237,6 @@
             <xsl:value-of select="$x2"/>
           </field>
         </xsl:for-each>
-		<field name="dct_references_sm">
-			<xlink type="simple" role="urn:ogc:serviceType:WebMappingService">
-				<xsl:attribute name="href">
-					<xsl:value-of select="$geoserver_root"/>
-	          	  	<xsl:text>/wms</xsl:text>
-				</xsl:attribute>
-			</xlink>
-		</field>
-		<field name="dct_references_sm">
-			<xlink type="simple" role="urn:ogc:serviceType:WebFeatureService">
-				<xsl:attribute name="href">
-					<xsl:value-of select="$geoserver_root"/>
-	          	  	<xsl:text>/wfs</xsl:text>
-				</xsl:attribute>
-			</xlink>
-		</field>
       </doc>
     </add>
   </xsl:template>
