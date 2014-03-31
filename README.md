@@ -341,6 +341,7 @@ These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO 
 
 See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
 
+```json
 	{
 	  "uuid": "http://purl.stanford.edu/zy658cr1728",
 	  "dc_description_s": "This point dataset shows village locations with socio-demographic and economic Census data for 2001 for the
@@ -408,6 +409,7 @@ See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
 	  "solr_geom": "POLYGON((92.234924 13.637013, 94.262535 13.637013, 94.262535 6.761581, 92.234924 6.761581, 92.234924 13.637013))",
 	  "score": 1.6703978
 	}
+```
 
 # Links
 
