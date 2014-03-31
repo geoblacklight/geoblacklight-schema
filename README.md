@@ -128,21 +128,24 @@ A variety of attributes are required for the discovery application. These are al
 For the Solr 4 implementation, we derive a few Solr-specific fields from other schema
 properties.
 
+*solr_pt*
+: 	(from `georss_point_s` using `solr.LatLonType`). Point in y,x. Example: `12.62309,84.76618`
+
 *solr_bbox*
-: 	(from `georss_box_s`). Bounding box as maximum values for W S E N. Example: `76.76 12.62309 84.76618 19.91705`
+: 	(from `georss_box_s` using `solr.SpatialRecursivePrefixTreeFieldType`). Bounding box as maximum values for W S E N. Example: `76.76 12.62309 84.76618 19.91705`
 
 *solr_geom*
-: 	(from `georss_polygon_s`). Shape of the layer as a Point, LineString, or Polygon WKT.
+: 	(from `georss_polygon_s` using *JTS* version of `solr.SpatialRecursivePrefixTreeFieldType`). Shape of the layer as a Point, LineString, or Polygon WKT.
 :	Example: `POLYGON((76.76 19.91705, 84.76618 19.91705, 84.76618 12.62309, 76.76 12.62309, 76.76 19.91705))`
 
 *solr_ne_pt*
-: 	(from `solr_bbox`). North-eastern most point of the bounding box, as (y, x). Example: `83.1,-128.5`
+: 	(from `solr_bbox` using `solr.LatLonType`). North-eastern most point of the bounding box, as (y, x). Example: `83.1,-128.5`
 
 *solr_sw_pt*
-: 	(from `solr_bbox`). South-western most point of the bounding box, as (y, x). Example: `81.2,-130.1`
+: 	(from `solr_bbox` using `solr.LatLonType`). South-western most point of the bounding box, as (y, x). Example: `81.2,-130.1`
 
 *solr_year_i*
-: 	(from `dc_coverage_temporal_sm`): Year for which layer is valid. Example: `2012`.
+: 	(from `dct_temporal_sm` using `solr.TrieIntField`): Year for which layer is valid. Example: `2012`.
 
 ## Solr4 schema implementation
 
@@ -150,17 +153,17 @@ The [schema.xml](https://github.com/sul-dlss/geoblacklight-schema/blob/master/co
 
 Note on the types:
 
-| Suffix | Solr data type using dynamicField |
-| ------ | --------------------------------- |
-| `_s` | String |
-| `_sm` | String, multivalued |
-| `_t` | Text, English |
-| `_i` | Integer |
-| `_dt` | Date time |
-| `_url` | URL as a non-indexed String |
-| `_bbox` | Spatial bounding box, Rectangle as (w, s, e, n) |
-| `_pt` | Spatial point as (y,x) |
-| `_geom` | Spatial shape as WKT |
+| Suffix | Solr data type using *dynamicField* | Solr *fieldType* Class |
+| ------ | --------------------------------- | --------------------- |
+| `_s` | String | `solr.StrField` |
+| `_sm` | String, multivalued | `solr.StrField` |
+| `_t` | Text, English | `solr.TextField` |
+| `_i` | Integer | `solr.TrieIntField` |
+| `_dt` | Date time | `solr.TrieDateField` |
+| `_url` | URL as a non-indexed String | `solr.StrField` |
+| `_bbox` | Spatial bounding box, Rectangle as (w, s, e, n) | `solr.SpatialRecursivePrefixTreeFieldType` |
+| `_pt` | Spatial point as (y,x) | `solr.LatLonType` |
+| `_geom` | Spatial shape as WKT | *JTS* version of `solr.SpatialRecursivePrefixTreeFieldType` |
 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
@@ -334,9 +337,8 @@ These attributes are all available as facets:
 # Solr example documents
 
 
-These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO 19139.
-
-See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
+These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO 19139. For example, from 
+[OGP to GeoBlacklight](https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb).
 
 ```xml
 <doc>
@@ -392,7 +394,7 @@ See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
       <str>Vārānasi</str>
     </arr>
     <arr name="dct_temporal_sm">
-      <str>2007-01-01T00:00:00Z</str>
+      <str>2007</str>
     </arr>
     <date name="dct_issued_dt">2000-01-01T00:00:00Z</date>
     <str name="dct_provenance_s">Stanford</str>
@@ -406,13 +408,14 @@ See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
     <str name="layer_geom_type_s">Polygon</str>
 	
     <str name="solr_bbox">77.1 23.9 84.6 30.4</str>
+    <str name="solr_ne_pt">30.4,84.6</str>
     <double name="solr_ne_pt_0_d">30.4</double>
     <double name="solr_ne_pt_1_d">84.6</double>
-    <str name="solr_ne_pt">30.4,84.6</str>
+    <str name="solr_sw_pt">23.9,77.1</str>
     <double name="solr_sw_pt_0_d">23.9</double>
     <double name="solr_sw_pt_1_d">77.1</double>
-    <str name="solr_sw_pt">23.9,77.1</str>
     <str name="solr_geom">POLYGON((77.1 30.4, 84.6 30.4, 84.6 23.9, 77.1 23.9, 77.1 30.4))</str>
+    <int name="solr_year_i">2007</int>
     <long name="_version_">1464112144206266368</long>
     <date name="timestamp">2014-03-31T17:15:48.267Z</date>
     <float name="score">3.2848911</float>
@@ -421,6 +424,7 @@ See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
 
 # Links
 
-- Solr 4: http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4
-- Solr 3: http://wiki.apache.org/solr/SpatialSearch
+- Solr: https://cwiki.apache.org/confluence/display/solr/Spatial+Search
+	- Old Solr 4: http://wiki.apache.org/solr/SolrAdaptersForLuceneSpatial4
+	- Old Solr 3: http://wiki.apache.org/solr/SpatialSearch
 - JTS: http://tsusiatsoftware.net/jts/main.html
