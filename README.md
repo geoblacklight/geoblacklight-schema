@@ -1,5 +1,20 @@
+This schema focuses on discovery use cases for patrons and analysts in a research library
+setting, although it is likely useful in other settings. Text search, faceted search and
+refinement, and spatial search and relevancy are among the primary features that the schema
+enables. The schema design supports a variety of discovery applications and GIS data types.
+We especially wanted to provide for contextual collection-oriented discovery applications as
+well as traditional portal applications.
 
-# Solr schema
+#### Example
+
+The `examples` folder has some Solr documents that uses this schema. First, install the
+schema into a Solr 4 instance, then upload the documents.
+
+    # install conf/ into your SOLR_HOME folder
+    % cd examples
+	% ruby upload-to-solr.rb your-collection-name http://localhost:8080
+
+#  Schema for GeoBlacklight
 
 ### Primary key
 
@@ -12,7 +27,7 @@
 
 See the [Dublin Core Elements
 Guide](http://dublincore.org/documents/dcmi-terms/) for semantic descriptions
-of all of these fields. We're using both DC Elements and DC Terms
+of all of these fields. We're using both DC Elements and DC Terms.
 
 *dct_spatial_sm*
 :	Coverage, placenames. Multiple values allowed. Example: `Paris, France`.
@@ -78,7 +93,10 @@ of all of these fields. We're using both DC Elements and DC Terms
 *dct_available_sm*
 : 	Date range for when the data are available.
 
-### GeoRSS metadata
+### GeoRSS
+
+We use [GeoRSS](http://georss.org) for geometry encoding. Note that all data are in WGS84
+(EPSG:4326 projection). Depending on your usage, only the bounding box field is required.
 
 *georss_point_s*
 : 	Point representation for layer -- i.e., centroid?
@@ -91,6 +109,8 @@ of all of these fields. We're using both DC Elements and DC Terms
 :	Example: "n w n e s e s w n w"
 
 ### Layer-specific metadata
+
+A variety of attributes are required for the discovery application. These are all layer-specific.
 
 *layer_slug_s*
 :	Unique identifier visible to the user, used for Permalinks.
@@ -105,11 +125,14 @@ of all of these fields. We're using both DC Elements and DC Terms
 
 ### Derived metadata used by Solr index
 
+For the Solr 4 implementation, we derive a few Solr-specific fields from other schema
+properties.
+
 *solr_bbox*
-: 	Bounding box as maximum values for W S E N. Example: `76.76 12.62309 84.76618 19.91705`
+: 	(from `georss_box_s`). Bounding box as maximum values for W S E N. Example: `76.76 12.62309 84.76618 19.91705`
 
 *solr_geom*
-: 	Shape of the layer as a Point, LineString, or Polygon WKT.
+: 	(from `georss_polygon_s`). Shape of the layer as a Point, LineString, or Polygon WKT.
 :	Example: `POLYGON((76.76 19.91705, 84.76618 19.91705, 84.76618 12.62309, 76.76 12.62309, 76.76 19.91705))`
 
 *solr_ne_pt*
@@ -121,7 +144,7 @@ of all of these fields. We're using both DC Elements and DC Terms
 *solr_year_i*
 : 	(from `dc_coverage_temporal_sm`): Year for which layer is valid. Example: `2012`.
 
-## Solr schema syntax
+## Solr4 schema implementation
 
 The schema XML is on Github here: https://github.com/sul-dlss/geoblacklight-schema/blob/master/conf/schema.xml.
 
@@ -139,7 +162,7 @@ Note on the types:
 | `_pt` | Spatial point as (y,x) |
 | `_geom` | Spatial shape as WKT |
 
-```xml
+```
 <?xml version="1.0" encoding="UTF-8"?>
 <schema name="GeoBlacklight" version="1.5">
   <uniqueKey>uuid</uniqueKey>
@@ -184,6 +207,7 @@ Note on the types:
 
 # Solr queries
 
+We provide a set of example Solr queries against this schema.
 
 - Use the Solr query interface with LatLon data on [sul-solr-a](http://sul-solr-a/solr/#/) to try these using ogp core.
 - For the polygon or JTS queries use [ogpapp-test](http://localhost:8983/solr/#/) via ssh tunnel to jetty 8983.
@@ -196,7 +220,7 @@ Note on the types:
 
 Note: Solr `_bbox` uses circle with radius not rectangles.
 
-```xml
+```
 <str name="d">50</str>
 <str name="q">*:*</str>
 <str name="sfield">solr_latlon</str>
@@ -206,74 +230,74 @@ Note: Solr `_bbox` uses circle with radius not rectangles.
 
 #### Search for single point _within_ a bounding box of SW=40,-120 NE=50,-110
 
-```xml
+```
 <str name="q">*:*</str>
 <str name="fq">solr_latlon:[40,-120 TO 50,-110]</str>
 ```
 
 #### Search for bounding box _within_ a bounding box of SW=20,-160 NE=70,-70
 
-```xml
+```
 <str name="q">*:*</str>
 <str name="fq">solr_sw_latlon:[20,-160 TO 70,-70] AND solr_ne_latlon:[20,-160 TO 70,-70]</str>
 ```
 
-### Solr 4 Spatial -- non JTS
+### Solr 4 Spatial
 
 `_pt` and `_bbox` in these examples are assumed to be `solr.SpatialRecursivePrefixTreeFieldType`.
 
 #### Search for point _within_ a bounding box of SW=20,-160 NE=70,-70
 
-```xml
+```
 <str name="q">*:*</str>
 <str name="fq">solr_pt:"Intersects(-160 20 -70 70)"</str>
 ```
 
 #### Search for bounding box _within_ a bounding box of SW=20,-160 NE=70,-70
 
-```xml
+```
 <str name="q">*:*</str>
 <str name="fq">solr_sw_pt:[20,-160 TO 70,-70] AND solr_ne_pt:[20,-160 TO 70,-70]</str>
 ```
 
 
-#### Solr 4: ... using polygon intersection
+#### ... using polygon intersection
 
-```xml
+```
 <str name="q">*:*</str>
 <str name="fq">solr_bbox:"Intersects(-160 20 -70 70)"</str>
 ```
 
-#### Solr 4: ... using polygon containment
+#### ... using polygon containment
 
-```xml
+```
 <str name="q">*:*</str>
 <str name="fq">solr_bbox:"IsWithin(-160 20 -150 30)"</str>
 ```
 
-#### Solr 4: ... using polygon containment for spatial relevancy
+#### ... using polygon containment for spatial relevancy
 
-```xml
+This is the **primary** query used by GeoBlacklight. In this example, we score containment by
+10x and issue a text query, then filter the results via intersection.
+
+```
 <str name="q">solr_bbox:"IsWithin(-160 20 -150 30)"^10 railroads</str>
 <str name="fq">solr_bbox:"Intersects(-160 20 -150 30)"</str>
 ```
 
-
-### Solr 4 Spatial -- JTS
+### Solr 4 Spatial *using  JTS*
 
 This query requires [JTS](http://tsusiatsoftware.net/jts/main.html) installed in
 Solr 4, where the
 `spatialContextFactory="com.spatial4j.core.context.jts.JtsSpatialContextFactory"`
 for the `solr.SpatialRecursivePrefixTreeFieldType` field class.
 
-
 #### Search for bbox _intersecting_ bounding box of SW=20,-160 NE=70,-70 using polygon intersection
 
-```xml
+```
 <str name="q">*:*</str>
 <str name="fq">solr_bbox:"Intersects(POLYGON((-160 20, -160 70, -70 70, -70 20, -160 20)))"</str>
 ```
-
 
 ### Scoring formula
 
@@ -294,7 +318,7 @@ for the `solr.SpatialRecursivePrefixTreeFieldType` field class.
 
 ### Facets
 
-```xml
+```
 <str name="facet.field">dct_spatial_sm</str>
 <str name="facet.field">dc_format_s</str>
 <str name="facet.field">dc_language_s</str>
@@ -313,18 +337,18 @@ See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
 
 These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO 19139.
 
-```json
+```
 {
   "uuid": "http://purl.stanford.edu/zy658cr1728",
-  "dc_description_s": "This point dataset shows village locations with socio-demographic and economic Census data f
-or 2001 for the Union Territory of Andaman and Nicobar Islands, India linked to the 2001 Census. Includes village s
-ocio-demographic and economic Census attribute data such as total population, population by sex, household, literac
-y and illiteracy rates, and employment by industry. This layer is part of the VillageMap dataset which includes soc
-io-demographic and economic Census data for 2001 at the village level for all the states of India. This data layer 
-is sourced from secondary government sources, chiefly Survey of India, Census of India, Election Commission, etc. T
-his map Includes data for 547 villages, 3 towns, 2 districts, and 1 union territory.; This dataset is intended for 
-researchers, students, and policy makers for reference and mapping purposes, and may be used for village level demo
-graphic analysis within basic applications to support graphical overlays and analysis with other spatial data.; ",
+  "dc_description_s": "This point dataset shows village locations with socio-demographic and economic Census data for 2001 for the
+  Union Territory of Andaman and Nicobar Islands, India linked to the 2001 Census. Includes village s ocio-demographic and economic
+  Census attribute data such as total population, population by sex, household, literacy and illiteracy rates, and employment by
+  industry. This layer is part of the VillageMap dataset which includes soc io-demographic and economic Census data for 2001 at the
+  village level for all the states of India. This data layer is sourced from secondary government sources, chiefly Survey of India,
+  Census of India, Election Commission, etc. This map Includes data for 547 villages, 3 towns, 2 districts, and 1 union territory.;
+  This dataset is intended for researchers, students, and policy makers for reference and mapping purposes, and may be used for
+  village level demo graphic analysis within basic applications to support graphical overlays and analysis with other spatial
+  data.; ",
   "dc_format_s": "Shapefile",
   "dc_identifier_s": "http://purl.stanford.edu/zy658cr1728",
   "dc_language_s": "English",
