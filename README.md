@@ -344,6 +344,7 @@ See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
 ```xml
 <doc>
     <str name="uuid">http://purl.stanford.edu/qb767ss4042</str>
+	
     <str name="dc_description_s">This polygon dataset shows pre-delimitation state Legislative Assembly constituency boundaries and
     data relating to the 2007 Assembly elections for the State of Uttar Pradesh, India. Map includes data for 403 constituencies.
     Includes attribute data on election parties, candidates, voters, and results. This layer is part of the Poll Map of India which
@@ -368,16 +369,17 @@ See https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb.
     </arr>
     <str name="dc_title_s">Uttar Pradesh, India: Pre Delimitation State Assembly Constituency Boundaries and Election Data, 2007</str>
     <str name="dc_type_s">Dataset</str>
+	
     <arr name="dct_isPartOf_sm">
       <str>PollMap of India</str>
     </arr>
     <arr name="dct_references_sm">
+      <str><xlink type="simple" role="urn:iso:dataFormat:ISO19139" href="http://purl.stanford.edu/qb767ss4042.iso19139"/></str>
+      <str><xlink type="simple" role="urn:loc:dataFormat:MODS" href="http://purl.stanford.edu/qb767ss4042.mods"/></str>
       <str><xlink type="simple" role="urn:ogc:serviceType:WebFeatureService" href="http://geowebservices-restricted.stanford.edu/geoserver/wfs"/></str>
       <str><xlink type="simple" role="urn:ogc:serviceType:WebMapService" href="http://geowebservices-restricted.stanford.edu/geoserver/wms"/></str>
-      <str><xlink type="simple" role="urn:iso:dataFormat:19139" href="http://purl.stanford.edu/qb767ss4042.iso19139"/></str>
       <str><xlink type="simple" role="urn:x-osgeo:link:www" href="http://purl.stanford.edu/qb767ss4042"/></str>
-      <str><xlink type="simple" role="urn:loc:dataFormat:MODS" href="http://purl.stanford.edu/qb767ss4042.mods"/></str>
-      <str><xlink type="simple" role="urn:x-osgeo:link:www-thumbnail" href="http://example.com/preview.jpg"/></str>
+      <str><xlink type="simple" role="urn:x-osgeo:link:www-thumbnail" href="https://stacks.stanford.edu/file/druid:qb767ss4042/preview.jpg"/></str>
     </arr>
     <arr name="dct_spatial_sm">
       <str>Agra</str>
