@@ -1,3 +1,5 @@
+#### Introduction
+
 This schema focuses on discovery use cases for patrons and analysts in a research library
 setting, although it is likely useful in other settings. Text search, faceted search and
 refinement, and spatial search and relevancy are among the primary features that the schema
@@ -12,24 +14,24 @@ schema into a Solr 4 instance, then upload the documents.
 
     # install conf/ into your SOLR_HOME folder
     % cd examples
-	% ruby upload-to-solr.rb your-collection-name http://localhost:8080
-
+	  % ruby upload-to-solr.rb your-collection-name http://localhost:8080
+		
 #  Schema for GeoBlacklight
 
 Note that the suffixes in the schema attribute names are used by the Solr schema implementation.
 
 ### Primary key
 
-- *uuid*: Unique Identifier. Examples:
-    - `http://purl.stanford.edu/vr593vj7147`
-    - `http://ark.cdlib.org/ark:/28722/bk0012h535q`
-    - `urn:geodata.tufts.edu:Tufts.CambridgeGrid100_04`
+**uuid**
+: 	Unique Identifier. Examples:
+:    `http://purl.stanford.edu/vr593vj7147`,
+:    `http://ark.cdlib.org/ark:/28722/bk0012h535q`,
+:    `urn:geodata.tufts.edu:Tufts.CambridgeGrid100_04`
 
 ### Dublin Core
 
-See the [Dublin Core Elements
-Guide](http://dublincore.org/documents/dcmi-terms/) for semantic descriptions
-of all of these fields. We're using both DC Elements and DC Terms.
+See the [Dublin Core Elements Guide](http://dublincore.org/documents/dcmi-terms/) for semantic descriptions of all of these fields.
+We're using both DC Elements and DC Terms.
 
 **dct_spatial_sm**
 :	Coverage, placenames. Multiple values allowed. Example: `Paris, France`.
