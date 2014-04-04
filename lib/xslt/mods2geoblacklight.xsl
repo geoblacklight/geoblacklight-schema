@@ -131,8 +131,9 @@
             <xsl:value-of select="text()"/>
           </field>
         </xsl:for-each>
+<!-- see https://github.com/OSGeo/Cat-Interop/blob/master/LinkPropertyLookupTable.csv -->
 		<field name="dct_references_sm">
-			<xlink type="simple" role="urn:ogc:serviceType:WebMapService">
+			<xlink type="simple" role="http://www.opengis.net/def/serviceType/ogc/wms">
 				<xsl:attribute name="href">
 					<xsl:value-of select="$geoserver_root"/>
 	        <xsl:text>/wms</xsl:text>
@@ -140,7 +141,7 @@
 			</xlink>
 		</field>
 		<field name="dct_references_sm">
-			<xlink type="simple" role="urn:ogc:serviceType:WebFeatureService">
+			<xlink type="simple" role="http://www.opengis.net/def/serviceType/ogc/wfs">
 				<xsl:attribute name="href">
 					<xsl:value-of select="$geoserver_root"/>
 	        <xsl:text>/wfs</xsl:text>
@@ -148,7 +149,7 @@
 			</xlink>
 		</field>
 		<field name="dct_references_sm">
-			<xlink type="simple" role="urn:iso:dataFormat:ISO19139">
+			<xlink type="simple" role="http://www.isotc211.org/schemas/2005/gmd/">
 				<xsl:attribute name="href">
 					<xsl:value-of select="$purl"/>
 	        <xsl:text>.iso19139</xsl:text>
@@ -156,7 +157,7 @@
 			</xlink>
 		</field>
 		<field name="dct_references_sm">
-			<xlink type="simple" role="urn:loc:dataFormat:MODS">
+			<xlink type="simple" role="http://www.loc.gov/mods/v3">
 				<xsl:attribute name="href">
 					<xsl:value-of select="$purl"/>
           <xsl:text>.mods</xsl:text>
@@ -164,14 +165,14 @@
 			</xlink>
 		</field>
 		<field name="dct_references_sm">
-			<xlink type="simple" role="urn:x-osgeo:link:www">
+			<xlink type="simple" role="http://schema.org/url">
 				<xsl:attribute name="href">
 					<xsl:value-of select="$purl"/>
 				</xsl:attribute>
 			</xlink>
 		</field>
 		<field name="dct_references_sm">
-			<xlink type="simple" role="urn:x-osgeo:link:www-thumbnail">
+			<xlink type="simple" role="http://schema.org/thumbnailUrl">
 				<xsl:attribute name="href">
 					<xsl:value-of select="$purl"/>
           <xsl:text>.jpg</xsl:text>
