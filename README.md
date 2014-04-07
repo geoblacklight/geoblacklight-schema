@@ -42,8 +42,8 @@ We're using both DC Elements and DC Terms.
 **dc_creator_sm**
 :	Author(s). Example: `Washington, George`.
 
-**dct_issued_dt**
-:	Date in Solr syntax. Example: `2001-01-01T00:00:00Z`.
+**dct_issued_s**
+:	Date issued. Example: `2010` or `2008-02-18`
 
 **dc_description_s**
 : 	Description.
@@ -64,8 +64,8 @@ We're using both DC Elements and DC Terms.
 
 **dct_references_sm**
 : 	URLs to referenced resources using XLink. 
-	Role values are based on [CatInterop](https://github.com/OSGeo/Cat-Interop/blob/master/link_types.csv) Multiple values allowed. 
-	Example: `<xlink link="simple" role="urn:ogc:serviceType:WebFeatureService" href="http://geowebservices-restricted.stanford.edu/geoserver/wfs"/>`
+	Role values are based on [CatInterop](https://github.com/OSGeo/Cat-Interop) Multiple values allowed. 
+	Example: `<xlink link="simple" role="http://www.opengis.net/def/serviceType/ogc/wfs" href="http://geowebservices-restricted.stanford.edu/geoserver/wfs"/>`
 
 **dc_rights_s**
 : 	Rights for access. Valid values:
@@ -147,6 +147,9 @@ properties.
 
 **solr_sw_pt**
 : 	(from `solr_bbox` using `solr.LatLonType`). South-western most point of the bounding box, as (y, x). Example: `81.2,-130.1`
+
+**solr_issued_dt**
+:   (from `dct_issued_s` using `solr.TrieDateField`). in Solr syntax. Example: `2001-01-01T00:00:00Z`.
 
 **solr_year_i**
 : 	(from `dct_temporal_sm` using `solr.TrieIntField`): Year for which layer is valid. Example: `2012`.
