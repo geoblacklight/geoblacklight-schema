@@ -62,10 +62,17 @@ We're using both DC Elements and DC Terms.
 **dc_publisher_s**
 : 	Publisher. Example: `ML InfoMap (Firm)`.
 
-**dct_references_sm**
-: 	URLs to referenced resources using XLink. 
+**dct_references_s**
+: 	URLs to referenced resources using [JSON-LD](http://en.wikipedia.org/wiki/JSON-LD). 
 	Role values are based on [CatInterop](https://github.com/OSGeo/Cat-Interop) Multiple values allowed. 
-	Example: `<xlink link="simple" role="http://www.opengis.net/def/serviceType/ogc/wfs" href="http://geowebservices-restricted.stanford.edu/geoserver/wfs"/>`
+	Example: 
+  
+```
+{ 
+  "@context": "http://github.com/OSGeo/Cat-Interop",
+  "http://www.opengis.net/def/serviceType/ogc/wfs": "http://geowebservices-restricted.stanford.edu/geoserver/wfs"
+}
+```
 
 **dc_rights_s**
 : 	Rights for access. Valid values:
