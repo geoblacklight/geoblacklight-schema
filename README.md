@@ -370,7 +370,7 @@ These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO 
   <str name="dc_title_s">Andaman and Nicobar, India: Village Socio-Demographic and Economic Census Data, 2001</str>
   <str name="dc_type_s">Dataset</str>
   <arr name="dct_isPartOf_sm">
-    <str>My Collection</str>
+    <str>Village Map of India</str>
   </arr>
   <arr name="dct_references_sm">
     <str>{
