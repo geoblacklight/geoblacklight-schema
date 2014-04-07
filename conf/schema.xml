@@ -148,8 +148,9 @@
   <copyField source="*_tmi"              dest="text" />
 
   <!-- for sorting text fields -->
-  <copyField source="dc_title_s"         dest="dc_title_sort"/>
+  <copyField source="dct_provenance_s"   dest="dct_provenance_sort"/>
   <copyField source="dc_publisher_s"     dest="dc_publisher_sort"/>
+  <copyField source="dc_title_s"         dest="dc_title_sort"/>
 
 </schema>
 
