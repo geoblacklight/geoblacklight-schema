@@ -100,7 +100,7 @@
       <str name="qf">
         text^1
         dc_description_ti^2
-        dc_creator_ti^3
+        dc_creator_tmi^3
         dc_publisher_ti^3
         dct_isPartOf_tmi^4
         dc_subject_tmi^5
@@ -119,15 +119,14 @@
       <str name="facet.field">dct_isPartOf_sm</str>
       <str name="facet.field">dct_provenance_s</str>
       <str name="facet.field">dct_spatial_sm</str>
-      <str name="facet.field">dc_creator_s</str>
+      <str name="facet.field">dc_creator_sm</str>
       <str name="facet.field">dc_format_s</str>
       <str name="facet.field">dc_language_s</str>
       <str name="facet.field">dc_publisher_s</str>
       <str name="facet.field">dc_rights_s</str>
       <str name="facet.field">dc_subject_sm</str>
       <str name="facet.field">layer_geom_type_s</str>
-      <str name="facet.field">layer_srs_s</str>
-      <str name="facet.field">layer_year_i</str>
+      <str name="facet.field">solr_year_i</str>
     </lst>
   </requestHandler>
 
