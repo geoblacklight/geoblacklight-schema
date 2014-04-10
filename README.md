@@ -228,7 +228,18 @@ Here is an example of the schema implementation for the spatial types:
 
 # Solr queries
 
-We provide a set of example Solr queries against this schema.
+####  polygon containment for spatial relevancy
+
+This is the **primary** query used by GeoBlacklight. In this example, we score
+containment by 10x and issue a text query, then filter the results via
+intersection.
+
+```xml
+<str name="q">solr_bbox:"IsWithin(-160 20 -150 30)"^10 railroads</str>
+<str name="fq">solr_bbox:"Intersects(-160 20 -150 30)"</str>
+```
+
+Below we provide a set of example Solr 3 & Solr 4 queries against this schema.
 
 ### Solr 3: Pseudo-spatial using `solr.LatLon`
 
