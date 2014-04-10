@@ -1,24 +1,36 @@
 #### Introduction
 
-This schema focuses on discovery use cases for patrons and analysts in a research library
-setting, although it is likely useful in other settings. Text search, faceted search and
-refinement, and spatial search and relevancy are among the primary features that the schema
-enables. The schema design supports a variety of discovery applications and GIS data types.
-We especially wanted to provide for contextual collection-oriented discovery applications as
-well as traditional portal applications.
+This schema focuses on discovery use cases for patrons and analysts in a
+research library setting, although it is likely useful in other settings. Text
+search, faceted search and refinement, and spatial search and relevancy are
+among the primary features that the schema enables. The schema design supports
+a variety of discovery applications and GIS data types. We especially wanted to
+provide for contextual collection-oriented discovery applications as well as
+traditional portal applications.
+
+The source code for the Solr implementation and the design document are on
+Github:
+
+  http://github.com/sul-dlss/geoblacklight-schema
+
+The conf/ folder has everything you need to implement the schema in Solr 4.7,
+and the examples/ folder has 100 example Solr documents that you can use. The
+lib/ folder has some initial, but incomplete, implementations for metadata
+format conversions (e.g., FGDC -> MODS, OGP -> GeoBlacklight, etc.).
 
 #### Example
 
-The `examples` folder has some Solr documents that uses this schema. First, install the
-schema into a Solr 4 instance, then upload the documents.
+The `examples` folder has some Solr documents that uses this schema. First,
+install the schema into a Solr 4 instance, then upload the documents.
 
     # install conf/ into your SOLR_HOME folder
     % cd examples
-	  % ruby upload-to-solr.rb your-collection-name http://localhost:8080
+	% ruby upload-to-solr.rb your-collection-name http://localhost:8080
 		
 #  Schema for GeoBlacklight
 
-Note that the suffixes in the schema attribute names are used by the Solr schema implementation.
+Note that the suffixes in the schema attribute names are used by the Solr
+schema implementation.
 
 ### Primary key
 
@@ -30,8 +42,9 @@ Note that the suffixes in the schema attribute names are used by the Solr schema
 
 ### Dublin Core
 
-See the [Dublin Core Elements Guide](http://dublincore.org/documents/dcmi-terms/) for semantic descriptions of all of these fields.
-We're using both DC Elements and DC Terms.
+See the [Dublin Core Elements
+Guide](http://dublincore.org/documents/dcmi-terms/) for semantic descriptions
+of all of these fields. We're using both DC Elements and DC Terms.
 
 **dct_spatial_sm**
 :	Coverage, placenames. Multiple values allowed. Example: `Paris, France`.
@@ -106,8 +119,9 @@ We're using both DC Elements and DC Terms.
 
 ### GeoRSS
 
-We use [GeoRSS](http://georss.org) for geometry encoding. Note that all data are in WGS84
-(EPSG:4326 projection). Depending on your usage, only the bounding box field is required.
+We use [GeoRSS](http://georss.org) for geometry encoding. Note that all data
+are in WGS84 (EPSG:4326 projection). Depending on your usage, only the bounding
+box field is required.
 
 **georss_point_s**
 : 	Point representation for layer -- i.e., centroid?
@@ -135,8 +149,8 @@ A variety of attributes are required for the discovery application. These are al
 
 ### Derived metadata used by Solr index
 
-For the Solr 4 implementation, we derive a few Solr-specific fields from other schema
-properties.
+For the Solr 4 implementation, we derive a few Solr-specific fields from other
+schema properties.
 
 **solr_pt**
 : 	(from `georss_point_s` using `solr.LatLonType`). Point in y,x. Example: `12.62309,84.76618`
@@ -162,8 +176,9 @@ properties.
 
 ## Solr4 schema implementation
 
-The [schema.xml](https://github.com/sul-dlss/geoblacklight-schema/blob/master/conf/schema.xml) is on Github. The
-schema makes heavy use of the `dynamicField` feature of Solr. Here are the suffixes to yield the datatype.
+The
+[schema.xml](https://github.com/sul-dlss/geoblacklight-schema/blob/master/conf/schema.xml) is on Github. The schema makes heavy use of the `dynamicField`
+feature of Solr. Here are the suffixes to yield the datatype.
 
 | Suffix | Solr data type using *dynamicField* | Solr *fieldType* Class |
 | ------ | --------------------------------- | --------------------- |
@@ -217,8 +232,8 @@ We provide a set of example Solr queries against this schema.
 
 ### Solr 3: Pseudo-spatial using `solr.LatLon`
 
-`solr.LatLonType` does not correctly work across the international dateline in these queries. `_pt` in these examples are assumed
-to be `solr.LatLonType`.
+`solr.LatLonType` does not correctly work across the international dateline in
+these queries. `_pt` in these examples are assumed to be `solr.LatLonType`.
 
 #### Search for point within 50 km of N40 W114
 
@@ -279,8 +294,9 @@ Note: Solr `_bbox` uses circle with radius (not rectangles).
 
 #### ... using polygon containment for spatial relevancy
 
-This is the **primary** query used by GeoBlacklight. In this example, we score containment by
-10x and issue a text query, then filter the results via intersection.
+This is the **primary** query used by GeoBlacklight. In this example, we score
+containment by 10x and issue a text query, then filter the results via
+intersection.
 
 ```xml
 <str name="q">solr_bbox:"IsWithin(-160 20 -150 30)"^10 railroads</str>
@@ -289,10 +305,10 @@ This is the **primary** query used by GeoBlacklight. In this example, we score c
 
 ### Solr 4 Spatial *using  JTS*
 
-This query requires [JTS](http://tsusiatsoftware.net/jts/main.html) installed in
-Solr 4, where the
-`spatialContextFactory="com.spatial4j.core.context.jts.JtsSpatialContextFactory"`
-for the `solr.SpatialRecursivePrefixTreeFieldType` field class.
+This query requires [JTS](http://tsusiatsoftware.net/jts/main.html) installed
+in Solr 4, where the
+`spatialContextFactory="com.spatial4j.core.context.jts.JtsSpatialContextFactory"
+` for the `solr.SpatialRecursivePrefixTreeFieldType` field class.
 
 #### Search for bbox _intersecting_ bounding box of SW=20,-160 NE=70,-70 using polygon intersection
 
@@ -339,8 +355,8 @@ These attributes are all available as facets:
 # Solr example documents
 
 
-These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO 19139. For example, from 
-[OGP to GeoBlacklight](https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb).
+These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO
+19139. For example, from [OGP to GeoBlacklight](https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb).
 
 ```xml
 <?xml version="1.0"?>
@@ -434,8 +450,8 @@ These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO 
 
 #### Lack of best practice standard
 
-The [MODS v3 specification](http://www.loc.gov/standards/mods/userguide/subject.html#coordinates) is vague in how coordinates
-should be formatted, and in practice there doesn't seem to be a standard format. It claims:
+The [MODS v3 specification](http://www.loc.gov/standards/mods/userguide/subject.html#coordinates) is vague in how coordinates should be formatted, and in practice there
+doesn't seem to be a standard format. It claims:
 
 
 > One or more statements may be supplied. If one is supplied, it is a point (i.e., a single location); if two, it is a line; if more than two, it is an n-sided polygon where n=number of coordinates assigned. No three points should be co-linear, and coordinates should be supplied in polygon-traversal order.
@@ -454,9 +470,14 @@ Goals:
 * Support point and bounding box coordinates for geospatial indexing, in multiple projections
 * Compatible with MARC034 and MARC255 formats
 
-The human-readable data would be in MODS as usual in subject/cartographics/coordinates, but the machine-readable data would be in a MODS geo extension using an existing geospatial standard.
+The human-readable data would be in MODS as usual in
+subject/cartographics/coordinates, but the machine-readable data would be in a
+MODS geo extension using an existing geospatial standard.
 
-Using GML and RDF we can support arbitrary projections for bounding boxes, and using Dublin Core we can define spatial facets like the format (e.g., a Shapefile) and type (e.g., a Dataset with point data), and associated place names.
+Using GML and RDF we can support arbitrary projections for bounding boxes, and
+using Dublin Core we can define spatial facets like the format (e.g., a
+Shapefile) and type (e.g., a Dataset with point data), and associated place
+names.
 
 ```xml
 <mods>
