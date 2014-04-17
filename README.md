@@ -208,7 +208,8 @@ feature of Solr. Here are the suffixes to yield the datatype.
 | `_url` | URL as a non-indexed String | `solr.StrField` |
 | `_bbox` | Spatial bounding box, Rectangle as (w, s, e, n) | `solr.SpatialRecursivePrefixTreeFieldType` |
 | `_pt` | Spatial point as (y,x) | `solr.LatLonType` |
-| `_geom` | Spatial shape as WKT | *JTS* version of `solr.SpatialRecursivePrefixTreeFieldType` |
+| `_geom` | Spatial shape as WKT | *Spatial4J* version of `solr.SpatialRecursivePrefixTreeFieldType` |
+| `_jts` | Spatial shape as WKT | *JTS* version of `solr.SpatialRecursivePrefixTreeFieldType` |
 
 Here is an example of the schema implementation for the spatial types:
 
@@ -391,12 +392,47 @@ These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO
 ```xml
 <doc>
   <str name="uuid">http://purl.stanford.edu/zy658cr1728</str>
-  <str name="dc_description_s">This point dataset shows village locations with socio-demographic and economic Census data for 2001 for the Union Territory of Andaman and Nicobar Islands, India linked to the 2001 Census. Includes village socio-demographic and economic Census attribute data such as total population, population by sex, household, literacy and illiteracy rates, and employment by industry. This layer is part of the VillageMap dataset which includes socio-demographic and economic Census data for 2001 at the village level for all the states of India. This data layer is sourced from secondary government sources, chiefly Survey of India, Census of India, Election Commission, etc. This map Includes data for 547 villages, 3 towns, 2 districts, and 1 union territory.; This dataset is intended for researchers, students, and policy makers for reference and mapping purposes, and may be used for village level demographic analysis within basic applications to support graphical overlays and analysis with other spatial data.; </str>
-  <str name="dc_format_s">Shapefile</str>
   <str name="dc_identifier_s">http://purl.stanford.edu/zy658cr1728</str>
+  <arr name="dct_isPartOf_sm">
+    <str>Village Map of India</str>
+  </arr>
+  <str name="dc_title_s">Andaman and Nicobar, India: Village Socio-Demographic and Economic Census Data, 2001</str>
+  <str name="dc_format_s">Shapefile</str>
   <str name="dc_language_s">English</str>
-  <str name="dc_publisher_s">ML InfoMap (Firm)</str>
   <str name="dc_rights_s">Restricted</str>
+  <str name="dct_provenance_s">Stanford</str>
+  <str name="dc_type_s">Dataset</str>
+  <str name="layer_id_s">druid:zy658cr1728</str>
+  <str name="layer_slug_s">stanford-zy658cr1728</str>
+  <str name="dct_references_s">{
+    "@context":"http://github.com/OSGeo/Cat-Interop",
+    "http://schema.org/url":"http://purl.stanford.edu/zy658cr1728",
+    "http://schema.org/thumbnailUrl":"http://purl.stanford.edu/zy658cr1728.jpg",
+    "http://www.loc.gov/mods/v3":"http://purl.stanford.edu/zy658cr1728.mods",
+    "http://www.isotc211.org/schemas/2005/gmd/":"http://purl.stanford.edu/zy658cr1728.iso19139",
+    "http://www.opengis.net/def/serviceType/ogc/wms":"http://kurma-podd1.stanford.edu/geoserver/wms",
+    "http://www.opengis.net/def/serviceType/ogc/wfs":"http://kurma-podd1.stanford.edu/geoserver/wfs",
+    "http://www.opengis.net/def/serviceType/ogc/wcs":"http://kurma-podd1.stanford.edu/geoserver/wcs"
+  }</str>
+  <str name="dct_issued_s">2013</str>
+  <arr name="dct_temporal_sm">
+    <str>2001</str>
+  </arr>
+  <int name="solr_year_i">2001</int>
+  <str name="layer_geom_type_s">Point</str>
+  <str name="dc_publisher_s">ML InfoMap (Firm)</str>
+  <arr name="dc_creator_sm">
+    <str>ML InfoMap (Firm)</str>
+  </arr>
+  <str name="dc_description_s">This point dataset shows village locations with socio-demographic and economic Census data for
+  2001 for the Union Territory of Andaman and Nicobar Islands, India linked to the 2001 Census. Includes village
+  socio-demographic and economic Census attribute data such as total population, population by sex, household, literacy and
+  illiteracy rates, and employment by industry. This layer is part of the VillageMap dataset which includes socio-demographic and
+  economic Census data for 2001 at the village level for all the states of India. This data layer is sourced from secondary
+  government sources, chiefly Survey of India, Census of India, Election Commission, etc. This map Includes data for 547
+  villages, 3 towns, 2 districts, and 1 union territory.This dataset is intended for researchers, students, and policy makers for
+  reference and mapping purposes, and may be used for village level demographic analysis within basic applications to support
+  graphical overlays and analysis with other spatial data.</str>
   <arr name="dc_subject_sm">
     <str>Human settlements</str>
     <str>Villages</str>
@@ -411,21 +447,32 @@ These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO
     <str>Society</str>
     <str>Location</str>
   </arr>
-  <str name="dc_title_s">Andaman and Nicobar, India: Village Socio-Demographic and Economic Census Data, 2001</str>
-  <str name="dc_type_s">Dataset</str>
-  <arr name="dct_isPartOf_sm">
-    <str>Village Map of India</str>
+  <arr name="dc_spatial_sm">
+    <str>Andaman and Nicobar Islands</str>
+    <str>Andaman</str>
+    <str>Nicobar</str>
+    <str>Car Nicobar Island</str>
+    <str>Port Blair</str>
+    <str>Indira Point</str>
+    <str>Diglipur</str>
+    <str>Nancowry Island</str>
+    <str>Andaman and Nicobar Islands (India)</str>
+    <str>Andaman Islands (India)</str>
+    <str>Nicobar Islands (India)</str>
+    <str>Car Nicobar Island (India)</str>
+    <str>Port Blair (India)</str>
+    <str>Diglipur (India)</str>
   </arr>
-  <str name="dct_references_s">{
-      "@context":"http://github.com/OSGeo/Cat-Interop",
-      "http://www.opengis.net/def/serviceType/ogc/wfs":"http://geowebservices-restricted.stanford.edu/geoserver/wfs",
-      "http://www.opengis.net/def/serviceType/ogc/wms":"http://geowebservices-restricted.stanford.edu/geoserver/wms",
-      "http://library.stanford.edu/iiif/image-api/1.1/context.json":"http://purl.stanford.edu/zy658cr1728.iiif",
-      "http://schema.org/thumbnailUrl":"http://purl.stanford.edu/zy658cr1728.jpg",
-      "http://schema.org/url":"http://purl.stanford.edu/zy658cr1728",
-      "http://www.isotc211.org/schemas/2005/gmd/":"http://purl.stanford.edu/zy658cr1728.iso19139",
-      "http://www.loc.gov/mods/v3":"http://purl.stanford.edu/zy658cr1728.mods"
-  }</str>
+  <str name="georss_box_s">6.761581 92.234924 13.637013 94.262535</str>
+  <str name="georss_polygon_s">6.761581 92.234924 13.637013 92.234924 13.637013 94.262535 6.761581 94.262535 6.761581 92.234924</str>
+  <str name="solr_geom">ENVELOPE(92.234924, 94.262535, 13.637013, 6.761581)</str>
+  <str name="solr_bbox">92.234924 6.761581 94.262535 13.637013</str>
+  <double name="solr_sw_pt_0_d">6.761581</double>
+  <double name="solr_sw_pt_1_d">92.234924</double>
+  <str name="solr_sw_pt">6.761581,92.234924</str>
+  <double name="solr_ne_pt_0_d">13.637013</double>
+  <double name="solr_ne_pt_1_d">94.262535</double>
+  <str name="solr_ne_pt">13.637013,94.262535</str>
   <arr name="dct_spatial_sm">
     <str>Andaman and Nicobar Islands</str>
     <str>Andaman</str>
@@ -436,32 +483,22 @@ These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO
     <str>Diglipur</str>
     <str>Nancowry Island</str>
   </arr>
-  <arr name="dct_temporal_sm">
-    <str>2001</str>
+  <arr name="dc_relation_sm">
+    <str>http://sws.geonames.org/1278647/about.rdf</str>
+    <str>http://sws.geonames.org/1278648/about.rdf</str>
+    <str>http://sws.geonames.org/1261448/about.rdf</str>
+    <str>http://sws.geonames.org/1274969/about.rdf</str>
+    <str>http://sws.geonames.org/1259385/about.rdf</str>
+    <str>http://sws.geonames.org/1259116/about.rdf</str>
+    <str>http://sws.geonames.org/1272607/about.rdf</str>
+    <str>http://sws.geonames.org/1261993/about.rdf</str>
   </arr>
-  <str name="dct_issued_s">2000</str>
-  <str name="dct_provenance_s">Stanford</str>
-  <str name="georss_box_s">6.761581 92.234924 13.637013 94.262535</str>
-  <str name="georss_polygon_s">13.637013 92.234924 13.637013 94.262535 6.761581 94.262535 6.761581 92.234924 13.637013 92.234924</str>
-  <str name="layer_slug_s">stanford-zy658cr1728</str>
-  <str name="layer_id_s">druid:zy658cr1728</str>
-  <str name="layer_geom_type_s">Point</str>
-  <str name="solr_bbox">92.234924 6.761581 94.262535 13.637013</str>
-  <double name="solr_ne_pt_0_d">13.637013</double>
-  <double name="solr_ne_pt_1_d">94.262535</double>
-  <str name="solr_ne_pt">13.637013,94.262535</str>
-  <double name="solr_sw_pt_0_d">6.761581</double>
-  <double name="solr_sw_pt_1_d">92.234924</double>
-  <str name="solr_sw_pt">6.761581,92.234924</str>
-  <str name="solr_geom">POLYGON((92.234924 13.637013, 94.262535 13.637013, 94.262535 6.761581, 92.234924 6.761581, 92.234924 13.637013))</str>
-  <int name="solr_year_i">2001</int>
-  <date name="solr_issued_dt">2000-01-01T00:00:00Z</date>
-  <str name="solr_wms_url">http://geowebservices-restricted.stanford.edu/geoserver/wms</str>
-  <str name="solr_wfs_url">http://geowebservices-restricted.stanford.edu/geoserver/wfs</str>
-  <str name="solr_wcs_url">http://geowebservices-restricted.stanford.edu/geoserver/wcs</str>
-  <long name="_version_">1464764666622246912</long>
-  <date name="timestamp">2014-04-07T22:07:22.145Z</date>
-  <float name="score">1.9068477</float>
+  <str name="solr_wms_url">http://kurma-podd1.stanford.edu/geoserver/wms</str>
+  <str name="solr_wfs_url">http://kurma-podd1.stanford.edu/geoserver/wfs</str>
+  <str name="solr_wcs_url">http://kurma-podd1.stanford.edu/geoserver/wcs</str>
+  <long name="_version_">1465674129654939648</long>
+  <date name="timestamp">2014-04-17T23:02:53.672Z</date>
+  <float name="score">1.0</float>
 </doc>
 ```
 
