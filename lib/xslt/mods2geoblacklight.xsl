@@ -100,9 +100,6 @@
             <field name="dct_issued_s">
               <xsl:value-of select="mods:originInfo/mods:dateIssued"/>
             </field>
-            <field name="solr_issued_dt">
-              <xsl:value-of select="substring(mods:originInfo/mods:dateIssued, 1, 4)"/>
-            </field>
           </xsl:when>
         </xsl:choose>
         <xsl:for-each select="mods:subject/mods:temporal">
@@ -192,27 +189,15 @@
             <xsl:value-of select="$x1"/>
           </field>
           <field name="solr_geom">
-            <xsl:text>POLYGON((</xsl:text>
+            <xsl:text>ENVELOPE(</xsl:text>
             <xsl:value-of select="$x1"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="$y1"/>
             <xsl:text>, </xsl:text>
             <xsl:value-of select="$x2"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="$y1"/>
             <xsl:text>, </xsl:text>
-            <xsl:value-of select="$x2"/>
-            <xsl:text> </xsl:text>
             <xsl:value-of select="$y2"/>
             <xsl:text>, </xsl:text>
-            <xsl:value-of select="$x1"/>
-            <xsl:text> </xsl:text>
-            <xsl:value-of select="$y2"/>
-            <xsl:text>, </xsl:text>
-            <xsl:value-of select="$x1"/>
-            <xsl:text> </xsl:text>
             <xsl:value-of select="$y1"/>
-            <xsl:text>))</xsl:text>
+            <xsl:text>)</xsl:text>
           </field>
           <field name="solr_bbox">
             <xsl:value-of select="$x1"/>
