@@ -173,7 +173,7 @@ schema properties.
 : 	(from `georss_box_s` using `solr.SpatialRecursivePrefixTreeFieldType`). Bounding box as maximum values for W S E N. Example: `76.76 12.62309 84.76618 19.91705`
 
 **solr_geom**
-: 	(from `georss_polygon_s` using **Spatial4J** 0.4 version of `solr.SpatialRecursivePrefixTreeFieldType`). Shape of the layer as a ENVELOPE WKT, see spec for [parseEnvelopeShape](http://spatial4j.github.io/spatial4j/apidocs/com/spatial4j/core/io/WktShapeParser.html#parseEnvelopeShape).
+: 	(from `georss_polygon_s` using **Spatial4J** 0.4 version Solr 4.7+ of `solr.SpatialRecursivePrefixTreeFieldType`). Shape of the layer as a ENVELOPE WKT, see spec for [parseEnvelopeShape](http://spatial4j.github.io/spatial4j/apidocs/com/spatial4j/core/io/WktShapeParser.html#parseEnvelopeShape).
 :	Example: `ENVELOPE(W, E, N, S)`.  Note the inverted order of S and N.
 
 **solr_jts**
@@ -388,6 +388,8 @@ These attributes are all available as facets:
 
 These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO
 19139. For example, from [OGP to GeoBlacklight](https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb).
+
+Note that the `solr_geom` WKT syntax requires Solr 4.7 with Spatial4J 0.4.
 
 ```xml
 <doc>
