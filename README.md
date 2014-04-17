@@ -384,8 +384,6 @@ These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO
 19139. For example, from [OGP to GeoBlacklight](https://github.com/sul-dlss/geohydra/blob/master/ogp/transform.rb).
 
 ```xml
-<?xml version="1.0"?>
-<?xml version="1.0"?>
 <doc>
   <str name="uuid">http://purl.stanford.edu/zy658cr1728</str>
   <str name="dc_description_s">This point dataset shows village locations with socio-demographic and economic Census data for 2001 for the Union Territory of Andaman and Nicobar Islands, India linked to the 2001 Census. Includes village socio-demographic and economic Census attribute data such as total population, population by sex, household, literacy and illiteracy rates, and employment by industry. This layer is part of the VillageMap dataset which includes socio-demographic and economic Census data for 2001 at the village level for all the states of India. This data layer is sourced from secondary government sources, chiefly Survey of India, Census of India, Election Commission, etc. This map Includes data for 547 villages, 3 towns, 2 districts, and 1 union territory.; This dataset is intended for researchers, students, and policy makers for reference and mapping purposes, and may be used for village level demographic analysis within basic applications to support graphical overlays and analysis with other spatial data.; </str>
@@ -413,8 +411,7 @@ These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO
   <arr name="dct_isPartOf_sm">
     <str>Village Map of India</str>
   </arr>
-  <arr name="dct_references_sm">
-    <str>{
+  <str name="dct_references_s">{
       "@context":"http://github.com/OSGeo/Cat-Interop",
       "http://www.opengis.net/def/serviceType/ogc/wfs":"http://geowebservices-restricted.stanford.edu/geoserver/wfs",
       "http://www.opengis.net/def/serviceType/ogc/wms":"http://geowebservices-restricted.stanford.edu/geoserver/wms",
@@ -423,8 +420,7 @@ These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO
       "http://schema.org/url":"http://purl.stanford.edu/zy658cr1728",
       "http://www.isotc211.org/schemas/2005/gmd/":"http://purl.stanford.edu/zy658cr1728.iso19139",
       "http://www.loc.gov/mods/v3":"http://purl.stanford.edu/zy658cr1728.mods"
-    }</str>
-  </arr>
+  }</str>
   <arr name="dct_spatial_sm">
     <str>Andaman and Nicobar Islands</str>
     <str>Andaman</str>
@@ -457,6 +453,7 @@ These metadata would be generated from the OGP Schema, or MODS, or FGDC, or ISO
   <date name="solr_issued_dt">2000-01-01T00:00:00Z</date>
   <str name="solr_wms_url">http://geowebservices-restricted.stanford.edu/geoserver/wms</str>
   <str name="solr_wfs_url">http://geowebservices-restricted.stanford.edu/geoserver/wfs</str>
+  <str name="solr_wcs_url">http://geowebservices-restricted.stanford.edu/geoserver/wcs</str>
   <long name="_version_">1464764666622246912</long>
   <date name="timestamp">2014-04-07T22:07:22.145Z</date>
   <float name="score">1.9068477</float>
