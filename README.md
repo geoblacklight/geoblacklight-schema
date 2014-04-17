@@ -77,14 +77,28 @@ of all of these fields. We're using both DC Elements and DC Terms.
 
 **dct_references_s**
 : 	URLs to referenced resources using [JSON-LD](http://en.wikipedia.org/wiki/JSON-LD). 
-	Role values are based on [CatInterop](https://github.com/OSGeo/Cat-Interop) Multiple values allowed. 
+	Role values are based on [CatInterop](https://github.com/OSGeo/Cat-Interop). 
 	Example: 
   
 ```
 { 
   "@context": "http://github.com/OSGeo/Cat-Interop",
-  "http://www.opengis.net/def/serviceType/ogc/wfs": "http://geowebservices-restricted.stanford.edu/geoserver/wfs"
+      "@context":"http://github.com/OSGeo/Cat-Interop",
+      "http://www.opengis.net/def/serviceType/ogc/wfs":"http://geowebservices-restricted.stanford.edu/geoserver/wfs",
+      "http://www.opengis.net/def/serviceType/ogc/wms":"http://geowebservices-restricted.stanford.edu/geoserver/wms",
+      "http://library.stanford.edu/iiif/image-api/1.1/context.json":"http://purl.stanford.edu/zy658cr1728.iiif",
+      "http://schema.org/thumbnailUrl":"http://purl.stanford.edu/zy658cr1728.jpg",
+      "http://schema.org/url":"http://purl.stanford.edu/zy658cr1728",
+      "http://www.isotc211.org/schemas/2005/gmd/":"http://purl.stanford.edu/zy658cr1728.iso19139",
+      "http://www.loc.gov/mods/v3":"http://purl.stanford.edu/zy658cr1728.mods"
 }
+```
+
+**dc_relation_sm**
+:   URLs to related resources. Multiple values allowed. Example:
+
+```
+http://sws.geonames.org/1252881/about.rdf
 ```
 
 **dc_rights_s**
@@ -115,7 +129,7 @@ of all of these fields. We're using both DC Elements and DC Terms.
 : 	Collection to which the layer belongs.
 
 **dct_available_sm**
-: 	Date range for when the data are available.
+: 	Date range for when the data are available. XXX: Need more specifics -- isn't the same as **dct_issued_s**?
 
 ### GeoRSS
 
