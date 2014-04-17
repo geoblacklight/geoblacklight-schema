@@ -173,6 +173,10 @@ schema properties.
 : 	(from `georss_box_s` using `solr.SpatialRecursivePrefixTreeFieldType`). Bounding box as maximum values for W S E N. Example: `76.76 12.62309 84.76618 19.91705`
 
 **solr_geom**
+: 	(from `georss_polygon_s` using **Spatial4J** 0.4 version of `solr.SpatialRecursivePrefixTreeFieldType`). Shape of the layer as a ENVELOPE WKT, see spec for [parseEnvelopeShape](http://spatial4j.github.io/spatial4j/apidocs/com/spatial4j/core/io/WktShapeParser.html#parseEnvelopeShape).
+:	Example: `ENVELOPE(W, E, N, S)`.  Note the inverted order of S and N.
+
+**solr_jts**
 : 	(from `georss_polygon_s` using **JTS** version of `solr.SpatialRecursivePrefixTreeFieldType`). Shape of the layer as a Point, LineString, or Polygon WKT.
 :	Example: `POLYGON((76.76 19.91705, 84.76618 19.91705, 84.76618 12.62309, 76.76 12.62309, 76.76 19.91705))`
 
@@ -218,7 +222,8 @@ Here is an example of the schema implementation for the spatial types:
     ...
     <dynamicField name="*_pt"     type="location"     stored="true" indexed="true"/>
     <dynamicField name="*_bbox"   type="location_rpt" stored="true" indexed="true"/>
-    <dynamicField name="*_geom"   type="location_jts" stored="true" indexed="true"/>
+    <dynamicField name="*_geom"   type="location_rpt" stored="true" indexed="true"/>
+    <dynamicField name="*_jts"    type="location_jts" stored="true" indexed="true"/>
   </fields>
   <types>
 	...
