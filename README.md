@@ -25,7 +25,7 @@ install the schema into a Solr 4 instance, then upload the documents.
 
     # install conf/ into your SOLR_HOME folder
     % cd examples
-	% ruby upload-to-solr.rb your-collection-name http://localhost:8080
+	  % ruby upload-to-solr.rb your-collection-name http://localhost:8080
 		
 #  Schema for GeoBlacklight
 
@@ -35,7 +35,7 @@ schema implementation.
 ### Primary key
 
 **uuid**
-: 	Unique Identifier. Examples:
+: 	REQUIRED. Unique Identifier. Examples:
 :    `http://purl.stanford.edu/vr593vj7147`,
 :    `http://ark.cdlib.org/ark:/28722/bk0012h535q`,
 :    `urn:geodata.tufts.edu:Tufts.CambridgeGrid100_04`
@@ -59,7 +59,7 @@ of all of these fields. We're using both DC Elements and DC Terms.
 :	Date issued. Example: `2010` or `2008-02-18`
 
 **dc_description_s**
-: 	Description.
+: 	REQUIRED. Description.
 
 **dc_format_s**
 :	File format (not MIME types). Valid values:
@@ -67,7 +67,7 @@ of all of these fields. We're using both DC Elements and DC Terms.
     `GeoTIFF`
 	
 **dc_identifier_s**
-:	Unique identifier. Same as UUID.
+:	REQUIRED. Unique identifier. Same as UUID.
 
 **dc_language_s**
 : 	Language. Example: `English`.
@@ -76,21 +76,20 @@ of all of these fields. We're using both DC Elements and DC Terms.
 : 	Publisher. Example: `ML InfoMap (Firm)`.
 
 **dct_references_s**
-: 	URLs to referenced resources using [JSON-LD](http://en.wikipedia.org/wiki/JSON-LD). 
+: 	REQUIRED. URLs to referenced resources using [JSON-LD](http://en.wikipedia.org/wiki/JSON-LD). 
 	Role values are based on [CatInterop](https://github.com/OSGeo/Cat-Interop). 
 	Example: 
   
 ```
 { 
   "@context": "http://github.com/OSGeo/Cat-Interop",
-      "@context":"http://github.com/OSGeo/Cat-Interop",
-      "http://www.opengis.net/def/serviceType/ogc/wfs":"http://geowebservices-restricted.stanford.edu/geoserver/wfs",
-      "http://www.opengis.net/def/serviceType/ogc/wms":"http://geowebservices-restricted.stanford.edu/geoserver/wms",
-      "http://library.stanford.edu/iiif/image-api/1.1/context.json":"http://purl.stanford.edu/zy658cr1728.iiif",
-      "http://schema.org/thumbnailUrl":"http://purl.stanford.edu/zy658cr1728.jpg",
-      "http://schema.org/url":"http://purl.stanford.edu/zy658cr1728",
-      "http://www.isotc211.org/schemas/2005/gmd/":"http://purl.stanford.edu/zy658cr1728.iso19139",
-      "http://www.loc.gov/mods/v3":"http://purl.stanford.edu/zy658cr1728.mods"
+  "http://www.opengis.net/def/serviceType/ogc/wfs":"http://geowebservices-restricted.stanford.edu/geoserver/wfs",
+  "http://www.opengis.net/def/serviceType/ogc/wms":"http://geowebservices-restricted.stanford.edu/geoserver/wms",
+  "http://library.stanford.edu/iiif/image-api/1.1/context.json":"http://purl.stanford.edu/zy658cr1728.iiif",
+  "http://schema.org/thumbnailUrl":"http://purl.stanford.edu/zy658cr1728.jpg",
+  "http://schema.org/url":"http://purl.stanford.edu/zy658cr1728",
+  "http://www.isotc211.org/schemas/2005/gmd/":"http://purl.stanford.edu/zy658cr1728.iso19139",
+  "http://www.loc.gov/mods/v3":"http://purl.stanford.edu/zy658cr1728.mods"
 }
 ```
 
@@ -102,11 +101,12 @@ http://sws.geonames.org/1252881/about.rdf
 ```
 
 **dc_rights_s**
-: 	Rights for access. Valid values:
+: 	REQUIRED. Rights for access. Valid values:
     `Restricted`
     `Public`
 	
-**dct_provenance_s**: Source institution: Examples:
+**dct_provenance_s**
+: REQUIRED. Source institution: Examples:
 :    Berkeley
 :    Harvard
 :    MassGIS
@@ -118,7 +118,7 @@ http://sws.geonames.org/1252881/about.rdf
 : 	Subject. Multiple values allowed. Example: `Human settlements, Census`
 
 **dc_title_s**
-: 	Title.
+: 	REQUIRED. Title.
 
 **dc_type_s** 
 : 	Resource type. dc:type=Dataset for georectified images, dc:type=Image for
@@ -141,7 +141,7 @@ box field is required.
 : 	Point representation for layer -- i.e., centroid?
 
 **georss_box_s**
-: 	Bounding box as maximum values for S W N E. Example: `12.62309 76.76 19.91705 84.76618`
+: 	REQUIRED. Bounding box as maximum values for S W N E. Example: `12.62309 76.76 19.91705 84.76618`
 
 **georss_polygon_s**
 : 	Shape of the layer as a Polygon in the form S W N W N E S E S W.
@@ -151,15 +151,15 @@ box field is required.
 A variety of attributes are required for the discovery application. These are all layer-specific.
 
 **layer_slug_s**
-:	Unique identifier visible to the user, used for Permalinks.
+:	REQUIRED. Unique identifier visible to the user, used for Permalinks.
 :	Example: `stanford-vr593vj7147`.
 
 **layer_id_s**
-: 	The complete identifier for the WMS/WFS/WCS layer.
+: REQUIRED. The complete identifier for the WMS/WFS/WCS layer.
 :	Example: `druid:vr593vj7147`
 
 **layer_geom_type_s**
-:	Valid values are: `Point`, `Line`, `Polygon`, and `Raster`.
+:	REQUIRED. Valid values are: `Point`, `Line`, `Polygon`, and `Raster`.
 
 ### Derived metadata used by Solr index
 
