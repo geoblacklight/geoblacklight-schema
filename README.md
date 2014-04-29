@@ -23,9 +23,10 @@ format conversions (e.g., FGDC -> MODS, OGP -> GeoBlacklight, etc.).
 The `examples` folder has some Solr documents that uses this schema. First,
 install the schema into a Solr 4 instance, then upload the documents.
 
-    # install conf/ into your SOLR_HOME folder
-    % cd examples
-	  % ruby upload-to-solr.rb your-collection-name http://localhost:8080
+```
+% cd examples
+% ruby upload-to-solr.rb your-collection-name http://localhost:8080/solr
+```
 		
 #  Schema for GeoBlacklight
 
@@ -35,7 +36,7 @@ schema implementation.
 ### Primary key
 
 **uuid**
-: 	REQUIRED. Unique Identifier. Examples:
+: 	**REQUIRED**. Unique Identifier. Examples:
 :    `http://purl.stanford.edu/vr593vj7147`,
 :    `http://ark.cdlib.org/ark:/28722/bk0012h535q`,
 :    `urn:geodata.tufts.edu:Tufts.CambridgeGrid100_04`
@@ -59,7 +60,7 @@ of all of these fields. We're using both DC Elements and DC Terms.
 :	Date issued. Example: `2010` or `2008-02-18`
 
 **dc_description_s**
-: 	REQUIRED. Description.
+: 	**REQUIRED**. Description.
 
 **dc_format_s**
 :	File format (not MIME types). Valid values:
@@ -67,7 +68,7 @@ of all of these fields. We're using both DC Elements and DC Terms.
     `GeoTIFF`
 	
 **dc_identifier_s**
-:	REQUIRED. Unique identifier. Same as UUID.
+:	**REQUIRED**. Unique identifier. Same as UUID.
 
 **dc_language_s**
 : 	Language. Example: `English`.
@@ -76,7 +77,7 @@ of all of these fields. We're using both DC Elements and DC Terms.
 : 	Publisher. Example: `ML InfoMap (Firm)`.
 
 **dct_references_s**
-: 	REQUIRED. URLs to referenced resources using [JSON-LD](http://en.wikipedia.org/wiki/JSON-LD). 
+: 	**REQUIRED**. URLs to referenced resources using [JSON-LD](http://en.wikipedia.org/wiki/JSON-LD). 
 	Role values are based on [CatInterop](https://github.com/OSGeo/Cat-Interop). 
 	Example: 
   
@@ -101,12 +102,12 @@ http://sws.geonames.org/1252881/about.rdf
 ```
 
 **dc_rights_s**
-: 	REQUIRED. Rights for access. Valid values:
+: 	**REQUIRED**. Rights for access. Valid values:
     `Restricted`
     `Public`
 	
 **dct_provenance_s**
-: REQUIRED. Source institution: Examples:
+: **REQUIRED**. Source institution: Examples:
 :    Berkeley
 :    Harvard
 :    MassGIS
@@ -118,7 +119,7 @@ http://sws.geonames.org/1252881/about.rdf
 : 	Subject. Multiple values allowed. Example: `Human settlements, Census`
 
 **dc_title_s**
-: 	REQUIRED. Title.
+: 	**REQUIRED**. Title.
 
 **dc_type_s** 
 : 	Resource type. dc:type=Dataset for georectified images, dc:type=Image for
@@ -135,31 +136,31 @@ http://sws.geonames.org/1252881/about.rdf
 
 We use [GeoRSS](http://georss.org) for geometry encoding. Note that all data
 are in WGS84 (EPSG:4326 projection). Depending on your usage, only the bounding
-box field is required.
+box field is **REQUIRED**.
 
 **georss_point_s**
 : 	Point representation for layer -- i.e., centroid?
 
 **georss_box_s**
-: 	REQUIRED. Bounding box as maximum values for S W N E. Example: `12.62309 76.76 19.91705 84.76618`
+: 	**REQUIRED**. Bounding box as maximum values for S W N E. Example: `12.62309 76.76 19.91705 84.76618`
 
 **georss_polygon_s**
 : 	Shape of the layer as a Polygon in the form S W N W N E S E S W.
 
 ### Layer-specific metadata
 
-A variety of attributes are required for the discovery application. These are all layer-specific.
+A variety of attributes are **REQUIRED** for the discovery application. These are all layer-specific.
 
 **layer_slug_s**
-:	REQUIRED. Unique identifier visible to the user, used for Permalinks.
+:	**REQUIRED**. Unique identifier visible to the user, used for Permalinks.
 :	Example: `stanford-vr593vj7147`.
 
 **layer_id_s**
-: REQUIRED. The complete identifier for the WMS/WFS/WCS layer.
+: **REQUIRED**. The complete identifier for the WMS/WFS/WCS layer.
 :	Example: `druid:vr593vj7147`
 
 **layer_geom_type_s**
-:	REQUIRED. Valid values are: `Point`, `Line`, `Polygon`, and `Raster`.
+:	**REQUIRED**. Valid values are: `Point`, `Line`, `Polygon`, and `Raster`.
 
 ### Derived metadata used by Solr index
 
@@ -449,7 +450,7 @@ Note that the `solr_geom` WKT syntax requires Solr 4.7 with Spatial4J 0.4.
     <str>Society</str>
     <str>Location</str>
   </arr>
-  <arr name="dc_spatial_sm">
+  <arr name="dct_spatial_sm">
     <str>Andaman and Nicobar Islands</str>
     <str>Andaman</str>
     <str>Nicobar</str>
