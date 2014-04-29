@@ -47,34 +47,28 @@ See the [Dublin Core Elements
 Guide](http://dublincore.org/documents/dcmi-terms/) for semantic descriptions
 of all of these fields. We're using both DC Elements and DC Terms.
 
-**dct_spatial_sm**
-:	Coverage, placenames. Multiple values allowed. Example: `Paris, France`.
+**dc_identifier_s**
+:	**REQUIRED**. Unique identifier. Same as `uuid`.
 
-**dct_temporal_sm**
-:	Coverage, years. Multiple values allowed. Example: `2010`
-
-**dc_creator_sm**
-:	Author(s). Example: `Washington, George`.
-
-**dct_issued_s**
-:	Date issued. Example: `2010` or `2008-02-18`
+**dc_title_s**
+: 	**REQUIRED**. Title.
 
 **dc_description_s**
 : 	**REQUIRED**. Description.
 
-**dc_format_s**
-:	File format (not MIME types). Valid values:
-    `Shapefile`,
-    `GeoTIFF`
+**dc_rights_s**
+: 	**REQUIRED**. Rights for access. Valid values:
+    `Restricted`
+    `Public`
 	
-**dc_identifier_s**
-:	**REQUIRED**. Unique identifier. Same as UUID.
-
-**dc_language_s**
-: 	Language. Example: `English`.
-
-**dc_publisher_s**
-: 	Publisher. Example: `ML InfoMap (Firm)`.
+**dct_provenance_s**
+: **REQUIRED**. Source institution: Examples:
+:    `Berkeley`
+:    `Harvard`
+:    `MassGIS`
+:    `MIT`
+:    `Stanford`
+:    `Tufts`
 
 **dct_references_s**
 : 	**REQUIRED**. URLs to referenced resources using [JSON-LD](http://en.wikipedia.org/wiki/JSON-LD). 
@@ -94,6 +88,29 @@ of all of these fields. We're using both DC Elements and DC Terms.
 }
 ```
 
+**dct_spatial_sm**
+:	Coverage, placenames. Multiple values allowed. Example: `Paris, France`.
+
+**dct_temporal_sm**
+:	Coverage, years. Multiple values allowed. Example: `2010`
+
+**dc_creator_sm**
+:	Author(s). Example: `Washington, George`.
+
+**dct_issued_s**
+:	Date issued. Example: `2010` or `2008-02-18`
+
+**dc_format_s**
+:	File format (not MIME types). Valid values:
+    `Shapefile`,
+    `GeoTIFF`
+	
+**dc_language_s**
+: 	Language. Example: `English`.
+
+**dc_publisher_s**
+: 	Publisher. Example: `ML InfoMap (Firm)`.
+
 **dc_relation_sm**
 :   URLs to related resources. Multiple values allowed. Example:
 
@@ -101,25 +118,8 @@ of all of these fields. We're using both DC Elements and DC Terms.
 http://sws.geonames.org/1252881/about.rdf
 ```
 
-**dc_rights_s**
-: 	**REQUIRED**. Rights for access. Valid values:
-    `Restricted`
-    `Public`
-	
-**dct_provenance_s**
-: **REQUIRED**. Source institution: Examples:
-:    Berkeley
-:    Harvard
-:    MassGIS
-:    MIT
-:    Stanford
-:    Tufts
-
 **dc_subject_sm**
 : 	Subject. Multiple values allowed. Example: `Human settlements, Census`
-
-**dc_title_s**
-: 	**REQUIRED**. Title.
 
 **dc_type_s** 
 : 	Resource type. dc:type=Dataset for georectified images, dc:type=Image for
@@ -138,11 +138,11 @@ We use [GeoRSS](http://georss.org) for geometry encoding. Note that all data
 are in WGS84 (EPSG:4326 projection). Depending on your usage, only the bounding
 box field is **REQUIRED**.
 
-**georss_point_s**
-: 	Point representation for layer -- i.e., centroid?
-
 **georss_box_s**
 : 	**REQUIRED**. Bounding box as maximum values for S W N E. Example: `12.62309 76.76 19.91705 84.76618`
+
+**georss_point_s**
+: 	Point representation for layer -- i.e., centroid?
 
 **georss_polygon_s**
 : 	Shape of the layer as a Polygon in the form S W N W N E S E S W.
