@@ -57,8 +57,13 @@
           <xsl:value-of select="$purl"/>
           <xsl:text>",</xsl:text>
           <xsl:text>"http://schema.org/thumbnailUrl":"</xsl:text>              
-          <xsl:value-of select="$purl"/>
-          <xsl:text>.jpg",</xsl:text>
+          <xsl:text>http://stacks.stanford.edu/file/druid:</xsl:text>
+          <xsl:value-of select="$druid"/>
+          <xsl:text>/preview.jpg",</xsl:text>
+          <xsl:text>"http://schema.org/DownloadAction":"</xsl:text>              
+          <xsl:text>http://stacks.stanford.edu/file/druid:</xsl:text>
+          <xsl:value-of select="$druid"/>
+          <xsl:text>/data.zip",</xsl:text>
           <xsl:text>"http://www.loc.gov/mods/v3":"</xsl:text>              
           <xsl:value-of select="$purl"/>
           <xsl:text>.mods",</xsl:text>
