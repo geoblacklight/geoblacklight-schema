@@ -120,11 +120,11 @@ http://sws.geonames.org/1252881/about.rdf
 ```
 
 **dc_subject_sm**
-: 	Subject. Multiple values allowed. Example: `Human settlements, Census`
+: 	Subject. Multiple values allowed. Example: `Human settlements`, `Census`
 
 **dc_type_s** 
-: 	Resource type. dc:type=Dataset for georectified images, dc:type=Image for
-:	  digitaized, non-georectified images, or dc:type=PhysicalObject for paper maps (no
+: 	Resource type. Example: dc:type=`Dataset` for georectified images, dc:type=`Image` for
+:	  digitaized, non-georectified images, or dc:type=`PhysicalObject` for paper maps (no
 :	  digitization).
 
 **dct_isPartOf_sm**
@@ -135,18 +135,17 @@ http://sws.geonames.org/1252881/about.rdf
 
 ### GeoRSS
 
-We use [GeoRSS](http://georss.org) for geometry encoding. Note that all data
-are in WGS84 (EPSG:4326 projection). Depending on your usage, only the bounding
-box field is **REQUIRED**.
+We use [GeoRSS](http://georss.org) for geometry encoding. Note that all data are in WGS84 (EPSG:4326 projection) and
+use latitude-longitude (y,x) pairs. Depending on your usage, only the bounding box field is required.
 
 **georss_box_s**
-: 	**REQUIRED**. Bounding box as maximum values for S W N E. Example: `12.62309 76.76 19.91705 84.76618`
+: 	**REQUIRED**. Bounding box as maximum values for S W N E. Example: `12.6 -119.4 19.9 84.8`
 
 **georss_point_s**
-: 	Point representation for layer -- i.e., centroid?
+: 	Point representation for layer -- i.e., centroid?. Example: `12.6 -119.4`
 
 **georss_polygon_s**
-: 	Shape of the layer as a Polygon in the form S W N W N E S E S W.
+: 	Shape of the layer as a Polygon in the form S W N W N E S E S W. Example: `12.6 -119.4 19.9 -119.4 19.9 84.8 12.6 84.8 12.6 -119.4`
 
 ### Layer-specific metadata
 
@@ -165,7 +164,7 @@ layer-specific.
 :	**REQUIRED**. Valid values are: `Point`, `Line`, `Polygon`, and `Raster`.
 
 **layer_modified_dt**
-: **REQUIRED**. Last modification date for the metadata record.
+: **REQUIRED**. Last modification date for the metadata record. Example: `2014-04-30T13:48:51Z`
 
 ### Derived metadata used by Solr index
 
@@ -413,6 +412,7 @@ Note that the `solr_geom` WKT syntax requires Solr 4.7 with Spatial4J 0.4.
   <str name="dc_type_s">Dataset</str>
   <str name="layer_id_s">druid:zy658cr1728</str>
   <str name="layer_slug_s">stanford-zy658cr1728</str>
+  <date name="layer_modified_dt">2014-04-17T23:02:53.672Z</date>
   <str name="dct_references_s">{
     "@context":"http://github.com/OSGeo/Cat-Interop",
     "http://schema.org/url":"http://purl.stanford.edu/zy658cr1728",
@@ -579,8 +579,8 @@ names.
             <gml:upperCorner>-78.085007 69.4325</gml:upperCorner>
           </gml:Envelope>
         </gml:boundedBy>
-        <dc:coverage rdf:resource="http://sws.geonames.org/6252001/about.rdf" dc:language="eng" dc:title="United States"/>
         <dc:coverage rdf:resource="http://sws.geonames.org/5332921/about.rdf" dc:language="eng" dc:title="California"/>
+        <dc:coverage rdf:resource="http://sws.geonames.org/6252001/about.rdf" dc:language="eng" dc:title="United States"/>
       </rdf:Description>
     </rdf:RDF>
   </extension>
@@ -614,25 +614,25 @@ The placenames are a 0..n mapping:
           <gml:upperCorner>97.409103 37.050301</gml:upperCorner>
         </gml:Envelope>
       </gml:boundedBy>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1269750/about.rdf" dc:language="eng" dc:title="India"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1269320/about.rdf" dc:language="eng" dc:title="Jammu and Kashmir"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1270101/about.rdf" dc:language="eng" dc:title="Himachal Pradesh"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1252881/about.rdf" dc:language="eng" dc:title="West Bengal"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1253626/about.rdf" dc:language="eng" dc:title="Uttar Pradesh"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1254169/about.rdf" dc:language="eng" dc:title="Tripura"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1256312/about.rdf" dc:language="eng" dc:title="Sikkim"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1258899/about.rdf" dc:language="eng" dc:title="Rajasthan"/>
       <dc:coverage rdf:resource="http://sws.geonames.org/1259223/about.rdf" dc:language="eng" dc:title="Punjab"/>
       <dc:coverage rdf:resource="http://sws.geonames.org/1260108/about.rdf" dc:language="eng" dc:title="Patiala"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1275638/about.rdf" dc:language="eng" dc:title="Bilaspur"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1253626/about.rdf" dc:language="eng" dc:title="Uttar Pradesh"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1258899/about.rdf" dc:language="eng" dc:title="Rajasthan"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1278253/about.rdf" dc:language="eng" dc:title="Assam"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1273293/about.rdf" dc:language="eng" dc:title="Delhi"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1256312/about.rdf" dc:language="eng" dc:title="Sikkim"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1275715/about.rdf" dc:language="eng" dc:title="Bihar"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1252881/about.rdf" dc:language="eng" dc:title="West Bengal"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1279160/about.rdf" dc:language="eng" dc:title="Ajmer"/>
       <dc:coverage rdf:resource="http://sws.geonames.org/1263706/about.rdf" dc:language="eng" dc:title="Manipur"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1275339/about.rdf" dc:language="eng" dc:title="Bombay"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1268731/about.rdf" dc:language="eng" dc:title="Kutch"/>
-      <dc:coverage rdf:resource="http://sws.geonames.org/1254169/about.rdf" dc:language="eng" dc:title="Tripura"/>
       <dc:coverage rdf:resource="http://sws.geonames.org/1264542/about.rdf" dc:language="eng" dc:title="Madhya Pradesh"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1268731/about.rdf" dc:language="eng" dc:title="Kutch"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1269320/about.rdf" dc:language="eng" dc:title="Jammu and Kashmir"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1269750/about.rdf" dc:language="eng" dc:title="India"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1270101/about.rdf" dc:language="eng" dc:title="Himachal Pradesh"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1273293/about.rdf" dc:language="eng" dc:title="Delhi"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1275339/about.rdf" dc:language="eng" dc:title="Bombay"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1275638/about.rdf" dc:language="eng" dc:title="Bilaspur"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1275715/about.rdf" dc:language="eng" dc:title="Bihar"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1278253/about.rdf" dc:language="eng" dc:title="Assam"/>
+      <dc:coverage rdf:resource="http://sws.geonames.org/1279160/about.rdf" dc:language="eng" dc:title="Ajmer"/>
     </rdf:Description>
   </rdf:RDF>
 </extension>
