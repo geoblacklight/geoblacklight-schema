@@ -3,7 +3,7 @@
      geo2mods.xsl - Transformation from ISO 19139 XML into MODS v3 
      
      
-     Copyright 2013, The Board of Trustees of the Leland Stanford Junior University
+     Copyright 2013-2014, The Board of Trustees of the Leland Stanford Junior University
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -26,7 +26,6 @@
      http://www.schemacentral.com/sc/niem21/t-gml32_GeometryPropertyType.html
      * purl - e.g., http://purl.stanford.edu/aa111bb2222
      * zipName - e.g., data.zip
-     * format - e.g., MIME type application/x-esri-shapefile
      
      TODO:
      * Series statements may need work?
@@ -41,7 +40,6 @@
   version="1.0" exclude-result-prefixes="gml gmd gco gmi xsl">
   <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
   <xsl:strip-space elements="*"/>
-  <xsl:param name="format" select="'application/x-esri-shapefile'"/>
   <xsl:param name="geometryType"/>
   <xsl:param name="purl"/>
   <xsl:param name="zipName" select="'data.zip'"/>
@@ -51,15 +49,27 @@
        -->
   <xsl:param name="geoformat" select="'MARC255'"/>
   <xsl:param name="fileIdentifier" select="''"/>
+  <xsl:variable name="format">
+    <xsl:choose>
+    <xsl:when test="contains(gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Raster Dataset')">
+      <xsl:text>image/tiff</xsl:text>
+    </xsl:when>
+      <xsl:when test="contains(gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'GeoTIFF')">
+        <xsl:text>image/tiff</xsl:text>
+      </xsl:when>
+      <xsl:when test="contains(gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Shapefile')">
+        <xsl:text>application/x-esri-shapefile</xsl:text>
+      </xsl:when>
+    </xsl:choose>
+  </xsl:variable>
   <xsl:template match="/">
     <mods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" version="3.4" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
       <xsl:for-each select="/gmi:MI_Metadata|/gmd:MD_Metadata|//gmd:MD_Metadata">
         <xsl:if test="gmd:fileIdentifier/gco:CharacterString/text()">
           <xsl:variable name="fileIdentifier" select="."/>
         </xsl:if>
-        <xsl:if test="gmd:dataSetURI/gco:CharacterString/text()">
-          <xsl:variable name="purl" select="."/>
-        </xsl:if>
+         <xsl:variable name="purl" select="gmd:dataSetURI"/>
+        
         <titleInfo>
           <title>
             <xsl:apply-templates select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:title"/>
@@ -153,21 +163,8 @@
             </xsl:choose>
           </dateIssued>
      
-            
-         <!-- kd: construct dateValid from Temporal_EX field? 
-                <xsl:if test="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod">
-               <dateValid>
-               <xsl:attribute name="point">start</xsl:attribute>
-                   
-                   <xsl:value-of select="substring-before(gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition, 'T')"/>
-              </dateValid>  
-               <dateValid>
-                   <xsl:attribute name="point">end</xsl:attribute>
-                   <xsl:value-of select="substring-before(gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition, 'T')"/>
-               </dateValid>  
-           </xsl:if> -->
-            
-            <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords">
+  
+             <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords">
                 <xsl:if test="gmd:type/gmd:MD_KeywordTypeCode[@codeListValue='temporal']">
                     <xsl:for-each select="gmd:keyword">
                         
@@ -226,15 +223,10 @@
           <xsl:for-each select="gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:transferSize">
             <extent>
               <xsl:value-of select="gco:Real"/>
-              <xsl:choose>
-                <xsl:when test="ancestor-or-self::*/gmd:MD_DigitalTransferOptions/gmd:unitsOfDistribution">
+                <xsl:if test="ancestor-or-self::*/gmd:MD_DigitalTransferOptions/gmd:unitsOfDistribution">
                   <xsl:text> </xsl:text>
                   <xsl:value-of select="ancestor-or-self::*/gmd:MD_DigitalTransferOptions/gmd:unitsOfDistribution"/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:text> MB</xsl:text>
-                </xsl:otherwise>
-              </xsl:choose>
+                </xsl:if>
             </extent>
               
             <!-- The digitalOrigin is coded here: 
@@ -506,6 +498,13 @@
                 </title>
               </titleInfo>
               <typeOfResource collection="yes"/>
+              <xsl:if test="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code">
+                <location>
+                  <url>
+                    <xsl:value-of select="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code"/>
+                  </url>
+                </location>
+              </xsl:if>
               <xsl:for-each select="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:organisationName">
                 <xsl:if test="ancestor-or-self::gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='originator']">
                   <name type="corporate">
@@ -547,7 +546,9 @@
                   </edition>
                 </xsl:for-each>
               </originInfo>
-               <xsl:for-each select="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:series/gmd:CI_Series">
+              
+              <!-- series titles / not in use -->
+             <!--  <xsl:for-each select="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:series/gmd:CI_Series">
                       <relatedItem>
                           <xsl:attribute name="type">host</xsl:attribute>
                         <titleInfo>
@@ -562,7 +563,7 @@
                               <issuance>continuing</issuance>
                          </originInfo>
                       </relatedItem>
-                  </xsl:for-each>
+                  </xsl:for-each>  -->
              </relatedItem>
           </xsl:if>
         </xsl:for-each>
@@ -749,9 +750,9 @@
                   <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Planning and Cadastral</xsl:text>
                 </xsl:when>
-                <xsl:when test="contains(.,'structural')">
+                <xsl:when test="contains(.,'structure')">
                   <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
-                  <xsl:text>Structures</xsl:text>
+                  <xsl:text>Structure</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'transportation')">
                   <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
@@ -769,13 +770,37 @@
             </topic>
           </subject>
         </xsl:for-each>
-        <!-- TODO: Need a metadata practice for GIS Dataset's Online Resource. -->
+
+ 
+          <location>
+            <url>
+              <xsl:value-of select="$purl"/>
+            </url>
+          </location>
+
         <!-- access rights to be mapped from restrictionCode/otherRestrictions/APO -->
         <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints">
           <accessCondition type="useAndReproduction">
             <xsl:value-of select=". "/>
           </accessCondition>
         </xsl:for-each>
+          
+          <!-- recordInfo -->
+          
+          
+              <recordInfo>
+                  <recordContentSource>
+                      <xsl:text>Stanford</xsl:text>
+                  </recordContentSource>
+                  <recordIdentifier>
+                      <xsl:value-of select="gmd:fileIdentifier"/>
+                  </recordIdentifier>
+                  <recordOrigin>This record was translated from ISO 19139 to MODS v.3 using an xsl transformation.</recordOrigin>
+                  <languageOfCataloging>
+                      <languageTerm authority="iso639-2b" type="code">eng</languageTerm>
+                  </languageOfCataloging>
+              </recordInfo>
+          
         
         <!-- Output geo extension to MODS -->
         <xsl:if test="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox">
@@ -823,7 +848,7 @@
                           <xsl:value-of select="../../@xlink:href"/>
                         </xsl:attribute>
                         <xsl:attribute name="dc:language">
-                          <xsl:value-of select="../../../../../gmd:language/gmd:LanguageCode"/>
+                          <xsl:value-of select="../../../../../gmd:language/gmd:LanguageCode"/> 
                         </xsl:attribute>
                         <xsl:attribute name="dc:title">
                           <xsl:value-of select="."/>
