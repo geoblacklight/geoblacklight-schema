@@ -9,7 +9,7 @@
      Example usage:
 
      xsltproc -stringparam geoserver_root 'http://kurma-podd1.stanford.edu/geoserver'
-              -stringparam purl 'http://purl-dev.stanford.edu/fw920bc5473'
+              -stringparam now '2014-04-30T21:17:41Z'
               -output '/var/geomdtk/current/workspace/fw/920/bc/5473/fw920bc5473/temp/geoblacklightSolr.xml'
               '/home/geostaff/geomdtk/current/lib/geomdtk/mods2geoblacklight.xsl'
               '/var/geomdtk/current/workspace/fw/920/bc/5473/fw920bc5473/metadata/descMetadata.xml'
@@ -17,9 +17,10 @@
      Requires parameters:
 
        - geoserver_root - URL prefix to the geoserver
+       - now - the current date/time
 
      -->
-<xsl:stylesheet xmlns="http://lucene.apache.org/solr/4/document" xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" exclude-result-prefixes="gml mods rdf xsl">
+<xsl:stylesheet xmlns="http://lucene.apache.org/solr/4/document" xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" exclude-result-prefixes="gml mods rdf xsl dc">
   <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
   <xsl:strip-space elements="*"/>
   <xsl:template match="/mods:mods">
@@ -34,21 +35,13 @@
         <field name="dc_identifier_s">
           <xsl:value-of select="$purl"/>
         </field>
-        <xsl:for-each select="mods:relatedItem/mods:titleInfo/mods:title">
-          <field name="dct_isPartOf_sm">
-            <xsl:value-of select="text()"/>
-          </field>
-        </xsl:for-each>
         <field name="dc_title_s">
           <xsl:value-of select="mods:titleInfo/mods:title[not(@type)]/text()"/>
         </field>
-        <!-- XXX: handle GeoTIFF -->
-        <field name="dc_format_s">
-          <xsl:text>Shapefile</xsl:text>
-        </field>
-        <!-- XXX: Handle other languages - get from MODS -->
-        <field name="dc_language_s">
-          <xsl:text>English</xsl:text>
+        <field name="dc_description_s">
+          <xsl:for-each select="mods:abstract[@displayLabel='Abstract' or @displayLabel='Purpose']">
+            <xsl:value-of select="text()"/>
+          </xsl:for-each>
         </field>
         <!-- XXX: Handle other institutions - get from MODS -->
         <field name="dc_rights_s">
@@ -58,20 +51,8 @@
         <field name="dct_provenance_s">
           <xsl:text>Stanford</xsl:text>
         </field>
-        <!-- XXX: Handle Image and PhysicalObject -->
-        <field name="dc_type_s">
-          <xsl:text>Dataset</xsl:text>
-        </field>
-        <!-- XXX: Handle other institution naming schemes -->
-        <field name="layer_id_s">
-          <xsl:text>druid:</xsl:text><xsl:value-of select="$druid"/>
-        </field>
-        <!-- XXX: Handle other institutions -->
-        <field name="layer_slug_s">
-          <xsl:text>stanford-</xsl:text><xsl:value-of select="$druid"/>
-        </field>
         <field name="dct_references_s">
-          <xsl:text>{"@context":"http://github.com/OSGeo/Cat-Interop",</xsl:text>
+          <xsl:text>{</xsl:text>
           <xsl:text>"http://schema.org/url":"</xsl:text>              
           <xsl:value-of select="$purl"/>
           <xsl:text>",</xsl:text>
@@ -95,21 +76,14 @@
           <xsl:text>/wcs"</xsl:text>
           <xsl:text>}</xsl:text>
         </field>
-        <xsl:choose>
-          <xsl:when test="mods:originInfo/mods:dateIssued">
-            <field name="dct_issued_s">
-              <xsl:value-of select="mods:originInfo/mods:dateIssued"/>
-            </field>
-          </xsl:when>
-        </xsl:choose>
-        <xsl:for-each select="mods:subject/mods:temporal">
-          <field name="dct_temporal_sm">
-            <xsl:value-of select="text()"/>
-          </field>
-          <field name="solr_year_i">
-            <xsl:value-of select="substring(text(), 1, 4)"/>
-          </field>
-        </xsl:for-each>
+        <!-- XXX: Handle other institution naming schemes -->
+        <field name="layer_id_s">
+          <xsl:text>druid:</xsl:text><xsl:value-of select="$druid"/>
+        </field>
+        <!-- XXX: Handle other institutions -->
+        <field name="layer_slug_s">
+          <xsl:text>stanford-</xsl:text><xsl:value-of select="$druid"/>
+        </field>
         <xsl:for-each select="mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:type">
           <field name="layer_geom_type_s">
             <xsl:choose>
@@ -122,6 +96,21 @@
             </xsl:choose>
           </field>
         </xsl:for-each>
+        <field name="layer_modified_dt">
+          <xsl:value-of select='$now'/>
+        </field>
+        <!-- XXX: handle GeoTIFF -->
+        <field name="dc_format_s">
+          <xsl:text>Shapefile</xsl:text>
+        </field>
+        <!-- XXX: Handle other languages - get from MODS -->
+        <field name="dc_language_s">
+          <xsl:text>English</xsl:text>
+        </field>
+        <!-- XXX: Handle Image and PhysicalObject -->
+        <field name="dc_type_s">
+          <xsl:text>Dataset</xsl:text>
+        </field>
         <field name="dc_publisher_s">
           <xsl:value-of select="mods:originInfo/mods:publisher"/>
         </field>
@@ -130,11 +119,6 @@
             <xsl:value-of select="mods:namePart"/>
           </field>
         </xsl:for-each>
-        <field name="dc_description_s">
-          <xsl:for-each select="mods:abstract[@displayLabel='Abstract' or @displayLabel='Purpose']">
-            <xsl:value-of select="text()"/>
-          </xsl:for-each>
-        </field>
         <xsl:for-each select="mods:subject/mods:topic">
           <field name="dc_subject_sm">
             <xsl:choose>
@@ -147,10 +131,37 @@
             </xsl:choose>
           </field>
         </xsl:for-each>
-        <xsl:for-each select="mods:subject/mods:geographic">
-          <field name="dc_spatial_sm">
+        <xsl:choose>
+          <xsl:when test="mods:originInfo/mods:dateIssued">
+            <field name="dct_issued_s">
+              <xsl:value-of select="mods:originInfo/mods:dateIssued"/>
+            </field>
+          </xsl:when>
+        </xsl:choose>
+        <xsl:for-each select="mods:subject/mods:temporal">
+          <field name="dct_temporal_sm">
             <xsl:value-of select="text()"/>
           </field>
+        </xsl:for-each>
+        <xsl:for-each select="mods:relatedItem/mods:titleInfo/mods:title">
+          <field name="dct_isPartOf_sm">
+            <xsl:value-of select="text()"/>
+          </field>
+        </xsl:for-each>
+        <xsl:for-each select="mods:subject/mods:geographic">
+          <field name="dct_spatial_sm">
+            <xsl:value-of select="text()"/>
+          </field>
+        </xsl:for-each>
+        <xsl:for-each select="mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:coverage">
+          <field name="dct_spatial_sm">
+            <xsl:value-of select="@dc:title"/>
+          </field>
+          <xsl:if test="@rdf:resource!=''">
+            <field name="dc_relation_sm">
+              <xsl:value-of select="@rdf:resource"/>
+            </field>
+          </xsl:if>
         </xsl:for-each>
         <xsl:for-each select="mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/gml:boundedBy/gml:Envelope">
           <xsl:variable name="x2" select="number(substring-before(gml:upperCorner/text(), ' '))"/><!-- E -->
@@ -219,14 +230,9 @@
             <xsl:value-of select="$x2"/>
           </field>
         </xsl:for-each>
-        <xsl:for-each select="mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:coverage">
-          <field name="dct_spatial_sm">
-            <xsl:value-of select="@dc:title"/>
-          </field>
-          <field name="dc_relation_sm">
-            <xsl:value-of select="@rdf:resource"/>
-          </field>
-        </xsl:for-each>
+        <field name="solr_year_i">
+          <xsl:value-of select="substring(mods:subject/mods:temporal[1]/text(), 1, 4)"/>
+        </field>
         <field name="solr_wms_url">
           <xsl:value-of select="$geoserver_root"/>
           <xsl:text>/wms</xsl:text>
