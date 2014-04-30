@@ -78,7 +78,6 @@ of all of these fields. We're using both DC Elements and DC Terms.
   
 ```
 { 
-  "@context": "http://github.com/OSGeo/Cat-Interop",
   "http://www.opengis.net/def/serviceType/ogc/wfs":"http://geowebservices-restricted.stanford.edu/geoserver/wfs",
   "http://www.opengis.net/def/serviceType/ogc/wms":"http://geowebservices-restricted.stanford.edu/geoserver/wms",
   "http://www.isotc211.org/schemas/2005/gmd/":"http://purl.stanford.edu/zy658cr1728.iso19139",
@@ -125,8 +124,8 @@ http://sws.geonames.org/1252881/about.rdf
 
 **dc_type_s** 
 : 	Resource type. dc:type=Dataset for georectified images, dc:type=Image for
-:	digitaized, non-georectified images, or dc:type=PhysicalObject for paper maps (no
-:	digitization).
+:	  digitaized, non-georectified images, or dc:type=PhysicalObject for paper maps (no
+:	  digitization).
 
 **dct_isPartOf_sm**
 : 	Collection to which the layer belongs.
@@ -151,7 +150,8 @@ box field is **REQUIRED**.
 
 ### Layer-specific metadata
 
-A variety of attributes are **REQUIRED** for the discovery application. These are all layer-specific.
+A variety of attributes are **REQUIRED** for the discovery application. These are all
+layer-specific.
 
 **layer_slug_s**
 :	**REQUIRED**. Unique identifier visible to the user, used for Permalinks.
@@ -164,6 +164,9 @@ A variety of attributes are **REQUIRED** for the discovery application. These ar
 **layer_geom_type_s**
 :	**REQUIRED**. Valid values are: `Point`, `Line`, `Polygon`, and `Raster`.
 
+**layer_modified_dt**
+: **REQUIRED**. Last modification date for the metadata record.
+
 ### Derived metadata used by Solr index
 
 For the Solr 4 implementation, we derive a few Solr-specific fields from other
@@ -173,7 +176,8 @@ schema properties.
 : 	(from `georss_point_s` using `solr.LatLonType`). Point in y,x. Example: `12.62309,84.76618`
 
 **solr_bbox**
-: 	(from `georss_box_s` using `solr.SpatialRecursivePrefixTreeFieldType`). Bounding box as maximum values for W S E N. Example: `76.76 12.62309 84.76618 19.91705`
+: 	(from `georss_box_s` using `solr.SpatialRecursivePrefixTreeFieldType`). 
+:   Bounding box as maximum values for W S E N. Example: `76.76 12.62309 84.76618 19.91705`
 
 **solr_geom**
 : 	(from `georss_polygon_s` using **Spatial4J** 0.4 version Solr 4.7+ of `solr.SpatialRecursivePrefixTreeFieldType`). Shape of the layer as a ENVELOPE WKT, see spec for [parseEnvelopeShape](http://spatial4j.github.io/spatial4j/apidocs/com/spatial4j/core/io/WktShapeParser.html#parseEnvelopeShape).
