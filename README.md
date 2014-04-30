@@ -48,7 +48,7 @@ Guide](http://dublincore.org/documents/dcmi-terms/) for semantic descriptions
 of all of these fields. We're using both DC Elements and DC Terms.
 
 **dc_identifier_s**
-:	**REQUIRED**. Unique identifier. Same as `uuid`.
+:	  **REQUIRED**. Unique identifier. Same as `uuid`.
 
 **dc_title_s**
 : 	**REQUIRED**. Title.
@@ -72,7 +72,8 @@ of all of these fields. We're using both DC Elements and DC Terms.
 
 **dct_references_s**
 : 	**REQUIRED**. URLs to referenced resources using [JSON-LD](http://en.wikipedia.org/wiki/JSON-LD). 
-	Role values are based on [CatInterop](https://github.com/OSGeo/Cat-Interop). 
+	Role values are based in part on [CatInterop](https://github.com/OSGeo/Cat-Interop)'s 
+  [link properties](https://github.com/OSGeo/Cat-Interop/blob/master/LinkPropertyLookupTable2.csv). 
 	Example: 
   
 ```
@@ -80,11 +81,12 @@ of all of these fields. We're using both DC Elements and DC Terms.
   "@context": "http://github.com/OSGeo/Cat-Interop",
   "http://www.opengis.net/def/serviceType/ogc/wfs":"http://geowebservices-restricted.stanford.edu/geoserver/wfs",
   "http://www.opengis.net/def/serviceType/ogc/wms":"http://geowebservices-restricted.stanford.edu/geoserver/wms",
-  "http://library.stanford.edu/iiif/image-api/1.1/context.json":"http://purl.stanford.edu/zy658cr1728.iiif",
-  "http://schema.org/thumbnailUrl":"http://purl.stanford.edu/zy658cr1728.jpg",
-  "http://schema.org/url":"http://purl.stanford.edu/zy658cr1728",
   "http://www.isotc211.org/schemas/2005/gmd/":"http://purl.stanford.edu/zy658cr1728.iso19139",
-  "http://www.loc.gov/mods/v3":"http://purl.stanford.edu/zy658cr1728.mods"
+  "http://www.loc.gov/mods/v3":"http://purl.stanford.edu/zy658cr1728.mods",
+  "http://schema.org/thumbnailUrl":"https://stacks.stanford.edu/file/druid:zy658cr1728/preview.jpg",
+  "http://schema.org/url":"http://purl.stanford.edu/zy658cr1728",
+  "http://schema.org/DownloadAction":"https://stacks.stanford.edu/file/druid:zy658cr1728/data.zip",
+  "http://library.stanford.edu/iiif/image-api/1.1/context.json":"http://purl.stanford.edu/zy658cr1728.iiif"
 }
 ```
 
