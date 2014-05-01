@@ -125,16 +125,18 @@
           </field>
         </xsl:for-each>
         <xsl:for-each select="mods:subject/mods:topic">
-          <field name="dc_subject_sm">
             <xsl:choose>
               <xsl:when test="@authority='ISO19115topicCategory'">
-                <xsl:value-of select="@valueURI"/>
+                <field name="dc_subject_sm">
+                  <xsl:value-of select="@valueURI"/>
+                </field>
               </xsl:when>
-              <xsl:otherwise>
-                <xsl:value-of select="text()"/>
-              </xsl:otherwise>
+              <xsl:when test="text()!=''">
+                <field name="dc_subject_sm">
+                  <xsl:value-of select="text()"/>
+                </field>
+              </xsl:when>
             </xsl:choose>
-          </field>
         </xsl:for-each>
         <xsl:choose>
           <xsl:when test="mods:originInfo/mods:dateIssued">
