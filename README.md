@@ -78,12 +78,14 @@ of all of these fields. We're using both DC Elements and DC Terms.
   
 ```
 { 
-  "http://www.opengis.net/def/serviceType/ogc/wfs":"http://geowebservices-restricted.stanford.edu/geoserver/wfs",
   "http://www.opengis.net/def/serviceType/ogc/wms":"http://geowebservices-restricted.stanford.edu/geoserver/wms",
+  "http://www.opengis.net/def/serviceType/ogc/wfs":"http://geowebservices-restricted.stanford.edu/geoserver/wfs",
+  "http://www.opengis.net/def/serviceType/ogc/wcs":"http://geowebservices-restricted.stanford.edu/geoserver/wcs",
   "http://www.isotc211.org/schemas/2005/gmd/":"http://purl.stanford.edu/zy658cr1728.iso19139",
   "http://www.loc.gov/mods/v3":"http://purl.stanford.edu/zy658cr1728.mods",
-  "http://schema.org/thumbnailUrl":"https://stacks.stanford.edu/file/druid:zy658cr1728/preview.jpg",
+  "http://www.opengis.net/cat/csw/csdgm":"http://purl.stanford.edu/zy658cr1728.fgdc",
   "http://schema.org/url":"http://purl.stanford.edu/zy658cr1728",
+  "http://schema.org/thumbnailUrl":"https://stacks.stanford.edu/file/druid:zy658cr1728/preview.jpg",
   "http://schema.org/DownloadAction":"https://stacks.stanford.edu/file/druid:zy658cr1728/data.zip",
   "http://library.stanford.edu/iiif/image-api/1.1/context.json":"http://purl.stanford.edu/zy658cr1728.iiif"
 }
