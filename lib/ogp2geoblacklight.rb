@@ -124,14 +124,13 @@ class TransformOgp
       location[k] = location[k].first if location[k].is_a? Array
     end
     refs = {}
-    refs['@context'] = "http://github.com/OSGeo/Cat-Interop"
     refs['http://www.opengis.net/def/serviceType/ogc/wcs'] = "#{location['wcs']}" if location['wcs']
     refs['http://www.opengis.net/def/serviceType/ogc/wfs'] = "#{location['wfs']}" if location['wfs']
     refs['http://www.opengis.net/def/serviceType/ogc/wms'] = "#{location['wms']}" if location['wms']
     if purl
-      refs["http://library.stanford.edu/iiif/image-api/1.1/context.json"] = "#{purl}.iiif"
-      refs["http://schema.org/thumbnailUrl"] = "#{purl}.jpg"
+      refs["http://schema.org/thumbnailUrl"] = "http://stacks.stanford.edu/file/druid:#{id}/preview.jpg"
       refs["http://schema.org/url"] = "#{clean_uri(purl)}"
+      refs["http://schema.org/DownloadAction"] = "http://stacks.stanford.edu/file/druid:#{id}/data.zip"
       refs["http://www.isotc211.org/schemas/2005/gmd/"] = "#{purl}.iso19139"
       refs["http://www.loc.gov/mods/v3"] = "#{purl}.mods"
     end
@@ -179,6 +178,7 @@ class TransformOgp
       :layer_id_s         => layer['WorkspaceName'] + ':' + layer['Name'],
       # :layer_srs_s        => 'EPSG:4326', # XXX: fake data
       :layer_geom_type_s  => layer_geom_type.capitalize,
+      :layer_modified_dt  => Time.now.utc.strftime('%FT%TZ'),
       
       # derived fields used only by solr, for which copyField is insufficient
       :solr_bbox  => "#{w} #{s} #{e} #{n}", # minX minY maxX maxY
