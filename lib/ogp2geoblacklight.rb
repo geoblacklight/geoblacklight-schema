@@ -37,7 +37,7 @@ class TransformOgp
   def transform_file(fn)
     stats = { :accepted => 0, :rejected => 0 }
     puts "Parsing #{fn}"
-    json = JSON::parse(File.read(fn))
+    json = JSON::parse(File.open(fn, 'rb').read)
     json.each do |doc| # contains JSON Solr query results
       unless doc.empty?
         begin
@@ -93,11 +93,11 @@ class TransformOgp
     dt = DateTime.rfc3339(layer['ContentDate'])
     pub_dt = DateTime.rfc3339('2000-01-01T00:00:00Z') # XXX fake data, get from MODS
     
+    access = layer['Access']
+    collection = nil
+    
     # Parse out the PURL and other metadata for Stanford
     if layer['Institution'] == 'Stanford'
-      access = 'Restricted' # always restricted, XXX: fake data if really Public
-      collection = 'My Collection' # XXX: need to parse out of MODS
-      preview_jpg = "https://stacks.stanford.edu/file/druid:#{id}/preview.jpg"
       purl = location['purl']
       if purl.is_a? Array
         purl = purl.first
@@ -106,12 +106,13 @@ class TransformOgp
         purl = uuid
       end
     else
-      access = layer['Access']
-      collection = nil
-      preview_jpg = nil
       purl = nil
-      layer['ThemeKeywords'] = nil # not properly delimited
-      layer['PlaceKeywords'] = nil # not properly delimited
+      # Because OGP does not deliminate keywords, we use a heuristic here
+      %w{PlaceKeywords ThemeKeywords}.each do |k|
+        unless layer[k] =~ /[;,]/ or layer[k].split.size < 4
+          layer[k] = layer[k].split.join(';')
+        end
+      end
     end
     
     slug = to_slug(id, layer)
@@ -161,7 +162,7 @@ class TransformOgp
                                          # or 'PhysicalObject' for non-digitized maps
       # Dublin Core terms
       :dct_isPartOf_sm    => collection.nil?? nil : [collection],
-      :dct_references_sm  => refs.to_json.to_s,
+      :dct_references_s   => refs.to_json.to_s,
       :dct_spatial_sm     => string2array(layer['PlaceKeywords']),
       :dct_temporal_sm    => [dt.year.to_s],
       :dct_issued_s       => pub_dt.year.to_s,
@@ -184,7 +185,7 @@ class TransformOgp
       :solr_bbox  => "#{w} #{s} #{e} #{n}", # minX minY maxX maxY
       :solr_ne_pt => "#{n},#{e}",
       :solr_sw_pt => "#{s},#{w}",
-      :solr_geom  => "POLYGON((#{w} #{n}, #{e} #{n}, #{e} #{s}, #{w} #{s}, #{w} #{n}))",
+      :solr_geom  => "ENVELOPE(#{w} #{e} #{n} #{s})",
       :solr_year_i => dt.year,
       :solr_issued_dt => pub_dt.strftime('%FT%TZ'), # Solr requires 1995-12-31T23:59:59Z
       :solr_wms_url => location['wms'],
@@ -228,9 +229,9 @@ class TransformOgp
   # @return [Array] results as array
   def string2array(s)
     if s.to_s =~ /[;,>]/
-      s.split(/\s*[;,>]\s*/).uniq
+      s.split(/\s*[;,>]\s*/).uniq.collect {|i| i.strip}
     elsif s.is_a?(String) and s.size > 0
-      [s]
+      [s.strip]
     else
       nil
     end
