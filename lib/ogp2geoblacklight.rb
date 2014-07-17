@@ -185,7 +185,7 @@ class TransformOgp
       :solr_bbox  => "#{w} #{s} #{e} #{n}", # minX minY maxX maxY
       :solr_ne_pt => "#{n},#{e}",
       :solr_sw_pt => "#{s},#{w}",
-      :solr_geom  => "ENVELOPE(#{w} #{e} #{n} #{s})",
+      :solr_geom  => "ENVELOPE(#{w}, #{e}, #{n}, #{s})",
       :solr_year_i => dt.year,
       :solr_issued_dt => pub_dt.strftime('%FT%TZ'), # Solr requires 1995-12-31T23:59:59Z
       :solr_wms_url => location['wms'],
