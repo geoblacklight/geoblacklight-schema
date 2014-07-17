@@ -30,7 +30,8 @@ install the schema into a Solr 4 instance, then upload the documents.
 
 ## Requirements
 
-* Saxon-HE, the Home Edition from http://saxon.sourceforge.net
+* Saxon-HE v9, the Home Edition from http://saxon.sourceforge.net installed as
+  `vendor/saxon9he.jar`
 
 #  Schema for GeoBlacklight
 
