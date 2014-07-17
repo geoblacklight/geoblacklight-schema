@@ -1,11 +1,14 @@
 #!/bin/bash
-# Usage: xsltproc-saxon stylesheet.xsl input.xml output.xml [flags or params]
+#
+# Usage: xsltproc-saxon stylesheet.xsl input.xml [output.xml [flags or params]]
 #
 # See http://saxonica.com/documentation/html/using-xsl/commandline.html
+#
 s=$1; shift
 i=$1; shift
 o=$1; shift
-if [ -s "$o" ]; then
+if [ -n "$o" ]; then
   o="-o:$o"
 fi
-java -jar vendor/SaxonHE9-5-1-6J/saxon9he.jar -s:$i -xsl:$s $o $*
+
+java -jar vendor/saxon9he.jar "-s:$i" "-xsl:$s" $o $*
