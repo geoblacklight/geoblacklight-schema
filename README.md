@@ -23,11 +23,15 @@ format conversions (e.g., FGDC -> MODS, OGP -> GeoBlacklight, etc.).
 The `examples` folder has some Solr documents that uses this schema. First,
 install the schema into a Solr 4 instance, then upload the documents.
 
-```
+```bash
 % cd examples
 % ruby upload-to-solr.rb your-collection-name http://localhost:8080/solr
 ```
-		
+
+## Requirements
+
+* Saxon-HE, the Home Edition from http://saxon.sourceforge.net
+
 #  Schema for GeoBlacklight
 
 Note that the suffixes in the schema attribute names are used by the Solr
