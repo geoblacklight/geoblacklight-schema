@@ -2,7 +2,7 @@
 #
 # Usage: transform_ogp output.json
 #
-#  Reads valid*.json in current directory
+#  Reads data/valid*.json in current directory
 #
 
 require 'awesome_print'
@@ -216,7 +216,7 @@ class TransformOgp
     
     unless skip_fgdc or layer['FgdcText'].nil? or layer['FgdcText'].empty?
       xml = Nokogiri::XML(layer['FgdcText'])
-      xml.write_xml_to(File.open('fgdc' + '/' + slug + '.xml', 'wb'), :encoding => 'UTF-8', :indent => 2)
+      xml.write_xml_to(File.open('data/fgdc/' + slug + '.xml', 'wb'), :encoding => 'UTF-8', :indent => 2)
     end
   end
 
@@ -311,9 +311,9 @@ end
 
 # __MAIN__
 #
-TransformOgp.new(ARGV[0].nil?? 'transformed.json' : ARGV[0]) do |ogp|
+TransformOgp.new(ARGV[0].nil?? 'data/transformed.json' : ARGV[0]) do |ogp|
   stats = { :accepted => 0, :rejected => 0 }
-  Dir.glob('valid*.json') do |fn|
+  Dir.glob('data/valid*.json') do |fn|
     s = ogp.transform_file(fn)
     stats[:accepted] += s[:accepted]
     stats[:rejected] += s[:rejected]

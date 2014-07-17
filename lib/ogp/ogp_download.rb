@@ -56,7 +56,7 @@ class DownloadOgp
   # @param [String] target the target institution
   # @param [Integer] start
   # @param [Integer] rows
-  def fetch(src, target, start, rows, datadir = 'data')
+  def fetch(src, target, start, rows, datadir = 'data/download')
     fn = File.join(datadir, "#{src.downcase}_#{target.downcase}_#{sprintf('%05i', start)}_#{rows}.json")
     unless File.exist?(fn)
       raise "Unknown URL for #{src}" unless URL.include?(src.downcase)

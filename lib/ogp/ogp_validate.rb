@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 #
-# Usage: validate_ogp [output.json]
+# Usage: ogp_validate [output.json]
 #
-#  Requires data/*.json as input and output to valid.json
+#  Requires data/download/*.json as input and output to data/valid.json
 #
 require 'awesome_print'
 require 'json'
@@ -171,9 +171,9 @@ end
 
 
 # __MAIN__
-ValidateOgp.new(ARGV[0].nil?? 'valid.json' : ARGV[0]) do |ogp|
+ValidateOgp.new(ARGV[0].nil?? 'data/valid.json' : ARGV[0]) do |ogp|
   stats = { :accepted => 0, :rejected => 0 }
-  Dir.glob('data/*.json') do |fn|
+  Dir.glob('data/download/*.json') do |fn|
     s = ogp.validate_file(fn)
     stats[:accepted] += s[:accepted]
     stats[:rejected] += s[:rejected]
