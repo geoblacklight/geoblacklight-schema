@@ -34,14 +34,14 @@ class TransformOgp
 
   # @param [String] fn filename of JSON array of OGP hash objects
   # @return [Hash] stats about :accepted vs. :rejected records
-  def transform_file(fn)
+  def transform_file(fn, skip_fgdc = false)
     stats = { :accepted => 0, :rejected => 0 }
     puts "Parsing #{fn}"
     json = JSON::parse(File.open(fn, 'rb').read)
     json.each do |doc| # contains JSON Solr query results
       unless doc.empty?
         begin
-          transform(doc)
+          transform(doc, skip_fgdc)
           stats[:accepted] += 1
         rescue ArgumentError => e
           puts e
@@ -54,9 +54,9 @@ class TransformOgp
 
   # Transforms a single OGP record into a GeoBlacklight record
   # @param [Hash] layer an OGP hash for a given layer
-  def transform(layer, skip_fgdc = true)
+  def transform(layer, skip_fgdc = false)
     id = layer['LayerId'].to_s.strip
-    puts "Tranforming #{id}"
+    puts "Tranforming #{id} #{skip_fgdc ? '' : 'and caching FGDC'}"
 
     # For URN style @see http://www.ietf.org/rfc/rfc2141.txt
     # For ARK @see https://wiki.ucop.edu/display/Curation/ARK
@@ -311,10 +311,11 @@ end
 
 # __MAIN__
 #
+SKIP_FGDC = false
 TransformOgp.new(ARGV[0].nil?? 'data/transformed.json' : ARGV[0]) do |ogp|
   stats = { :accepted => 0, :rejected => 0 }
   Dir.glob('data/valid*.json') do |fn|
-    s = ogp.transform_file(fn)
+    s = ogp.transform_file(fn, SKIP_FGDC)
     stats[:accepted] += s[:accepted]
     stats[:rejected] += s[:rejected]
   end
