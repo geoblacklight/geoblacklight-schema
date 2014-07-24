@@ -20,14 +20,13 @@
        - now - the current date/time
 
      -->
-<xsl:stylesheet xmlns="http://lucene.apache.org/solr/4/document" xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0" exclude-result-prefixes="gml mods rdf xsl dc">
+<xsl:stylesheet xmlns="http://lucene.apache.org/solr/4/document" xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" exclude-result-prefixes="gml mods rdf xsl dc">
   <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
   <xsl:strip-space elements="*"/>
   <xsl:template match="/mods:mods">
     <!-- XXX: Handle other institution naming schemes -->
     <xsl:variable name="purl" select="mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/@rdf:about"/>
     <xsl:variable name="druid" select="substring($purl, string-length($purl)-10)"/>
-    <xsl:variable name="geoserver_root" select="'$GEOSERVER_ROOT'"/>
     <xsl:variable name="now" select="'$NOW'"/>
     <add>
       <doc>
