@@ -27,7 +27,6 @@
     <!-- XXX: Handle other institution naming schemes -->
     <xsl:variable name="purl" select="mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/@rdf:about"/>
     <xsl:variable name="druid" select="substring($purl, string-length($purl)-10)"/>
-    <xsl:variable name="now" select="'$NOW'"/>
     <add>
       <doc>
         <field name="uuid">
