@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ['Darren Hardy']
   spec.email         = ['drh@stanford.edu']
   spec.summary       = 'Schema Tools for GeoBlacklight'
-  spec.homepage      = 'http://github.com/sul-dlss/geoblacklight-schema'
+  spec.homepage      = 'http://github.com/geoblacklight/geoblacklight-schema'
   spec.license       = 'Apache 2.0'
 
   spec.files         = `git ls-files -z`.split(%Q{\x0})
