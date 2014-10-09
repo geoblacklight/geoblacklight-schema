@@ -26,6 +26,7 @@
      http://www.schemacentral.com/sc/niem21/t-gml32_GeometryPropertyType.html
      * purl - e.g., http://purl.stanford.edu/aa111bb2222
      * zipName - e.g., data.zip
+     * fileFormat - e.g., Shapefile, GeoTIFF, ArcGrid
      
      TODO:
      * Series statements may need work?
@@ -42,6 +43,7 @@
   <xsl:strip-space elements="*"/>
   <xsl:param name="geometryType"/>
   <xsl:param name="purl"/>
+  <xsl:param name="fileFormat"/>
   <xsl:param name="zipName" select="'data.zip'"/>
   <!-- The coordinates value for MODS v3 is quite vague, 
        so we have a variety of formats: 
@@ -51,13 +53,13 @@
   <xsl:param name="fileIdentifier" select="''"/>
   <xsl:variable name="format">
     <xsl:choose>
-    <xsl:when test="contains(gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Raster Dataset')">
+    <xsl:when test="contains(//gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Raster Dataset')">
       <xsl:text>image/tiff</xsl:text>
     </xsl:when>
-      <xsl:when test="contains(gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'GeoTIFF')">
+      <xsl:when test="contains(//gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'GeoTIFF')">
         <xsl:text>image/tiff</xsl:text>
       </xsl:when>
-      <xsl:when test="contains(gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Shapefile')">
+      <xsl:when test="contains(//gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Shapefile')">
         <xsl:text>application/x-esri-shapefile</xsl:text>
       </xsl:when>
     </xsl:choose>
@@ -813,6 +815,8 @@
                 <!-- Output MIME type -->
                 <dc:format>
                   <xsl:value-of select="$format"/>
+                  <xsl:text>; filetype=</xsl:text>
+                  <xsl:value-of select="$fileFormat"/>
                 </dc:format>
                 <!-- Output Dataset# point, linestring, polygon, raster, etc. -->
                 <dc:type>
