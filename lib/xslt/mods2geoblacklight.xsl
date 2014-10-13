@@ -107,9 +107,7 @@
         </xsl:for-each>
         <field name="layer_modified_dt">
           <xsl:value-of select='$now'/>
-        </field>
-        <!-- XXX: handle GeoTIFF -->
-        
+        </field>        
         <field name="dc_format_s">
           <xsl:value-of select="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')"/>
         </field>
