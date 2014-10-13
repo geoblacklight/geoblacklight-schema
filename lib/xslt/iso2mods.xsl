@@ -815,7 +815,7 @@
                 <!-- Output MIME type -->
                 <dc:format>
                   <xsl:value-of select="$format"/>
-                  <xsl:text>; filetype=</xsl:text>
+                  <xsl:text>; format=</xsl:text>
                   <xsl:value-of select="$fileFormat"/>
                 </dc:format>
                 <!-- Output Dataset# point, linestring, polygon, raster, etc. -->
