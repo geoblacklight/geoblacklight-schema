@@ -26,7 +26,7 @@
      http://www.schemacentral.com/sc/niem21/t-gml32_GeometryPropertyType.html
      * purl - e.g., http://purl.stanford.edu/aa111bb2222
      * zipName - e.g., data.zip
-     * fileFormat - e.g., Shapefile, GeoTIFF, ArcGrid
+     * fileFormat - e.g., Shapefile, GeoTIFF, ArcGRID
      
      TODO:
      * Series statements may need work?
@@ -35,7 +35,8 @@
   xmlns="http://www.loc.gov/mods/v3" 
   xmlns:gco="http://www.isotc211.org/2005/gco" 
   xmlns:gmi="http://www.isotc211.org/2005/gmi" 
-  xmlns:gmd="http://www.isotc211.org/2005/gmd" 
+  xmlns:gmd="http://www.isotc211.org/2005/gmd"
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   xmlns:gml="http://www.opengis.net/gml"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
   version="1.0" exclude-result-prefixes="gml gmd gco gmi xsl">
@@ -43,7 +44,6 @@
   <xsl:strip-space elements="*"/>
   <xsl:param name="geometryType"/>
   <xsl:param name="purl"/>
-  <xsl:param name="fileFormat"/>
   <xsl:param name="zipName" select="'data.zip'"/>
   <!-- The coordinates value for MODS v3 is quite vague, 
        so we have a variety of formats: 
@@ -53,13 +53,13 @@
   <xsl:param name="fileIdentifier" select="''"/>
   <xsl:variable name="format">
     <xsl:choose>
-    <xsl:when test="contains(//gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Raster Dataset')">
+      <xsl:when test="contains(rdf:RDF/rdf:Description/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Raster Dataset')">
       <xsl:text>image/tiff</xsl:text>
     </xsl:when>
-      <xsl:when test="contains(//gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'GeoTIFF')">
+      <xsl:when test="contains(rdf:RDF/rdf:Description/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'GeoTIFF')">
         <xsl:text>image/tiff</xsl:text>
       </xsl:when>
-      <xsl:when test="contains(//gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Shapefile')">
+      <xsl:when test="contains(rdf:RDF/rdf:Description/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Shapefile')">
         <xsl:text>application/x-esri-shapefile</xsl:text>
       </xsl:when>
     </xsl:choose>
@@ -473,6 +473,8 @@
           <note displayLabel="Preferred citation">
             <xsl:attribute name="lang">eng</xsl:attribute>
             <xsl:value-of select="gco:CharacterString"/>
+            <xsl:text> Available at: </xsl:text> 
+            <xsl:value-of select="$purl"/>  
           </note>
         </xsl:for-each>
         <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:supplementalInformation">
@@ -487,106 +489,134 @@
             </note>
           </xsl:for-each>
         </xsl:for-each>
-        <!-- MODS relatedItem type='host'-->
-          <xsl:choose>
-        <xsl:when test="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation">
-        <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation">
-          <xsl:if test="gmd:associationType/gmd:DS_AssociationTypeCode[@codeListValue='largerWorkCitation']">
+        <!-- MODS relatedItem type='host' added through RELS-EXT-
+
+
+          <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:associationType/gmd:DS_AssociationTypeCode[@codeListValue='largerWorkCitation']">
             <relatedItem>
               <xsl:attribute name="type">host</xsl:attribute>
-              <titleInfo>
-                <title>
-                  <xsl:value-of select="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:title"/>
-                </title>
-              </titleInfo>
-              <typeOfResource collection="yes"/>
-              <xsl:if test="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code">
+                <titleInfo>
+                    <title>
+                        <xsl:value-of select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:title"/>
+                    </title>
+                </titleInfo>
+              <xsl:if test="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code">
                 <location>
                   <url>
-                    <xsl:value-of select="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code"/>
+                    <xsl:value-of select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code"/>
                   </url>
                 </location>
               </xsl:if>
-              <xsl:for-each select="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:organisationName">
-                <xsl:if test="ancestor-or-self::gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='originator']">
+               <xsl:for-each select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='originator']">
+                  <xsl:if test="ancestor-or-self::*/gmd:individualName">
+                        <name type="personal">
+                            <namePart>
+                              <xsl:value-of select="ancestor-or-self::*/gmd:individualName"/>
+                            </namePart>
+                        </name>
+                        </xsl:if>
+                <xsl:if test="ancestor-or-self::*/gmd:organisationName">
                   <name type="corporate">
                     <namePart>
-                      <xsl:value-of select="."/>
+                      <xsl:value-of select="ancestor-or-self::*/gmd:organisationName"/>
                     </namePart>
                   </name>
                 </xsl:if>
-              </xsl:for-each>
-              <xsl:for-each select="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:personalName">
-                <xsl:if test="ancestor-or-self::gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='originator']">
-                <name type="personal">
-                  <namePart>
-                    <xsl:value-of select="."/>
-                  </namePart>
-                </name>
-                </xsl:if>
-              </xsl:for-each>
-              <originInfo>
-                <xsl:for-each select="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:organisationName">
-                  <xsl:if test="ancestor-or-self::gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='publisher']">
-                    <publisher>
-                      <xsl:value-of select="."/>
-                    </publisher>
+                </xsl:for-each>
+                <originInfo>
+                  <xsl:for-each select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='publisher']">
+                    <xsl:if test="ancestor-or-self::*/gmd:individualName">
+                      <publisher>
+                        <xsl:value-of select="ancestor-or-self::*/gmd:individualName"/>
+                      </publisher>
+                    </xsl:if>
+                    <xsl:if test="ancestor-or-self::*/gmd:organisationName">
+                      <publisher>
+                        <xsl:value-of select="ancestor-or-self::*/gmd:organisationName"/>
+                      </publisher>
+                    </xsl:if>
+                  </xsl:for-each>
+                    <dateIssued encoding="w3cdtf">
+               
+                        <xsl:choose>
+                            <xsl:when test="ancestor-or-self::*/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:date">
+                                <xsl:value-of select="substring(ancestor-or-self::*/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date,1,4)"/>
+                            </xsl:when>
+                            <xsl:otherwise>unknown</xsl:otherwise>
+                        </xsl:choose>
+                    </dateIssued>
+                    <xsl:for-each select="ancestor-or-self::*/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:edition">
+                        <edition>
+                            <xsl:value-of select="."/>
+                        </edition>
+                    </xsl:for-each>
+                </originInfo>
+            </relatedItem>
+        </xsl:for-each> -->
+         
+          <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:associationType/gmd:DS_AssociationTypeCode[@codeListValue='crossReference']">
+              <relatedItem>
+                  <xsl:attribute name="type">isReferencedBy</xsl:attribute>
+                  <titleInfo>
+                      <title>
+                          <xsl:value-of select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:title"/>
+                      </title>
+                  </titleInfo>
+                <xsl:if test="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code">
+                      <location>
+                          <url>
+                            <xsl:value-of select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code"/>
+                          </url>
+                      </location>
+                  </xsl:if>
+                <xsl:for-each select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='originator']">
+                  <xsl:if test="ancestor-or-self::*/gmd:individualName">
+                    <name type="personal">
+                      <namePart>
+                        <xsl:value-of select="ancestor-or-self::*/gmd:individualName"/>
+                      </namePart>
+                    </name>
+                  </xsl:if>
+                  <xsl:if test="ancestor-or-self::*/gmd:organisationName">
+                    <name type="corporate">
+                      <namePart>
+                        <xsl:value-of select="ancestor-or-self::*/gmd:organisationName"/>
+                      </namePart>
+                    </name>
                   </xsl:if>
                 </xsl:for-each>
-                <dateIssued encoding="w3cdtf">
-                  <!-- strip MM-DD, oupput YYYY -->
-                  <xsl:choose>
-                    <xsl:when test="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:date">
-                      <xsl:value-of select="substring(gmd:aggregateDataSetName/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date,1,4)"/>
-                    </xsl:when>
-                    <xsl:otherwise>unknown</xsl:otherwise>
-                  </xsl:choose>
-                </dateIssued>
-                <xsl:for-each select="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:edition">
-                  <edition>
-                    <xsl:value-of select="."/>
-                  </edition>
-                </xsl:for-each>
-              </originInfo>
-              
-              <!-- series titles / not in use -->
-             <!--  <xsl:for-each select="gmd:aggregateDataSetName/gmd:CI_Citation/gmd:series/gmd:CI_Series">
-                      <relatedItem>
-                          <xsl:attribute name="type">host</xsl:attribute>
-                        <titleInfo>
-                              <title>
-                                  <xsl:value-of select="gmd:name"/>
-                              </title>
-                         </titleInfo>
-                         <originInfo>
-                              <dateIssued>
-                                  <xsl:value-of select="gmd:issueIdentification"/>
-                              </dateIssued>
-                              <issuance>continuing</issuance>
-                         </originInfo>
-                      </relatedItem>
-                  </xsl:for-each>  -->
-             </relatedItem>
-          </xsl:if>
-        </xsl:for-each>
-      </xsl:when>
-      <xsl:when test="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:series/gmd:CI_Series">
-          <relatedItem>
-              <xsl:attribute name="type">host</xsl:attribute>
-              <titleInfo>
-                  <title>
-                      <xsl:value-of select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:series/gmd:CI_Series/gmd:name"/>
-                  </title>
-              </titleInfo>
-              <originInfo>
-                  <dateIssued>
-                      <xsl:value-of select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:series/gmd:CI_Series/gmd:issueIdentification"/>
-                  </dateIssued>
-                  <issuance>continuing</issuance>
-              </originInfo>
-          </relatedItem>   
-      </xsl:when>        
-    </xsl:choose>
+                
+                <originInfo>
+                  <xsl:for-each select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:citedResponsibleParty/gmd:CI_ResponsibleParty/gmd:role/gmd:CI_RoleCode[@codeListValue='publisher']">
+                    <xsl:if test="ancestor-or-self::*/gmd:individualName">
+                       <publisher>
+                         <xsl:value-of select="ancestor-or-self::*/gmd:individualName"/>
+                       </publisher>
+                    </xsl:if>
+                    <xsl:if test="ancestor-or-self::*/gmd:organisationName">
+                      <publisher>
+                        <xsl:value-of select="ancestor-or-self::*/gmd:organisationName"/>
+                      </publisher>
+                     </xsl:if>
+                  </xsl:for-each>
+                      <dateIssued encoding="w3cdtf">
+                          <!-- strip MM-DD, oupput YYYY -->
+                          <xsl:choose>
+                              <xsl:when test="ancestor-or-self::*/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:date">
+                                  <xsl:value-of select="substring(ancestor-or-self::*/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:date/gmd:CI_Date/gmd:date,1,4)"/>
+                              </xsl:when>
+                              <xsl:otherwise>unknown</xsl:otherwise>
+                          </xsl:choose>
+                      </dateIssued>
+                      <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:aggregationInfo/gmd:MD_AggregateInformation/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:edition">
+                          <edition>
+                              <xsl:value-of select="."/>
+                          </edition>
+                      </xsl:for-each>
+                  </originInfo>
+              </relatedItem>
+          </xsl:for-each>
+    
     <!-- subjects: topic, geographic, temporal, ISO19115TopicCategory -->
         <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords">
           <xsl:if test="gmd:type/gmd:MD_KeywordTypeCode[@codeListValue='theme']">
@@ -690,89 +720,127 @@
           <subject>
             <topic>
               <xsl:attribute name="authority">ISO19115TopicCategory</xsl:attribute>
-               
-             <!-- kd: do we need authorityURI? -->
-               <xsl:attribute name="authorityURI">
-                 <xsl:text>http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode</xsl:text>
-                </xsl:attribute>
+              
+              <!-- kd: do we need authorityURI? -->
+              <xsl:attribute name="authorityURI">
+                <xsl:text>http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode</xsl:text>
+              </xsl:attribute>
+              <xsl:attribute name="valueURI">
+                <xsl:choose>
+                  <xsl:when test="contains(.,'farming')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>
+                  <xsl:when test="contains(.,'biota')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>
+                  <xsl:when test="contains(.,'climatologyMeteorologyAtmosphere')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>
+                  <xsl:when test="contains(.,'boundaries')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>
+                  <xsl:when test="contains(.,'elevation')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>
+                  <xsl:when test="contains(.,'environment')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>
+                  <xsl:when test="contains(.,'health')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>
+                  <xsl:when test="contains(.,'imageryBaseMapsEarthCover')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>
+                  <xsl:when test="contains(.,'intelligenceMilitary')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>
+                  <xsl:when test="contains(.,'inlandWaters')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>  
+                  <xsl:when test="contains(.,'location')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>  
+                  <xsl:when test="contains(.,'oceans')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>  
+                  <xsl:when test="contains(.,'planningCadastre')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>  
+                  <xsl:when test="contains(.,'utilitiesCommunication')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>  
+                  <xsl:when test="contains(.,'structure')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>
+                  <xsl:when test="contains(.,'transportation')">
+                    <xsl:value-of select="."/>
+                  </xsl:when><xsl:when test="contains(.,'society')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>
+                </xsl:choose>
+              </xsl:attribute>
               <xsl:choose>
                 <xsl:when test="contains(.,'farming')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Farming</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'biota')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Biology and Ecology</xsl:text>
                 </xsl:when>
-                <xsl:when test="contains(.,'climatologyMeteorologyAtmosphere')">\
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                <xsl:when test="contains(.,'climatologyMeteorologyAtmosphere')">
                   <xsl:text>Climatology, Meteorology and Atmosphere</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'boundaries')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Boundaries</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'elevation')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Elevation</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'environment')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Environment</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'geoscientificInformation')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Geoscientific Information</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'health')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Health</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'imageryBaseMapsEarthCover')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Imagery and Base Maps</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'intelligenceMilitary')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Military</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'inlandWaters')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Inland Waters</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'location')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Location</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'oceans')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Oceans</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'planningCadastre')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Planning and Cadastral</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'structure')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Structure</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'transportation')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Transportation</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'utilitiesCommunication')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Utilities and Communication</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'society')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
                   <xsl:text>Society</xsl:text>
                 </xsl:when>
               </xsl:choose>
             </topic>
           </subject>
         </xsl:for-each>
-
+        
  
           <location>
             <url>
