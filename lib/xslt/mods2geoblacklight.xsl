@@ -10,6 +10,8 @@
 
      xsltproc -stringparam geoserver_root 'http://kurma-podd1.stanford.edu/geoserver'
               -stringparam now '2014-04-30T21:17:41Z'
+              -stringparam rights 'Public'
+              -stringparam stacks_root 'http://stacks.stanford.edu'
               -output '/var/geomdtk/current/workspace/fw/920/bc/5473/fw920bc5473/temp/geoblacklightSolr.xml'
               '/home/geostaff/geomdtk/current/lib/geomdtk/mods2geoblacklight.xsl'
               '/var/geomdtk/current/workspace/fw/920/bc/5473/fw920bc5473/metadata/descMetadata.xml'
@@ -17,7 +19,9 @@
      Requires parameters:
 
        - geoserver_root - URL prefix to the geoserver
+       - stacks_root - URL prefix to the download server
        - now - the current date/time
+       - rights - the rights for the object
 
      -->
 <xsl:stylesheet xmlns="http://lucene.apache.org/solr/4/document" xmlns:gml="http://www.opengis.net/gml/3.2/" xmlns:mods="http://www.loc.gov/mods/v3" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" exclude-result-prefixes="gml mods rdf xsl dc">
@@ -43,13 +47,11 @@
             <xsl:value-of select="text()"/>
           </xsl:for-each>
         </field>
-        <!-- XXX: Handle other institutions - get from MODS -->
         <field name="dc_rights_s">
-          <xsl:text>Restricted</xsl:text>
+          <xsl:value-of select="$rights"/>
         </field>
-        <!-- XXX: Handle other institutions -->
         <field name="dct_provenance_s">
-          <xsl:text>Stanford</xsl:text>
+          <xsl:value-of select="mods:recordInfo/mods:recordContentSource/text()"/>
         </field>
         <field name="dct_references_s">
           <xsl:text>{</xsl:text>
@@ -57,11 +59,13 @@
           <xsl:value-of select="$purl"/>
           <xsl:text>",</xsl:text>
           <xsl:text>"http://schema.org/thumbnailUrl":"</xsl:text>              
-          <xsl:text>http://stacks.stanford.edu/file/druid:</xsl:text>
+          <xsl:value-of select="$stacks_root"/>
+          <xsl:text>/file/druid:</xsl:text>
           <xsl:value-of select="$druid"/>
           <xsl:text>/preview.jpg",</xsl:text>
           <xsl:text>"http://schema.org/DownloadAction":"</xsl:text>              
-          <xsl:text>http://stacks.stanford.edu/file/druid:</xsl:text>
+          <xsl:value-of select="$stacks_root"/>
+          <xsl:text>/file/druid:</xsl:text>
           <xsl:value-of select="$druid"/>
           <xsl:text>/data.zip",</xsl:text>
           <xsl:text>"http://www.loc.gov/mods/v3":"</xsl:text>              
@@ -92,11 +96,11 @@
         <xsl:for-each select="mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:type">
           <field name="layer_geom_type_s">
             <xsl:choose>
-              <xsl:when test="substring(., 9)='LineString'">
+              <xsl:when test="substring-after(., '#')='LineString'">
                 <xsl:text>Line</xsl:text>
               </xsl:when>
               <xsl:otherwise>
-                <xsl:value-of select='substring(., 9)'/><!-- strip Dataset# prefix -->
+                <xsl:value-of select="substring-after(., '#')"/>
               </xsl:otherwise>
             </xsl:choose>
           </field>
@@ -105,16 +109,16 @@
           <xsl:value-of select='$now'/>
         </field>
         <!-- XXX: handle GeoTIFF -->
+        
         <field name="dc_format_s">
-          <xsl:text>Shapefile</xsl:text>
+          <xsl:value-of select="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')"/>
         </field>
         <!-- XXX: Handle other languages - get from MODS -->
         <field name="dc_language_s">
           <xsl:text>English</xsl:text>
         </field>
-        <!-- XXX: Handle Image and PhysicalObject -->
         <field name="dc_type_s">
-          <xsl:text>Dataset</xsl:text>
+          <xsl:value-of select="substring-before(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:type/text(),'#')"/>
         </field>
         <field name="dc_publisher_s">
           <xsl:value-of select="mods:originInfo/mods:publisher"/>
