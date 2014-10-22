@@ -11,4 +11,4 @@ if [ -n "$o" ]; then
   o="-o:$o"
 fi
 
-java -jar vendor/saxon9he.jar "-s:$i" "-xsl:$s" $o $*
+java -jar ../vendor/saxon9he.jar "-s:$i" "-xsl:$s" $o $*
