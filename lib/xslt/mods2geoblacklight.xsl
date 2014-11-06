@@ -239,11 +239,11 @@
             <xsl:value-of select="$x2"/>
           </field>
         </xsl:for-each>
-        <xsl:for-each select="mods:subject/mods:temporal[1]">
+        <xsl:if test="mods:subject/mods:temporal[1]">
           <field name="solr_year_i">
-            <xsl:value-of select="substring(text(), 1, 4)"/>
+            <xsl:value-of select="substring(mods:subject/mods:temporal[1]/text(), 1, 4)"/>
           </field>
-        </xsl:for-each>
+        </xsl:if>
         <field name="solr_wms_url">
           <xsl:value-of select="$geoserver_root"/>
           <xsl:text>/wms</xsl:text>
