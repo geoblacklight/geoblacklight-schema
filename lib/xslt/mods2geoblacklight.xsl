@@ -69,11 +69,13 @@
           <xsl:value-of select="$druid"/>
           <xsl:text>/data.zip",</xsl:text>
           <xsl:text>"http://www.loc.gov/mods/v3":"</xsl:text>              
-          <xsl:value-of select="$purl"/>
-          <xsl:text>.mods",</xsl:text>
+          <xsl:text>http://earthworks.stanford.edu/opengeometadata/layers/edu.stanford.purl/</xsl:text>
+          <xsl:value-of select="$druid"/>
+          <xsl:text>/mods",</xsl:text>
           <xsl:text>"http://www.isotc211.org/schemas/2005/gmd/":"</xsl:text>              
-          <xsl:value-of select="$purl"/>
-          <xsl:text>.iso19139",</xsl:text>
+          <xsl:text>http://earthworks.stanford.edu/opengeometadata/layers/edu.stanford.purl/</xsl:text>
+          <xsl:value-of select="$druid"/>
+          <xsl:text>/iso19139",</xsl:text>
           <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wms":"</xsl:text>
           <xsl:value-of select="$geoserver_root"/>
           <xsl:text>/wms",</xsl:text>
