@@ -165,9 +165,9 @@
           </field>
         </xsl:for-each>
         <xsl:for-each select="mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:coverage">
-          <field name="dct_spatial_sm">
+          <!-- XXX: leads to duplicates <field name="dct_spatial_sm">
             <xsl:value-of select="@dc:title"/>
-          </field>
+          </field> -->
           <xsl:if test="@rdf:resource!=''">
             <field name="dc_relation_sm">
               <xsl:value-of select="@rdf:resource"/>
