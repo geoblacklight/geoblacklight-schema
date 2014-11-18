@@ -31,7 +31,7 @@ http://www.w3.org/TR/xslt
   xmlns:gss="http://www.isotc211.org/2005/gss"
   xmlns:gts="http://www.isotc211.org/2005/gts"
   xmlns:srv="http://www.isotc211.org/2005/srv"
-  xmlns:gml="http://www.opengis.net/gml/3.2"
+  xmlns:gml="http://www.opengis.net/gml"
   xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
@@ -244,19 +244,13 @@ doctype to make everything work properly in IE:
     <xsl:apply-templates select="gmd:dataSetURI"/>
   </xsl:template>
 
-  <xsl:template match="gmd:fileIdentifier">
-    <h4 style="display: inline">File Identifier:</h4>
+ <xsl:template match="gmd:fileIdentifier">
+    <h4 style="display: inline">File Identifier: </h4>
     <xsl:variable name="fileURL">
-      <xsl:choose>
-        <xsl:when test="contains( ., 'http:')">
-          <xsl:value-of select="gco:CharacterString"/><xsl:text>.xml</xsl:text>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$datasetIdentifier"/><xsl:text>.xml</xsl:text> 
-        </xsl:otherwise>
-      </xsl:choose>
-    </xsl:variable>
-    <p style="display: inline"><a href="{$fileURL}"><xsl:value-of select="$fileURL"/></a></p>
+         <xsl:value-of select="gco:CharacterString"/>
+        </xsl:variable>
+    <xsl:value-of select="$fileURL"/>
+  <!--  <p style="display: inline"><a href="{$fileURL}"><xsl:value-of select="$fileURL"/></a></p>  -->
     <p></p>
   </xsl:template>
 
@@ -268,7 +262,10 @@ doctype to make everything work properly in IE:
 
   <xsl:template match="gmd:parentIdentifier">
     <h4 style="display: inline">Parent Identifier:</h4>
-    <p style="display: inline"><xsl:value-of select="."/></p>
+    <xsl:variable name="parentURL">
+      <xsl:value-of select="gco:CharacterString"/>
+    </xsl:variable>
+    <p style="display: inline"><a href="{$parentURL}"><xsl:value-of select="."/></a></p>
     <p></p>
   </xsl:template>
 
@@ -757,31 +754,44 @@ doctype to make everything work properly in IE:
           </blockquote>        
         </blockquote>
       </xsl:for-each>
-      <xsl:for-each select="gmd:temporalElement">
-        <p><b>Temporal Element:</b></p>
-        <blockquote>
-          <p><b>Time Period:</b></p>
+    <xsl:for-each select="gmd:temporalElement">
+          <p><b>Temporal Element:</b></p>
           <blockquote>
-            <xsl:for-each select="gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:description">
-              <b>Description: </b><xsl:value-of select="."/><br/>
-            </xsl:for-each>
-            <xsl:for-each select="gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition">
-              <b>Begin Position: </b>
-              <xsl:call-template name="date">
-                <xsl:with-param name="element" select="."/>
-              </xsl:call-template>
-              <br/>
-            </xsl:for-each>
-            <xsl:for-each select="gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition">
-              <b>End Position: </b>
-              <xsl:call-template name="date">
-                <xsl:with-param name="element" select="."/>
-              </xsl:call-template>
-              <br/>
-            </xsl:for-each>
-          </blockquote>
-        </blockquote>    
-      </xsl:for-each>
+            <p><b>Time Period:</b></p>
+            <blockquote>
+              <xsl:for-each select="//gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:description">
+                <b>Description: </b><xsl:value-of select="."/><br/>
+              </xsl:for-each>
+              <xsl:choose>
+                <xsl:when test="gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition">
+              <xsl:for-each select="gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:beginPosition">
+                <b>Begin Position: </b>
+                <xsl:call-template name="date">
+                  <xsl:with-param name="element" select="."/>
+                </xsl:call-template>
+                <br/>
+              </xsl:for-each>
+              <xsl:for-each select="gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod/gml:endPosition">
+                <b>End Position: </b>
+                <xsl:call-template name="date">
+                  <xsl:with-param name="element" select="."/>
+                </xsl:call-template>
+                <br/>
+              </xsl:for-each>
+                </xsl:when>
+                <xsl:when test="gmd:EX_TemporalExtent/gmd:extent/gml:TimeInstant/gml:timePosition">
+                  <xsl:for-each select="gmd:EX_TemporalExtent/gmd:extent/gml:TimeInstant/gml:timePosition">
+                    <b>Time Instant: </b>
+                  <xsl:call-template name="date">
+                    <xsl:with-param name="element" select="."/>
+                  </xsl:call-template>
+                    <br/>
+                  </xsl:for-each>
+                </xsl:when>
+              </xsl:choose>
+            </blockquote>
+          </blockquote>    
+        </xsl:for-each>
       <xsl:for-each select="gmd:verticalElement">
         <xsl:if test="gmd:EX_VerticalExtent/gmd:minimumValue != 0 or gmd:EX_VerticalExtent/gmd:maximumValue != 0">
           <p><b>Vertical Element:</b></p>
