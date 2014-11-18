@@ -58,12 +58,7 @@
           <xsl:text>"http://schema.org/url":"</xsl:text>              
           <xsl:value-of select="$purl"/>
           <xsl:text>",</xsl:text>
-          <xsl:text>"http://schema.org/thumbnailUrl":"</xsl:text>              
-          <xsl:value-of select="$stacks_root"/>
-          <xsl:text>/file/druid:</xsl:text>
-          <xsl:value-of select="$druid"/>
-          <xsl:text>/preview.jpg",</xsl:text>
-          <xsl:text>"http://schema.org/DownloadAction":"</xsl:text>              
+          <xsl:text>"http://schema.org/downloadUrl":"</xsl:text>              
           <xsl:value-of select="$stacks_root"/>
           <xsl:text>/file/druid:</xsl:text>
           <xsl:value-of select="$druid"/>
@@ -71,20 +66,33 @@
           <xsl:text>"http://www.loc.gov/mods/v3":"</xsl:text>              
           <xsl:text>http://earthworks.stanford.edu/opengeometadata/layers/edu.stanford.purl/</xsl:text>
           <xsl:value-of select="$druid"/>
-          <xsl:text>/mods",</xsl:text>
+          <xsl:text>/mods.xml",</xsl:text>
           <xsl:text>"http://www.isotc211.org/schemas/2005/gmd/":"</xsl:text>              
           <xsl:text>http://earthworks.stanford.edu/opengeometadata/layers/edu.stanford.purl/</xsl:text>
           <xsl:value-of select="$druid"/>
-          <xsl:text>/iso19139",</xsl:text>
+          <xsl:text>/iso19139.xml",</xsl:text>
+          <xsl:text>"http://www.w3.org/1999/xhtml":"</xsl:text>              
+          <xsl:text>http://earthworks.stanford.edu/opengeometadata/layers/edu.stanford.purl/</xsl:text>
+          <xsl:value-of select="$druid"/>
+          <xsl:text>/iso19139.html",</xsl:text>
+          <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='Shapefile'">
+            <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wfs":"</xsl:text>
+            <xsl:value-of select="$geoserver_root"/>
+            <xsl:text>/wfs",</xsl:text>
+          </xsl:if>
+          <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='GeoTIFF'">
+            <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wcs":"</xsl:text>
+            <xsl:value-of select="$geoserver_root"/>
+            <xsl:text>/wcs",</xsl:text>
+          </xsl:if>
+          <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='ArcGRID'">
+            <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wcs":"</xsl:text>
+            <xsl:value-of select="$geoserver_root"/>
+            <xsl:text>/wcs",</xsl:text>
+          </xsl:if>
           <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wms":"</xsl:text>
           <xsl:value-of select="$geoserver_root"/>
-          <xsl:text>/wms",</xsl:text>
-          <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wfs":"</xsl:text>
-          <xsl:value-of select="$geoserver_root"/>
-          <xsl:text>/wfs",</xsl:text>
-          <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wcs":"</xsl:text>
-          <xsl:value-of select="$geoserver_root"/>
-          <xsl:text>/wcs"</xsl:text>
+          <xsl:text>/wms"</xsl:text>
           <xsl:text>}</xsl:text>
         </field>
         <!-- XXX: Handle other institution naming schemes -->
@@ -250,15 +258,24 @@
           <xsl:value-of select="$geoserver_root"/>
           <xsl:text>/wms</xsl:text>
         </field>
-        <!-- XXX: need to check for WFS vs WCS -->
-        <field name="solr_wfs_url">
-          <xsl:value-of select="$geoserver_root"/>
-          <xsl:text>/wfs</xsl:text>
-        </field>
-        <field name="solr_wcs_url">
-          <xsl:value-of select="$geoserver_root"/>
-          <xsl:text>/wcs</xsl:text>
-        </field>
+        <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='Shapefile'">
+          <field name="solr_wfs_url">
+            <xsl:value-of select="$geoserver_root"/>
+            <xsl:text>/wfs</xsl:text>
+          </field>
+        </xsl:if>
+        <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='GeoTIFF'">
+          <field name="solr_wcs_url">
+            <xsl:value-of select="$geoserver_root"/>
+            <xsl:text>/wcs</xsl:text>
+          </field>
+        </xsl:if>
+        <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='ArcGRID'">
+          <field name="solr_wcs_url">
+            <xsl:value-of select="$geoserver_root"/>
+            <xsl:text>/wcs</xsl:text>
+          </field>
+        </xsl:if>
       </doc>
     </add>
   </xsl:template>
