@@ -677,7 +677,7 @@
     ],
     "dc_title_s": "Andhra Pradesh, India: Post Delimitation State Assembly Constituency Boundaries and Election Data, 2009",
     "dc_type_s": "Dataset",
-    "dct_references_s": "{\"http://www.opengis.net/def/serviceType/ogc/wfs\":\"http://geowebservices-restricted.stanford.edu/geoserver/wfs\",\"http://www.opengis.net/def/serviceType/ogc/wms\":\"http://geowebservices-restricted.stanford.edu/geoserver/wms\",\"http://schema.org/thumbnailUrl\":\"http://stacks.stanford.edu/file/druid:jf841ys4828/preview.jpg\",\"http://schema.org/url\":\"http://purl.stanford.edu/jf841ys4828\",\"http://schema.org/DownloadAction\":\"http://stacks.stanford.edu/file/druid:jf841ys4828/data.zip\",\"http://www.isotc211.org/schemas/2005/gmd/\":\"http://purl.stanford.edu/jf841ys4828.iso19139\",\"http://www.loc.gov/mods/v3\":\"http://purl.stanford.edu/jf841ys4828.mods\"}",
+    "dct_references_s": "{\"http://www.opengis.net/def/serviceType/ogc/wfs\":\"http://geowebservices-restricted.stanford.edu/geoserver/wfs\",\"http://www.opengis.net/def/serviceType/ogc/wms\":\"http://geowebservices-restricted.stanford.edu/geoserver/wms\",\"http://schema.org/url\":\"http://purl.stanford.edu/jf841ys4828\",\"http://schema.org/downloadUrl\":\"http://stacks.stanford.edu/file/druid:jf841ys4828/data.zip\",\"http://www.isotc211.org/schemas/2005/gmd/\":\"http://purl.stanford.edu/jf841ys4828.iso19139\",\"http://www.loc.gov/mods/v3\":\"http://purl.stanford.edu/jf841ys4828.mods\"}",
     "dct_spatial_sm": [
       "Andhra Pradesh",
       "Ādilābād",
@@ -732,7 +732,7 @@
     ],
     "dc_title_s": "Godavari Watershed, India : Drainage Areas, 2012",
     "dc_type_s": "Dataset",
-    "dct_references_s": "{\"http://www.opengis.net/def/serviceType/ogc/wfs\":\"http://geowebservices-restricted.stanford.edu/geoserver/wfs\",\"http://www.opengis.net/def/serviceType/ogc/wms\":\"http://geowebservices-restricted.stanford.edu/geoserver/wms\",\"http://schema.org/thumbnailUrl\":\"http://stacks.stanford.edu/file/druid:jr127wd5810/preview.jpg\",\"http://schema.org/url\":\"http://purl.stanford.edu/jr127wd5810\",\"http://schema.org/DownloadAction\":\"http://stacks.stanford.edu/file/druid:jr127wd5810/data.zip\",\"http://www.isotc211.org/schemas/2005/gmd/\":\"http://purl.stanford.edu/jr127wd5810.iso19139\",\"http://www.loc.gov/mods/v3\":\"http://purl.stanford.edu/jr127wd5810.mods\"}",
+    "dct_references_s": "{\"http://www.opengis.net/def/serviceType/ogc/wfs\":\"http://geowebservices-restricted.stanford.edu/geoserver/wfs\",\"http://www.opengis.net/def/serviceType/ogc/wms\":\"http://geowebservices-restricted.stanford.edu/geoserver/wms\",\"http://schema.org/url\":\"http://purl.stanford.edu/jr127wd5810\",\"http://schema.org/downloadUrl\":\"http://stacks.stanford.edu/file/druid:jr127wd5810/data.zip\",\"http://www.isotc211.org/schemas/2005/gmd/\":\"http://purl.stanford.edu/jr127wd5810.iso19139\",\"http://www.loc.gov/mods/v3\":\"http://purl.stanford.edu/jr127wd5810.mods\"}",
     "dct_spatial_sm": [
       "Mahārāshtra",
       "Andhra Pradesh",
