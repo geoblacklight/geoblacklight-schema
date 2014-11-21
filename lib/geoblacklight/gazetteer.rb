@@ -16,6 +16,7 @@ module GeoBlacklightSchema
         v = v.each { |k,v| v.to_s.strip }
         k = v[0]
         k = v[1] if k.nil? or k.empty?
+        k.strip!
         @registry[k] = {
           :geonames_placename => v[1],
           :geonames_id => v[2].to_i,
@@ -86,9 +87,9 @@ module GeoBlacklightSchema
 
     private
     def _get(k, i)
-      return nil unless @registry.include?(k)
+      return nil unless @registry.include?(k.strip)
       raise ArgumentError unless i.is_a? Symbol
-      @registry[k][i]
+      @registry[k.strip][i]
     end
 
   end
