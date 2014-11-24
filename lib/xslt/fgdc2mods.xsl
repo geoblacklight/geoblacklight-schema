@@ -73,36 +73,51 @@
       <xsl:when test="spdoinfo/ptvctinf/sdtsterm/sdtstype[contains(., 'G-polygon')]">
         <xsl:text>Polygon</xsl:text>
       </xsl:when> 
+        <xsl:when test="spdoinfo/ptvctinf/sdtsterm/sdtstype[contains(., 'String')]">
+          <xsl:text>Line</xsl:text>
+        </xsl:when>
+        <xsl:when test="spdoinfo/ptvctinf/sdtsterm/sdtstype[contains(., 'Entity point')]">
+          <xsl:text>Point</xsl:text>
+        </xsl:when>
      </xsl:choose>
     </xsl:variable>
-    
+   
     <!-- institution for mods:recordContentSource -->
     <xsl:variable name="institution">
+      <xsl:for-each select="distinfo/distrib">
       <xsl:choose>
-        <xsl:when test="contains(distinfo/distrib/cntinfo/cntorgp/cntorg, 'Harvard')">
+        <xsl:when test="contains(cntinfo/cntorgp/cntorg, 'Harvard')">
           <xsl:text>Harvard</xsl:text>
         </xsl:when> 
-        <xsl:when test="contains(distinfo/distrib/cntinfo/cntorgp/cntorg, 'Tufts')">
+        <xsl:when test="contains(cntinfo/cntorgp/cntorg, 'Tufts')">
           <xsl:text>Tufts</xsl:text>
         </xsl:when>
-        <xsl:when test="contains(distinfo/distrib/cntinfo/cntorgp/cntorg, 'MIT')">
+        <xsl:when test="contains(cntinfo/cntorgp/cntorg, 'MIT')">
           <xsl:text>MIT</xsl:text>
         </xsl:when>
-        <xsl:when test="contains(distinfo/distrib/cntinfo/cntorgp/cntorg, 'Massachusetts')">
+         <xsl:when test="contains(cntinfo/cntorgp/cntorg, 'Massachusetts')">
           <xsl:text>MassGIS</xsl:text>
         </xsl:when>
-        <xsl:when test="contains(metainfo/metc/cntinfo/cntorgp/cntorg, 'MassGIS')">
+        <xsl:when test="contains(//metainfo/metc/cntinfo/cntperp/cntorg, 'MassGIS')">
           <xsl:text>MassGIS</xsl:text>
         </xsl:when>
         <xsl:when test="contains(distinfo/distrib/cntinfo/cntemail, 'state.ma.us')">
           <xsl:text>MassGIS</xsl:text>
         </xsl:when>
-        <xsl:when test="contains(metainfo/metc/cntinfo/cntemail, 'ca.gov')">
+        <xsl:when test="contains(//metainfo/metc/cntinfo/cntemail, 'ca.gov')">
           <xsl:text>Berkeley</xsl:text>
         </xsl:when>
+        <xsl:when test="contains(//metainfo/metc/cntinfo/cntorgp/cntorg, 'Columbia')">
+          <xsl:text>Columbia</xsl:text>
+        </xsl:when>
+        <xsl:when test="contains(//cntinfo/cntorgp/cntorg, 'Harvard')">
+          <xsl:text>Harvard</xsl:text>
+        </xsl:when>
+   
       </xsl:choose>
+      </xsl:for-each>
     </xsl:variable>
-    
+
     <!-- fileidentifier for mods:recordIdentifier -->
     <xsl:variable name="recordID">
       <xsl:choose>
@@ -124,6 +139,10 @@
         </xsl:when> 
         <xsl:when test="contains($institution, 'Berkeley')">
           <xsl:text>urn:gis.library.berkeley.edu.</xsl:text>
+          <xsl:value-of select="substring-before(tokenize(base-uri(), '/')[last()], '.xml')"/>
+        </xsl:when> 
+        <xsl:when test="contains($institution, 'Columbia')">
+          <xsl:text>urn:gis.library.columbia.edu.</xsl:text>
           <xsl:value-of select="substring-before(tokenize(base-uri(), '/')[last()], '.xml')"/>
         </xsl:when> 
       </xsl:choose>
@@ -288,14 +307,42 @@
         </physicalDescription>
         <subject>
           <cartographics>
-            <xsl:choose>
-              <xsl:when test="number(dataqual/lineage/srcinfo/srcscale)">
-                <scale>
-                  <xsl:text>1:</xsl:text>
-                  <xsl:value-of select="dataqual/lineage/srcinfo/srcscale"/>
-                </scale>
-              </xsl:when>
-              <xsl:otherwise>
+            
+          <xsl:choose>
+            <xsl:when test="count(dataqual/lineage/srcinfo/srcscale) > 1">
+              <xsl:choose>
+             
+       <!-- Multiple scale elements with different values -->
+                  <xsl:when test="dataqual/lineage/srcinfo/srcscale != dataqual/lineage/srcinfo/srcscale">
+                    
+                    <scale>
+                      <xsl:text>Scale varies.</xsl:text>
+                   </scale>
+                    
+                  </xsl:when>
+                  
+        <!-- Multiple scale elements with the same value -->
+                  <xsl:when test="dataqual/lineage/srcinfo/srcscale = dataqual/lineage/srcinfo/srcscale">
+                     <xsl:choose>
+                  
+                      <xsl:when test="dataqual/lineage/srcinfo/srcscale = 'Unknown'">
+                      <scale>
+                        <xsl:text>Scale not given.</xsl:text>
+                      </scale>
+                      </xsl:when>
+                  
+                       <xsl:otherwise>
+                       <scale>
+                      <xsl:text>1:</xsl:text>
+                      <xsl:value-of select="(dataqual/lineage/srcinfo/srcscale)[1]"/>
+                      </scale>
+                       </xsl:otherwise>
+                      </xsl:choose>
+                   </xsl:when>
+                </xsl:choose>
+            </xsl:when>
+            
+                <xsl:otherwise>
                 <scale>
                   <xsl:text>Scale not given.</xsl:text>
                 </scale>
@@ -308,17 +355,19 @@
               <xsl:value-of select="spref/horizsys/planar/mapproj/mapprojn"/>
             </projection>
             </xsl:when>
-              <xsl:when test="spref/horizsys/cordsysn/projcsn">
+             <xsl:when test="spref/horizsys/cordsysn/projcsn">
                 <projection>
                   <xsl:value-of select="spref/horizsys/cordsysn/projcsn"/>
+                </projection>
+             </xsl:when>
+              <xsl:when test="spref/horizsys/geodetic/horizdn">
+                <projection>
+                  <xsl:value-of select="spref/horizsys/geodetic/horizdn"/>
                 </projection>
               </xsl:when>
             </xsl:choose>
             
-        
-            
-            
-            <xsl:for-each select="idinfo/spdom/bounding">
+             <xsl:for-each select="idinfo/spdom/bounding">
               <coordinates>
                 <xsl:choose>
                   <xsl:when test="$geoformat = 'GMD'">
@@ -689,86 +738,155 @@
            <subject>
             <topic>
               <xsl:attribute name="authority">ISO19115TopicCategory</xsl:attribute>
-               
-             <!-- kd: do we need authorityURI? -->
-               <xsl:attribute name="authorityURI">
-                 <xsl:text>http://www.isotc211.org/2005/resources/Codelist/gmxCodelists.xml#MD_TopicCategoryCode</xsl:text>
-                </xsl:attribute>
 
+              <xsl:variable name="iso_topic"><xsl:text>http://www.isotc211.org/2005/resources/Codelist/gmxCodelists#MD_TopicCategoryCode_</xsl:text></xsl:variable>
 
+              <xsl:attribute name="valueURI">
               <xsl:if test="contains(.,'farming')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
-                  <xsl:text>Farming</xsl:text>
-                </xsl:if>
-                <xsl:if test="contains(.,'biota')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Farming</xsl:text>
+              </xsl:if>
+                 <xsl:if test="contains(.,'biota')">
+                  
                   <xsl:text>Biology and Ecology</xsl:text>
                 </xsl:if>
-                <xsl:if test="contains(.,'climatologyMeteorologyAtmosphere')">\
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                <xsl:if test="contains(.,'climatologyMeteorologyAtmosphere')">
+                  
                   <xsl:text>Climatology, Meteorology and Atmosphere</xsl:text>
                 </xsl:if>
+             
                 <xsl:if test="contains(.,'boundaries')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Boundaries</xsl:text>
                 </xsl:if>
                 <xsl:if test="contains(.,'elevation')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Elevation</xsl:text>
                 </xsl:if>
                 <xsl:if test="contains(.,'environment')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Environment</xsl:text>
                 </xsl:if> 
-                <xsl:if test="contains(.,'geoscientificInformation')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                <xsl:if test="contains(.,'geoscientificinformation')">
+                  
                   <xsl:text>Geoscientific Information</xsl:text>
                 </xsl:if>
                 <xsl:if test="contains(.,'health')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Health</xsl:text>
                 </xsl:if>
                 <xsl:if test="contains(.,'imageryBaseMapsEarthCover')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Imagery and Base Maps</xsl:text>
                 </xsl:if>
                 <xsl:if test="contains(.,'intelligenceMilitary')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Military</xsl:text>
                 </xsl:if>
                 <xsl:if test="contains(.,'inlandWaters')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Inland Waters</xsl:text>
                 </xsl:if>
                 <xsl:if test="contains(.,'location')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Location</xsl:text>
                 </xsl:if>
                 <xsl:if test="contains(.,'oceans')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Oceans</xsl:text>
                 </xsl:if>
                 <xsl:if test="contains(.,'planningCadastre')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Planning and Cadastral</xsl:text>
                 </xsl:if>
                 <xsl:if test="contains(.,'structure')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Structures</xsl:text>
                 </xsl:if>
                 <xsl:if test="contains(.,'transportation')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Transportation</xsl:text>
                 </xsl:if>
                 <xsl:if test="contains(.,'utilitiesCommunication')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Utilities and Communication</xsl:text>
                 </xsl:if>
                 <xsl:if test="contains(.,'society')">
-                  <xsl:attribute name="valueURI"><xsl:value-of select="."/></xsl:attribute>
+                  
                   <xsl:text>Society</xsl:text>
                 </xsl:if>
- 
+                  </xsl:attribute>
+              <xsl:if test="contains(.,'farming')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Farming</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'biota')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Biology and Ecology</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'climatologyMeteorologyAtmosphere')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Climatology, Meteorology and Atmosphere</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'boundaries')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Boundaries</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'elevation')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Elevation</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'environment')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Environment</xsl:text>
+              </xsl:if> 
+              <xsl:if test="contains(.,'geoscientificinformation')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Geoscientific Information</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'health')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Health</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'imageryBaseMapsEarthCover')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Imagery and Base Maps</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'intelligenceMilitary')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Military</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'inlandWaters')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Inland Waters</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'location')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Location</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'oceans')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Oceans</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'planningCadastre')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Planning and Cadastral</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'structure')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Structures</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'transportation')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Transportation</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'utilitiesCommunication')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Utilities and Communication</xsl:text>
+              </xsl:if>
+              <xsl:if test="contains(.,'society')">
+                <xsl:attribute name="valueURI"><xsl:value-of select="$iso_topic"/><xsl:value-of select="."/></xsl:attribute>
+                <xsl:text>Society</xsl:text>
+              </xsl:if>
             </topic>
           </subject>
             </xsl:for-each>
@@ -785,6 +903,11 @@
                 </subject>
                </xsl:for-each>
             </xsl:when>
+            
+            <xsl:when test="contains(themekt, 'FGDC')"/>
+
+      
+            
             
             <!-- GCMD keywords -->
             <xsl:when test="contains(themekt, 'GCMD')">
