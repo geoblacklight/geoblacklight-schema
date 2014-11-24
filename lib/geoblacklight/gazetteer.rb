@@ -23,6 +23,9 @@ module GeoBlacklightSchema
           :loc_keyword => (v[3].nil? or v[3].empty?)? nil : v[3],
           :loc_id => (v[4].nil? or v[4].empty?)? nil : v[4]
         }
+        if @registry[k][:geonames_placename].nil? && @registry[k][:loc_keyword].nil?
+          @registry[k] = nil
+        end
       end
     end
 
@@ -84,12 +87,16 @@ module GeoBlacklightSchema
       end
       nil
     end
+    
+    def blank?(k)
+      @registry.include?(k) && @registry[k].nil?
+    end
 
     private
     def _get(k, i)
       return nil unless @registry.include?(k.strip)
       raise ArgumentError unless i.is_a? Symbol
-      @registry[k.strip][i]
+      @registry[k.strip].nil?? nil : @registry[k.strip][i]
     end
 
   end

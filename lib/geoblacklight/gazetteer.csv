@@ -23,7 +23,7 @@
 "Albuquerque (N.M.)","Albuquerque",5454711,"Albuquerque (N.M.)","n79079329"
 "Alībāg (India)","Alībāg",1279027,"Alibag (India)","n89265169"
 "Alīgarh (India : District)","Alīgarh",1279020,"Alīgarh (India : District)","n83156419"
-"Allahābād (India : District)","Allahābād",1278995,"Allahabad (India : District)","n85072194"
+"Allahabad (India : District)","Allahābād",1278995,"Allahabad (India : District)","n85072194"
 "Almora (India : District)","Almora",1278975,"Almora (India : District)","n85081975"
 "Alwar (India : District)","Alwar",1278947,"Alwar (India : District)","n83009287"
 "Ambāla (India : District)","Ambāla",1278861,"Ambāla (India : District)","n88080544"
@@ -70,6 +70,7 @@
 "Badgom (India)","Badgom",1277997,,
 "Bagaha (India : Division)","Bagaha",1277940,"Bagaha (India : Division)","n89263784"
 "Bagh (India)","Bāgh",1277905,"Bagh (India)","n93035901"
+"Baghlān (Afghanistan : Province)","Wilāyat-e Baghlān",114753,"Baghlān (Afghanistan : Province)","n86066472"
 "Baghlān (Afghanistan)","Wilāyat-e Baghlān",1147537,"Baghlān (Afghanistan)","n2010053592"
 "Bāgūr (India)","Bāgūr",1277842,,
 "Bāhudānadī River","Bāhudānadī River",1277791,,
@@ -79,12 +80,13 @@
 "Balarāmpur (India)","Balarāmpur",1277634,,
 "Balasore (India : District)","Bāleshwar",1277600,"Balasore (India : District)","n88147464"
 "Bāligurha (India)","Bāligurha",1277576,,
-"Balkh (Afghanistan)","Balkh",1147288,"Balkh (Afghanistan)","n83005425"
+"Balkh (Afghanistan : Province)","Balkh",1147288,"Balkh (Afghanistan : Province)","n98034057"
+"Balkh (Afghanistan)","Balkh",1147290,"Balkh (Afghanistan)","n83005425"
 "Balkonda (India)","Bālkonda",1277560,"Balkonda (India)","n89280166"
 "Bally (India)","Bāli",1277539,"Bally (India)","n84025845"
 "Baltic Sea","Baltic Sea",2633321,"Baltic Sea","sh85011368"
 "Baltimore (Md.)","Baltimore",4347778,"Baltimore (Md.)","n79006530"
-"Bāmyān (Afghanistan)","Wilāyat-e Bāmyān",1147239,"Bāmyān (Afghanistan)","n2012029934"
+"Bāmīān (Afghanistan : Province)","Wilāyat-e Bāmyān",1147239,"Bāmīān (Afghanistan : Province)","n86066473"
 "Bāndi Nadī","Bāndi Nadī",1277360,,
 "Bangalore (India) ","Bangalore",1277333,"Bangalore (India) ","n79127101"
 "Bangladesh","Bangladesh",1210997,"Bangladesh","n81063207"
@@ -109,6 +111,7 @@
 "Baswa (India)","Baswa",1276724,,
 "Bavarwala Nār","Bavarwala Nār",1276671,,
 "Beās River (India)","Beās River",1276635,"Beās River (India)","sh94001828"
+"Beās River Watershed (India)",,,,
 "Bedi Bundar Creek","Bedi Bundar Creek",1276626,,
 "Bedti River (India)","Bedti River",1276622,,
 "Behari Khāl","Behari Khāl",1276603,,
@@ -171,14 +174,17 @@
 "Both (India)","Both",1275216,"Both (India)","n82133366"
 "Botswana","Botswana",933860,"Botswana","n79079238."
 "Brahmani River (Orissa, India)","Brāhmani River",1275204,"Brahmani River (Orissa, India)","sh89005278"
+"Brahmani River Watershed (India)",,,,
 "Brahmapur (India)","Brahmapur",1275198,"Brahmapur (India)","n82162996"
 "Brahmaputra River","Brahmaputra River",1208092,"Brahmaputra River","sh85016307"
+"Brahmaputra River Watershed",,,,
 "Brentwood (Calif.)","Brentwood",5330642,"Brentwood (Calif.)","n78030109"
 "Brisbane (Calif.)","Brisbane",5330810,"Brisbane (Calif.)","n78087929"
 "Bundi (India : District)","Būndi",1275104,"Bundi (India : District)","no2004086752"
 "Burlingame (Calif.)","Burlingame",5331920,"Burlingame (Calif.)","n81081056"
 "Cabo San Lucas (Baja California Sur, Mexico)","Cabo San Lucas",3985710,"Cabo San Lucas (Baja California Sur, Mexico)","n84073229"
 "Calangute (India)","Calangute",1273858,,
+"California","California",3687919,"California","n79041717"
 "California, Gulf of (Mexico)","Gulf of California",4016118,"California, Gulf of (Mexico)","sh85018896"
 "Calistoga (Calif.)","Calistoga",5332937,"Calistoga (Calif.)","n82032028"
 "Campbell (Calif.)","Campbell",5333689,"Campbell (Calif.)","n81108743"
@@ -186,8 +192,10 @@
 "Car Nicobar Island (India)","Car Nicobar Island",1274969,"Car Nicobar Island (India)","sh96008264"
 "Carmel Canyon (Calif.)","Carmel Canyon (Calif.)",5334270,,
 "Cauvery River (India)","Kāveri River",1267384,"Cauvery River (India)","sh85021473"
+"Cauvery River Watershed (India)",,,,
 "Chakra Nadī","Chakra Nadī",1274888,,
 "Chambal River (India)","Chambal River",1274846,"Chambal River (India)","sh85022419"
+"Chambal River Watershed (India)",,,,
 "Chandīgarh (India : Union Territory)","Chandīgarh",1274744,"Chandīgarh (India : Union Territory)","n81109268"
 "Chandīgarh (India)","Chandīgarh",9747956,"Chandīgarh (India)","n80152930"
 "Chandni Chowk (Delhi, India)","Chandni Chowk",6619404,"Chandni Chowk (Delhi, India)","no2004006256"
@@ -212,7 +220,7 @@
 "Chittur (India)","Chittūr",1274032,"Chittur (India)","n88292165"
 "Chulband River (India)","Chūlband River",1273939,,
 "Churu (India)","Chūru",1273894,"Churu (India)","n82143148"
-"Ciudad Juarez (Mexico)","Ciudad Juárez",4013708,"Ciudad Juarez (Mexico)","n82000742"
+"Ciudad Juárez (Mexico)","Ciudad Juárez",4013708,"Ciudad Juarez (Mexico)","n82000742"
 "Clayton (Calif.)","Clayton",5337841,"Clayton (Calif.)","n81081210"
 "Cloverdale (Calif.)","Cloverdale",5338104,"Cloverdale (Calif.)","n83220611"
 "Cochin (India) ","Kochi",1273874,"Cochin (India) ","n80152910"
@@ -302,6 +310,7 @@
 "Foster City (Calif.)","Foster City",5350159,"Foster City (Calif.)","n81081217"
 "Fremont (Calif.)","Fremont",5350734,"Fremont (Calif.)","n81081218"
 "Fresno (Calif.)","Fresno",5350937,"Fresno (Calif.)","n80002531"
+"Gahmar","Gahmar",1271809,,
 "Gambhir River (India)","Utangan River",1253653,"Gambhir River (India)","sh89006018"
 "Gandak River (Nepal and India)","Gandaki River",1271732,"Gandak River (Nepal and India)","sh00000319"
 "Gāndhīdhām (India)","Gāndhīdhām",1271717,,
@@ -423,7 +432,7 @@
 "Kāli Nadi (India)","Kāli Nadi",1268400,,
 "Kali River (India and Nepal)","Kāli River",1257201,"Kali River (India and Nepal)","sh88001062"
 "Kalyāṇī (India)","Kalyani",1268293,"Kalyāṇī (India)","n89204461"
-"Kalyanpur Block (India)","Kalyanpur",1268287,,
+"Kalyanpur (India)","Kalyanpur",1268287,,
 "Kandahar (Afghanistan)","Kandahar",1138336,"Kandahār (Afghanistan)","n83042981"
 "Kandahar Airport (Afghanistan)","Kandahar Airport",1453901,,
 "Kāngra (India : District)","Kāngra",1268085,"Kāngra (India : District)","n82090471"
@@ -432,6 +441,7 @@
 "Kanpur (India : District)","Kānpur",1267997,"Kanpur (India : District)","n85031192"
 "Kansas","Kansas",4273857,"Kansas","n79007369"
 "Kansas City (Mo.)","Kansas City",4393217,"Kansas City (Mo.)","n79045171"
+"Kāpīsā (Afghanistan)","Kāpīsā",1138255,"Kāpīsā (Afghanistan)","n2005058615"
 "Kapūrthala (India : District)","Kapūrthala",1267912,"Kapūrthala (India : District)","n81067771"
 "Karaikal (India : District)","Kāraikāl",1267888,"Karaikal (India : District)","n2008207094"
 "Kargil (India)","Kargil",1267776,"Kargil (India)","n78030890"
@@ -446,7 +456,7 @@
 "Kenya","Kenya",192950,"Kenya","n80061011"
 "Kerala (India)","Kerala",1267254,"Kerala (India)","n79055067"
 "Khali Kachigam (India)","Khali Kachigam",1267116,"Khali Kachigam (India)",
-"Khānāpur (India)","Khānāpur",1445119,,
+"Khanapur (India)","Khānāpur",1445119,,
 "Khandāri (India)","Khandāri",6992356,,
 "Kharal (India)","Kharal",1266964,,
 "Khārda (India)","Khārda",1267167,,
@@ -458,6 +468,7 @@
 "Kherva (India)","Kherva",1266749,,
 "Khilchipur (India)","Khilchipur",1266731,,
 "Khonsa (India)","Khonsa",1266668,"Khonsa (India)","n2006206274"
+"Khōst (Afghanistan : Province)","Khost Province ",9166448,,
 "Khowai (India)","Khowai",1266649,,
 "Khujji (India)","Khujji",1266633,,
 "Kodoli (India)","Kodoli",1266390,,
@@ -704,6 +715,7 @@
 "Panaji (India)","Panaji",1260607,"Panaji (India)","n81118501"
 "Panam River","Panam River",1260604,,
 "Pānīpat (India)","Pānīpat",1260476,"Pānīpat (India)","n85027097"
+"Panjshir (Afghanistan : Province)","Panjshir",6957555,"Panjshir (Afghanistan : Province)","n2012063624"
 "Pāonta Sāhib (India)","Pāonta Sāhib",1260421,,
 "Par River (India)","Pār River",1260264,,
 "Paradgaon (India)","Pāradgaon",1260395,,
@@ -785,7 +797,8 @@
 "Rosarito (Tijuana, Baja California, Mexico)","Rosarito",3988392,"Rosarito (Tijuana, Baja California, Mexico)","n2002031116"
 "Ross (Calif.)","Ross",5388907,"Ross (Calif.)","n81081031"
 "Rūpangarh (India)","Rūpangarh",1257952,,
-"Russian River Watershed (Calif.)","Russian River",5389382,"Russian River Watershed (Calif.)","sh93003111"
+"Russian River (Calif.)","Russian River",5389382,"Russian River (Calif.)","sh88000860"
+"Russian River Watershed (Calif.)",,,,
 "Rwanda","Rwanda",49518,"Rwanda","n81025976"
 "Sabarmati (India)","Sābarmatī",1257921,"Sabarmati (India)","n81082599"
 "Sābarmatī River (India)","Sābarmatī River",1257920,"Sābarmatī River (India)","sh85116174"
@@ -858,7 +871,7 @@
 "Sitamarhi District (India)","Sītāmarhi",1255984,"Sitamarhi District (India)","n83060548"
 "Sītānadī River","Sītānadī River",1255979,,
 "Siwan (India : District)","Siwān",1255930,"Siwan (India : District)","no2001009997"
-"Siwān (Saran, India)","Sīwan",1255927,"Siwān (Saran, India)","no89000014"
+"Sīwan (India)","Sīwan",1255927,"Siwān (Saran, India)","no89000014"
 "Siwāna (India)","Siwāna",1255925,,
 "Solan (India : District)","Solan",1255851,"Solan (India : District)","n85161932"
 "Solāni River","Solāni River",1255849,,
@@ -904,6 +917,7 @@
 "Tamenglong (India)","Tamenglong",1255056,,
 "Tamil Nadu (India)","Tamil Nādu",1255053,"Tamil Nadu (India)","n80061081"
 "Tānūr (India)","Tānūr",1254952,"Tānūr (India)","n78092669"
+"Tāpti River","Tapi River",1254944,,
 "Tawā River (India)","Tawā River",1254829,,
 "Tecate (Mexico)","Tecate",3982266,"Tecate (Mexico)","n80090656"
 "Tekanpur (India)","Tekanpur",1254798,,
@@ -960,6 +974,7 @@
 "Vārāhi (India)","Vārāhi ",1253411,,
 "Vārānasi (Uttar Pradesh, India : District)","Vārānasi",1253407,"Vārānasi (Uttar Pradesh, India : District)","n82017475"
 "Varangaon (India)","Varangaon",1253403,,
+"Vardak (Afghanistan)","Wardak",1121863,"Vardak (Afghanistan)","n86066491"
 "Vāsco Da Gāma (India)","Vāsco Da Gāma",1253367,,
 "Vātrak River","Vātrak River",1253353,,
 "Vellore (India : District)","Vellore",7646146,"Vellore (India : District)","no2002095688"
