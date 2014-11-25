@@ -243,7 +243,7 @@
             <xsl:text> </xsl:text>
             <xsl:value-of select="$y2"/>
           </field>
-          <field name="solr_sw_pt">
+          <!-- <field name="solr_sw_pt">
             <xsl:value-of select="$y1"/>
             <xsl:text>,</xsl:text>
             <xsl:value-of select="$x1"/>
@@ -252,7 +252,7 @@
             <xsl:value-of select="$y2"/>
             <xsl:text>,</xsl:text>
             <xsl:value-of select="$x2"/>
-          </field>
+          </field> -->
         </xsl:for-each>
         <xsl:if test="mods:subject/mods:temporal[1]">
           <field name="solr_year_i">
