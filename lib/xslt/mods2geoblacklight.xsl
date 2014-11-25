@@ -64,15 +64,14 @@
           <xsl:value-of select="$druid"/>
           <xsl:text>/data.zip",</xsl:text>
           <xsl:text>"http://www.loc.gov/mods/v3":"</xsl:text>              
-          <xsl:text>http://earthworks.stanford.edu/opengeometadata/layers/edu.stanford.purl/</xsl:text>
-          <xsl:value-of select="$druid"/>
-          <xsl:text>/mods.xml",</xsl:text>
+          <xsl:value-of select="$purl"/>
+          <xsl:text>.mods",</xsl:text>
           <xsl:text>"http://www.isotc211.org/schemas/2005/gmd/":"</xsl:text>              
-          <xsl:text>http://earthworks.stanford.edu/opengeometadata/layers/edu.stanford.purl/</xsl:text>
+          <xsl:text>http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/</xsl:text>
           <xsl:value-of select="$druid"/>
           <xsl:text>/iso19139.xml",</xsl:text>
           <xsl:text>"http://www.w3.org/1999/xhtml":"</xsl:text>              
-          <xsl:text>http://earthworks.stanford.edu/opengeometadata/layers/edu.stanford.purl/</xsl:text>
+          <xsl:text>http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/</xsl:text>
           <xsl:value-of select="$druid"/>
           <xsl:text>/iso19139.html",</xsl:text>
           <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='Shapefile'">
@@ -84,11 +83,17 @@
             <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wcs":"</xsl:text>
             <xsl:value-of select="$geoserver_root"/>
             <xsl:text>/wcs",</xsl:text>
+            <!-- <xsl:text>"http://iiif.io/api/image":"</xsl:text>
+            <xsl:value-of select="$purl"/>
+            <xsl:text>/iiif",</xsl:text> -->
           </xsl:if>
           <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='ArcGRID'">
             <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wcs":"</xsl:text>
             <xsl:value-of select="$geoserver_root"/>
             <xsl:text>/wcs",</xsl:text>
+            <!-- <xsl:text>"http://iiif.io/api/image":"</xsl:text>
+            <xsl:value-of select="$purl"/>
+            <xsl:text>/iiif",</xsl:text> -->
           </xsl:if>
           <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wms":"</xsl:text>
           <xsl:value-of select="$geoserver_root"/>
