@@ -259,28 +259,6 @@
             <xsl:value-of select="substring(mods:subject/mods:temporal[1]/text(), 1, 4)"/>
           </field>
         </xsl:if>
-        <field name="solr_wms_url">
-          <xsl:value-of select="$geoserver_root"/>
-          <xsl:text>/wms</xsl:text>
-        </field>
-        <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='Shapefile'">
-          <field name="solr_wfs_url">
-            <xsl:value-of select="$geoserver_root"/>
-            <xsl:text>/wfs</xsl:text>
-          </field>
-        </xsl:if>
-        <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='GeoTIFF'">
-          <field name="solr_wcs_url">
-            <xsl:value-of select="$geoserver_root"/>
-            <xsl:text>/wcs</xsl:text>
-          </field>
-        </xsl:if>
-        <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='ArcGRID'">
-          <field name="solr_wcs_url">
-            <xsl:value-of select="$geoserver_root"/>
-            <xsl:text>/wcs</xsl:text>
-          </field>
-        </xsl:if>
       </doc>
     </add>
   </xsl:template>
