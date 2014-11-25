@@ -73,7 +73,7 @@
           <xsl:text>"http://www.w3.org/1999/xhtml":"</xsl:text>              
           <xsl:text>http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/</xsl:text>
           <xsl:value-of select="$druid"/>
-          <xsl:text>/iso19139.html",</xsl:text>
+          <xsl:text>/default.html",</xsl:text>
           <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='Shapefile'">
             <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wfs":"</xsl:text>
             <xsl:value-of select="$geoserver_root"/>
