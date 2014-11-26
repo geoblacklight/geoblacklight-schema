@@ -78,7 +78,7 @@ class TransformOgp
       raise ArgumentError, 'ERROR: Skipping urn:umn.edu:'
     when 'UCLA'
       'urn:ucla.edu:'
-    when 'Columbia', 'Columbia University'
+    when 'Columbia'
       'urn:columbia.edu:'
     else
       raise ArgumentError, 'ERROR: Skipping urn:UNKNOWN:'
