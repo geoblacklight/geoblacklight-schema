@@ -254,7 +254,7 @@ class TransformOgp
   def string2array(s, clean_only = false)
     return nil if s.nil?
     if clean_only
-      if !s.strip.index(' ')
+      if !s.strip.index(' ') && s.strip.downcase != 'none'
         [s.strip]
       else
         nil
