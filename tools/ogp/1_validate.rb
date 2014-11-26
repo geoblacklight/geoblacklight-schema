@@ -110,13 +110,12 @@ class ValidateOgp
     end
     
     k = 'ContentDate'
-    if layer[k].nil? or layer[k].empty?
+    if layer[k].nil? || layer[k].to_s.strip.empty?
       raise ArgumentError, "ERROR: #{id} has unsupported #{k}: #{layer[k]}"
     end
     dt = Date.rfc3339(layer[k])
-    if dt.year < 1500 or dt.year > 2100
-      puts "WARNING: #{id} has invalid #{k}: #{layer[k]}: #{dt}"
-      layer[k] = nil
+    if dt.year <= 1 or dt.year > 2100
+      raise ArgumentError, "ERROR: #{id} has invalid #{k}: #{layer[k]}: #{dt}"
     end
     
     # k = 'FgdcText'
