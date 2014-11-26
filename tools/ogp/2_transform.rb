@@ -133,10 +133,14 @@ class TransformOgp
     if layer_geom_type.downcase == 'raster'
       format = 'GeoTIFF'
     elsif %w{Point Line Polygon}.include?(layer_geom_type)
-        format = 'Shapefile'
+      format = 'Shapefile'
     elsif
-      format = layer_geom_type
-      layer_geom_type = 'Not Specified'
+      if layer_geom_type == 'Paper Map'
+        format = 'Paper'
+      else
+        format = layer_geom_type
+        layer_geom_type = 'Digital'
+      end
     end
     
     # @see https://github.com/OSGeo/Cat-Interop

@@ -170,13 +170,13 @@ valid.each do |j|
       found_case[i] = true
     end
   end
-  %w{Line Point Polygon Raster Not\ Specified}.each do |i|
+  %w{Line Point Polygon Raster Scanned\ Map Paper\ Map Digital}.each do |i|
     if !found_case[i] && j['layer_geom_type_s'] == i
       selected << j
       found_case[i] = true
     end
   end
-  %w{Shapefile GeoTIFF Paper\ Map CD-ROM DVD-ROM}.each do |i|
+  %w{Shapefile GeoTIFF Paper CD-ROM DVD-ROM}.each do |i|
     if !found_case[i] && j['dc_format_s'] == i
       selected << j
       found_case[i] = true
