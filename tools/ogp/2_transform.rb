@@ -129,18 +129,18 @@ class TransformOgp
     
     slug = to_slug(id, layer)
     
-    layer_geom_type = layer['DataType'].to_s
+    layer_geom_type = layer['DataType'].to_s.strip
     if layer_geom_type.downcase == 'raster'
       format = 'GeoTIFF'
+      layer_geom_type = 'Raster'
     elsif %w{Point Line Polygon}.include?(layer_geom_type)
       format = 'Shapefile'
-    elsif
-      if layer_geom_type == 'Paper Map'
-        format = 'Paper'
-      else
-        format = layer_geom_type
-        layer_geom_type = 'Digital'
-      end
+    elsif layer_geom_type.downcase == 'paper map'
+      format = 'Paper'
+      layer_geom_type = 'Paper Map'
+    else
+      format = layer_geom_type
+      layer_geom_type = 'Digital'
     end
     
     # @see https://github.com/OSGeo/Cat-Interop
