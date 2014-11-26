@@ -46,7 +46,7 @@ end
 
 
 # __MAIN__
-IngestOgp.new(ARGV[0], (ARGV[1].nil?? 'http://localhost:58080/solr' : ARGV[1])) do |ogp|
+IngestOgp.new(ARGV[0], (ARGV[1].nil?? 'http://localhost:8080/solr' : ARGV[1])) do |ogp|
   Dir.glob("transformed*.json") do |fn|
     ogp.ingest(fn)
   end
