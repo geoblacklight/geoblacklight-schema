@@ -60,12 +60,14 @@ class ValidateOgp
     end
     
     k = 'Institution'
-    if ([layer[k]] & %w{Berkeley Harvard MIT MassGIS Stanford Tufts UCLA Minnesota Columbia Columbia\ University}).empty?
+    layer[k] = 'Columbia' if layer[k] == 'Columbia University'
+    if ([layer[k]] & %w{Berkeley Harvard MIT MassGIS Stanford Tufts UCLA Minnesota Columbia}).empty?
       raise ArgumentError, "ERROR: #{id} has unsupported #{k}: #{layer[k]}"
     end
 
     k = 'DataType'
-    if ([layer[k]] & %w{Line Paper Paper\ Map Point Polygon Raster LibraryRecord CD-ROM DVD-ROM}).empty?
+    layer[k] = 'Paper Map' if layer[k] == 'Paper'
+    if ([layer[k]] & %w{Line Paper\ Map Point Polygon Raster CD-ROM DVD-ROM}).empty?
       raise ArgumentError, "ERROR: #{id} has unsupported #{k}: #{layer[k]}"
     end
 
