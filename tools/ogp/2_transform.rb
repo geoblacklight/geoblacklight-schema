@@ -136,7 +136,7 @@ class TransformOgp
         format = 'Shapefile'
     elsif
       format = layer_geom_type
-      layer_geom_type = 'Unknown'
+      layer_geom_type = 'Not Specified'
     end
     
     # @see https://github.com/OSGeo/Cat-Interop

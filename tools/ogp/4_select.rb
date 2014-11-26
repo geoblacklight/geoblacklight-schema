@@ -170,7 +170,7 @@ valid.each do |j|
       found_case[i] = true
     end
   end
-  %w{Line Point Polygon Raster Unknown}.each do |i|
+  %w{Line Point Polygon Raster Not\ Specified}.each do |i|
     if !found_case[i] && j['layer_geom_type_s'] == i
       selected << j
       found_case[i] = true
