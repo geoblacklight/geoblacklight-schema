@@ -164,14 +164,20 @@ valid.each do |j|
     selected << j
     found_case['2'] = true
   end
-  %w{Berkeley Columbia\ University Harvard MIT MassGIS Tufts UCLA}.each do |i|
+  %w{Berkeley Columbia Harvard Minnesota MIT MassGIS Tufts UCLA}.each do |i|
     if !found_case[i] && j['dct_provenance_s'] == i
       selected << j
       found_case[i] = true
     end
   end
-  %w{Line Point Polygon Raster}.each do |i|
+  %w{Line Point Polygon Raster Unknown}.each do |i|
     if !found_case[i] && j['layer_geom_type_s'] == i
+      selected << j
+      found_case[i] = true
+    end
+  end
+  %w{Shapefile GeoTIFF Paper\ Map CD-ROM DVD-ROM}.each do |i|
+    if !found_case[i] && j['dc_format_s'] == i
       selected << j
       found_case[i] = true
     end

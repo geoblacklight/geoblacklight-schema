@@ -129,8 +129,15 @@ class TransformOgp
     
     slug = to_slug(id, layer)
     
-    layer_geom_type = layer['DataType'].to_s.downcase
-    layer_geom_type = 'raster' if layer_geom_type == 'paper map'
+    layer_geom_type = layer['DataType'].to_s
+    if layer_geom_type.downcase == 'raster'
+      format = 'GeoTIFF'
+    elsif %w{Point Line Polygon}.include?(layer_geom_type)
+        format = 'Shapefile'
+    elsif
+      format = layer_geom_type
+      layer_geom_type = 'Unknown'
+    end
     
     # @see https://github.com/OSGeo/Cat-Interop
     %w{wcs wfs wms}.each do |k|
@@ -161,11 +168,7 @@ class TransformOgp
       # Dublin Core elements
       :dc_creator_sm      => string2array(layer['Originator']),
       :dc_description_s   => layer['Abstract'],
-      :dc_format_s        => (
-        (layer_geom_type == 'raster') ? 
-        'GeoTIFF' : # 'image/tiff' : 
-        'Shapefile' # 'application/x-esri-shapefile'
-      ), # XXX: fake data
+      :dc_format_s        => format,
       :dc_identifier_s    => uuid,
       :dc_language_s      => 'English', # 'en', # XXX: fake data
       :dc_publisher_s     => layer['Publisher'],
@@ -192,7 +195,7 @@ class TransformOgp
       :layer_slug_s       => slug,
       :layer_id_s         => layer['WorkspaceName'] + ':' + layer['Name'],
       # :layer_srs_s        => 'EPSG:4326', # XXX: fake data
-      :layer_geom_type_s  => layer_geom_type.capitalize,
+      :layer_geom_type_s  => layer_geom_type,
       :layer_modified_dt  => Time.now.utc.strftime('%FT%TZ'),
       
       # derived fields used only by solr, for which copyField is insufficient
