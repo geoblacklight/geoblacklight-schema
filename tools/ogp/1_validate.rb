@@ -54,9 +54,16 @@ class ValidateOgp
       raise ArgumentError, "ERROR: #{id}: Invalid longitude value: #{layer[lon]}" unless lon?(layer[lon])
     end
 
-    
     %w{MinY MaxY}.each do |lat|
       raise ArgumentError, "ERROR: #{id} Invalid latitude value: #{layer[lat]}" unless lat?(layer[lat])
+    end
+    
+    if layer['MinX'].to_s.to_f > layer['MaxX'].to_s.to_f
+      raise ArgumentError, "ERROR: #{id} has MinX > MaxX"
+    end
+
+    if layer['MinY'].to_s.to_f > layer['MaxY'].to_s.to_f
+      raise ArgumentError, "ERROR: #{id} has MinY > MaxY"
     end
     
     k = 'Institution'
