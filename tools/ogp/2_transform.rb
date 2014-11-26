@@ -143,6 +143,10 @@ class TransformOgp
       layer_geom_type = 'Digital'
     end
     
+    if layer['LayerDisplayName'] =~ /Scanned Map/
+      layer_geom_type = 'Scanned Map'
+    end
+    
     # @see https://github.com/OSGeo/Cat-Interop
     %w{wcs wfs wms}.each do |k|
       location[k] = location[k].first if location[k].is_a? Array
