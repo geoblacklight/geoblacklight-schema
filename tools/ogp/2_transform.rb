@@ -44,7 +44,7 @@ class TransformOgp
           transform(doc)
           stats[:accepted] += 1
         rescue ArgumentError => e
-          puts e
+          puts e, e.backtrace
           stats[:rejected] += 1
         end
       end
@@ -75,7 +75,7 @@ class TransformOgp
     when 'Harvard'
       'urn:hul.harvard.edu:'
     when 'Minnesota'
-      raise ArgumentError, 'ERROR: Skipping urn:umn.edu:'
+      'urn:umn.edu:'
     when 'UCLA'
       'urn:ucla.edu:'
     when 'Columbia'
@@ -96,7 +96,12 @@ class TransformOgp
     e = layer['MaxX'].to_f
     
     # Parse out the ContentDate date/time
-    dt = DateTime.rfc3339(layer['ContentDate'])
+    begin
+      dt = DateTime.rfc3339(layer['ContentDate']) 
+    rescue Exception => e
+      raise ArgumentError, "ERROR: #{id} has bad ContentDate: #{layer['ContentDate']}"
+    end
+    
     pub_dt = DateTime.rfc3339('2000-01-01T00:00:00Z') # XXX fake data, get from MODS
     
     access = layer['Access']
@@ -227,7 +232,7 @@ class TransformOgp
       _fn = 'fgdc' + '/' + slug + '.xml'
       unless File.size?(_fn)
         xml = Nokogiri::XML(layer['FgdcText'])
-        xml.write_xml_to(_fn, 'wb', :encoding => 'UTF-8', :indent => 2)
+        xml.write_xml_to(File.open(_fn, 'wb'), encoding: 'UTF-8', indent: 2)
       end
     end
   end
