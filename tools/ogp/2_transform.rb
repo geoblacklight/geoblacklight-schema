@@ -10,6 +10,7 @@ require 'json'
 require 'uri'
 require 'date'
 require 'nokogiri'
+require 'fileutils'
 
 # Transforms an OGP schema into GeoBlacklight. Requires input of a JSON array
 # of OGP hashs.
@@ -54,7 +55,7 @@ class TransformOgp
 
   # Transforms a single OGP record into a GeoBlacklight record
   # @param [Hash] layer an OGP hash for a given layer
-  def transform(layer, skip_fgdc = false)
+  def transform(layer, skip_fgdc = false, skip_geoblacklight = false)
     id = layer['LayerId'].to_s.strip
     puts "Tranforming #{id}"
 
@@ -161,8 +162,12 @@ class TransformOgp
       refs["http://schema.org/thumbnailUrl"] = "http://stacks.stanford.edu/file/druid:#{id}/preview.jpg"
       refs["http://schema.org/url"] = "#{clean_uri(purl)}"
       refs["http://schema.org/downloadUrl"] = "http://stacks.stanford.edu/file/druid:#{id}/data.zip"
-      refs["http://www.isotc211.org/schemas/2005/gmd/"] = "http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/#{id}/iso19139"
       refs["http://www.loc.gov/mods/v3"] = "#{purl}.mods"
+      refs["http://www.isotc211.org/schemas/2005/gmd/"] = "http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/#{id}/iso19139.xml"
+      refs['http://www.w3.org/1999/xhtml'] = "http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/#{id}/iso19139.html"
+    else
+      refs['http://www.opengis.net/cat/csw/csdgm'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{id}/fgdc.xml"
+      refs['http://www.w3.org/1999/xhtml'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{id}/fgdc.html"
     end
     
     # Make the conversion from OGP to GeoBlacklight
@@ -239,11 +244,32 @@ class TransformOgp
     @output.write JSON::pretty_generate(new_layer)
     @output.write "\n,\n"
     
+    # export into OGM
+    ogm_dir = new_layer[:dct_provenance_s] + '/' + new_layer[:layer_id_s][-2,2].downcase.gsub(/[^a-z0-9]/, '_') + '/' + new_layer[:layer_id_s].gsub(/\./, '/')
     unless skip_fgdc or layer['FgdcText'].nil? or layer['FgdcText'].empty?
-      _fn = 'fgdc' + '/' + slug + '.xml'
+      _fn = 'opengeometadata/org.opengeoportal/' + ogm_dir + '/fgdc.xml'
       unless File.size?(_fn)
+        FileUtils.mkdir_p(File.dirname(_fn)) unless File.directory?(File.dirname(_fn))
         xml = Nokogiri::XML(layer['FgdcText'])
         xml.write_xml_to(File.open(_fn, 'wb'), encoding: 'UTF-8', indent: 2)
+      end
+    end
+
+    unless skip_geoblacklight
+      _json_fn = 'opengeometadata/org.opengeoportal/layers.json'
+      _fn = 'opengeometadata/org.opengeoportal/' + ogm_dir + '/geoblacklight.json'
+      _layers_json = {}
+      if File.size?(_json_fn)
+        _layers_json = JSON.parse(File.open(_json_fn, 'rb').read)
+      end
+      _layers_json[new_layer[:layer_id_s]] = ogm_dir
+      File.open(_json_fn, 'wb') do |f|
+        f << JSON::pretty_generate(_layers_json)
+      end
+      unless File.size?(_fn)
+        FileUtils.mkdir_p(File.dirname(_fn)) unless File.directory?(File.dirname(_fn))
+        _s = JSON::pretty_generate(new_layer)
+        File.open(_fn, 'wb') {|f| f.write(_s) }
       end
     end
   end
