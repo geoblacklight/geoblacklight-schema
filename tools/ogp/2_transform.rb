@@ -245,7 +245,7 @@ class TransformOgp
     @output.write "\n,\n"
     
     # export into OGM
-    ogm_dir = new_layer[:dct_provenance_s] + '/' + new_layer[:layer_id_s][-2,2].downcase.gsub(/[^a-z0-9]/, '_') + '/' + new_layer[:layer_id_s].gsub(/\./, '/')
+    ogm_dir = new_layer[:dct_provenance_s] + '/' + new_layer[:layer_id_s][-2,2].downcase.gsub(/[^a-z0-9]/, '_') + '/' + new_layer[:layer_id_s]
     unless skip_fgdc or layer['FgdcText'].nil? or layer['FgdcText'].empty?
       _fn = 'opengeometadata/org.opengeoportal/' + ogm_dir + '/fgdc.xml'
       unless File.size?(_fn)
