@@ -67,11 +67,11 @@
           <xsl:value-of select="$purl"/>
           <xsl:text>.mods",</xsl:text>
           <xsl:text>"http://www.isotc211.org/schemas/2005/gmd/":"</xsl:text>              
-          <xsl:text>http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/</xsl:text>
+          <xsl:text>http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/druid:</xsl:text>
           <xsl:value-of select="$druid"/>
           <xsl:text>/iso19139.xml",</xsl:text>
           <xsl:text>"http://www.w3.org/1999/xhtml":"</xsl:text>              
-          <xsl:text>http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/</xsl:text>
+          <xsl:text>http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/druid:</xsl:text>
           <xsl:value-of select="$druid"/>
           <xsl:text>/default.html",</xsl:text>
           <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='Shapefile'">
