@@ -35,14 +35,14 @@ class TransformOgp
 
   # @param [String] fn filename of JSON array of OGP hash objects
   # @return [Hash] stats about :accepted vs. :rejected records
-  def transform_file(fn)
+  def transform_file(fn, layers_json)
     stats = { :accepted => 0, :rejected => 0 }
     puts "Parsing #{fn}"
     json = JSON::parse(File.open(fn, 'rb').read)
     json.each do |doc| # contains JSON Solr query results
       unless doc.empty?
         begin
-          transform(doc)
+          transform(doc, layers_json)
           stats[:accepted] += 1
         rescue ArgumentError => e
           puts e, e.backtrace
@@ -55,7 +55,7 @@ class TransformOgp
 
   # Transforms a single OGP record into a GeoBlacklight record
   # @param [Hash] layer an OGP hash for a given layer
-  def transform(layer, skip_fgdc = false, skip_geoblacklight = false)
+  def transform(layer, layers_json, skip_fgdc = false, skip_geoblacklight = false)
     id = layer['LayerId'].to_s.strip
     puts "Tranforming #{id}"
 
@@ -148,6 +148,8 @@ class TransformOgp
       layer_geom_type = 'Scanned Map'
     end
     
+    layer_id = layer['WorkspaceName'] + ':' + layer['Name']
+    
     # @see https://github.com/OSGeo/Cat-Interop
     %w{wcs wfs wms}.each do |k|
       location[k] = location[k].first if location[k].is_a? Array
@@ -163,11 +165,11 @@ class TransformOgp
       refs["http://schema.org/url"] = "#{clean_uri(purl)}"
       refs["http://schema.org/downloadUrl"] = "http://stacks.stanford.edu/file/druid:#{id}/data.zip"
       refs["http://www.loc.gov/mods/v3"] = "#{purl}.mods"
-      refs["http://www.isotc211.org/schemas/2005/gmd/"] = "http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/#{id}/iso19139.xml"
-      refs['http://www.w3.org/1999/xhtml'] = "http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/#{id}/iso19139.html"
+      refs["http://www.isotc211.org/schemas/2005/gmd/"] = "http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/#{layer_id}/iso19139.xml"
+      refs['http://www.w3.org/1999/xhtml'] = "http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/#{layer_id}/iso19139.html"
     else
-      refs['http://www.opengis.net/cat/csw/csdgm'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{id}/fgdc.xml"
-      refs['http://www.w3.org/1999/xhtml'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{id}/fgdc.html"
+      refs['http://www.opengis.net/cat/csw/csdgm'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{layer_id}/fgdc.xml"
+      refs['http://www.w3.org/1999/xhtml'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{layer_id}/fgdc.html"
     end
     
     # Make the conversion from OGP to GeoBlacklight
@@ -206,7 +208,7 @@ class TransformOgp
      
       # Layer-specific schema
       :layer_slug_s       => slug,
-      :layer_id_s         => layer['WorkspaceName'] + ':' + layer['Name'],
+      :layer_id_s         => layer_id,
       # :layer_srs_s        => 'EPSG:4326', # XXX: fake data
       :layer_geom_type_s  => layer_geom_type,
       :layer_modified_dt  => Time.now.utc.strftime('%FT%TZ'),
@@ -256,16 +258,8 @@ class TransformOgp
     end
 
     unless skip_geoblacklight
-      _json_fn = 'opengeometadata/org.opengeoportal/layers.json'
       _fn = 'opengeometadata/org.opengeoportal/' + ogm_dir + '/geoblacklight.json'
-      _layers_json = {}
-      if File.size?(_json_fn)
-        _layers_json = JSON.parse(File.open(_json_fn, 'rb').read)
-      end
-      _layers_json[new_layer[:layer_id_s]] = ogm_dir
-      File.open(_json_fn, 'wb') do |f|
-        f << JSON::pretty_generate(_layers_json)
-      end
+      layers_json[new_layer[:layer_id_s]] = ogm_dir
       unless File.size?(_fn)
         FileUtils.mkdir_p(File.dirname(_fn)) unless File.directory?(File.dirname(_fn))
         _s = JSON::pretty_generate(new_layer)
@@ -284,7 +278,7 @@ class TransformOgp
   def string2array(s, clean_only = false)
     return nil if s.nil?
     if clean_only
-      if !s.strip.index(' ') && s.strip.downcase != 'none'
+      if s.strip.size > 0 && !s.strip.index(' ') && s.strip.downcase != 'none'
         [s.strip]
       else
         nil
@@ -373,11 +367,18 @@ end
 #
 TransformOgp.new(ARGV[0].nil?? 'transformed.json' : ARGV[0]) do |ogp|
   stats = { :accepted => 0, :rejected => 0 }
+  layers_json = {}
+  
   Dir.glob('valid*.json') do |fn|
-    s = ogp.transform_file(fn)
+    s = ogp.transform_file(fn, layers_json)
     stats[:accepted] += s[:accepted]
     stats[:rejected] += s[:rejected]
   end
+  
+  File.open('opengeometadata/org.opengeoportal/layers.json', 'wb') do |f|
+    f << JSON::pretty_generate(layers_json)
+  end
+  
   ap({:statistics => stats})
 end
 
