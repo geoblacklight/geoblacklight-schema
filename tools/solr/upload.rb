@@ -5,18 +5,25 @@
 require 'rsolr'
 require 'nokogiri'
 
+stop_on_error = false
+
 solr = RSolr.connect :url => ARGV.delete_at(0) 
 
 ARGV.each do |fn|
   puts "Processing #{fn}"
-  if fn =~ /.xml$/
-    doc = Nokogiri::XML(File.open(fn, 'rb').read)
-    solr.update :data => doc.to_xml
-  elsif fn =~ /.json$/
-    doc = JSON.parse(File.open(fn, 'rb').read)
-    solr.add doc
-  else
-    raise RuntimeError, "Unknown file type: #{fn}"
+  begin
+    if fn =~ /.xml$/
+      doc = Nokogiri::XML(File.open(fn, 'rb').read)
+      solr.update :data => doc.to_xml    
+    elsif fn =~ /.json$/
+      doc = JSON.parse(File.open(fn, 'rb').read)
+      solr.add doc
+    else
+      raise RuntimeError, "Unknown file type: #{fn}"
+    end
+  rescue => e
+    puts "ERROR: #{e}: #{e.backtrace}"
+    raise e if stop_on_error
   end
 end
 
