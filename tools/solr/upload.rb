@@ -1,9 +1,14 @@
 #!/usr/bin/env ruby
 # 
-# Usage: upload.rb http://localhost:8080/my-collection file1.xml file2.json
+# Usage: upload.rb http://localhost:8080/my-collection file1.xml [file2.json...]
 #
 require 'rsolr'
 require 'nokogiri'
+
+if ARGV.size < 2
+  puts 'Usage: upload.rb http://localhost:8080/my-collection file1.xml [file2.json...]'
+  exit -1
+end
 
 stop_on_error = false
 
