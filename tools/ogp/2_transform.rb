@@ -139,14 +139,17 @@ class TransformOgp
     elsif layer_geom_type.downcase == 'paper map'
       format = 'Paper'
       layer_geom_type = 'Paper Map'
-    else
+    elsif layer_geom_type.downcase =~ /-rom$/
       format = layer_geom_type
-      layer_geom_type = 'Digital'
+      layer_geom_type = 'Mixed'
+    else
+      raise ArgumentError, "ERROR: Invalid layer_geom_type: #{layer_geom_type}"
     end
     
-    if layer['LayerDisplayName'] =~ /Scanned Map/
-      layer_geom_type = 'Scanned Map'
-    end
+    # if layer['LayerDisplayName'] =~ /Scanned Map/
+    #   layer_geom_type = 'Scanned Map'
+    #   format = 'Paper'
+    # end
     
     layer_id = layer['WorkspaceName'] + ':' + layer['Name']
     
