@@ -36,8 +36,9 @@ def generate(i, *params)
     :solr_geom  => "ENVELOPE(#{w}, #{e}, #{n}, #{s})"    
   })
   layer[:dc_title_s] = "Case #{i}: #{layer[:dc_title_s]}"
-  layer[:dct_references_s] = '{}' if layer[:dct_references_s].nil?
+  layer[:dct_references_s] = {} if layer[:dct_references_s].nil?
   
+  layer[:dct_references_s] = layer[:dct_references_s].to_json
   json = JSON.pretty_generate(layer)
   
   File.open("data/#{name}.json", 'wb') {|f| f << json }
