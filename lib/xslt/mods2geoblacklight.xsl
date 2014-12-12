@@ -167,11 +167,11 @@
             <xsl:value-of select="text()"/>
           </field>
         </xsl:for-each>
-        <xsl:for-each select="mods:relatedItem/mods:titleInfo/mods:title">
+        <xsl:if test="mods:relatedItem[@type='host']">
           <field name="dct_isPartOf_sm">
-            <xsl:value-of select="text()"/>
+            <xsl:value-of select="mods:relatedItem/mods:titleInfo/mods:title"/>
           </field>
-        </xsl:for-each>
+        </xsl:if>
         <xsl:for-each select="mods:subject/mods:geographic">
           <field name="dct_spatial_sm">
             <xsl:value-of select="text()"/>
