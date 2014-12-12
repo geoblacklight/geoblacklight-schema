@@ -11,6 +11,7 @@ require 'uri'
 require 'date'
 require 'nokogiri'
 require 'fileutils'
+require 'open-uri'
 
 # Transforms an OGP schema into GeoBlacklight. Requires input of a JSON array
 # of OGP hashs.
@@ -55,7 +56,7 @@ class TransformOgp
 
   # Transforms a single OGP record into a GeoBlacklight record
   # @param [Hash] layer an OGP hash for a given layer
-  def transform(layer, layers_json, skip_fgdc = false, skip_geoblacklight = false)
+  def transform(layer, layers_json, skip_fgdc = false, skip_geoblacklight = false, skip_ogm_check = true)
     id = layer['LayerId'].to_s.strip
     puts "Tranforming #{id}"
 
@@ -103,7 +104,7 @@ class TransformOgp
       raise ArgumentError, "ERROR: #{id} has bad ContentDate: #{layer['ContentDate']}"
     end
     
-    pub_dt = DateTime.rfc3339('2000-01-01T00:00:00Z') # XXX fake data, get from MODS
+    # pub_dt = DateTime.rfc3339('2000-01-01T00:00:00Z') # XXX fake data, get from MODS
     
     access = layer['Access']
     collection = nil
@@ -161,7 +162,13 @@ class TransformOgp
     refs['http://www.opengis.net/def/serviceType/ogc/wcs'] = "#{location['wcs']}" if location['wcs']
     refs['http://www.opengis.net/def/serviceType/ogc/wfs'] = "#{location['wfs']}" if location['wfs']
     refs['http://www.opengis.net/def/serviceType/ogc/wms'] = "#{location['wms']}" if location['wms']
-    refs['http://schema.org/downloadUrl'] = "#{location['download']}" if location['download']
+    if layer['Institution'] == 'Harvard'
+      refs['http://schema.org/DownloadAction'] = "#{location['download']}" if location['download']
+      refs['http://schema.org/UserDownloads'] = "#{location['serviceStart']}" if location['serviceStart']
+      refs['http://tilecache.org'] = "#{location['tilecache'].first}" if location['tilecache']
+    else
+      refs['http://schema.org/downloadUrl'] = "#{location['download']}" if location['download']
+    end
     refs['http://schema.org/url'] = "#{location['url']}" if location['url']
     if purl
       refs["http://schema.org/thumbnailUrl"] = "http://stacks.stanford.edu/file/druid:#{id}/preview.jpg"
@@ -171,8 +178,15 @@ class TransformOgp
       refs["http://www.isotc211.org/schemas/2005/gmd/"] = "http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/#{layer_id}/iso19139.xml"
       refs['http://www.w3.org/1999/xhtml'] = "http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/#{layer_id}/iso19139.html"
     else
-      refs['http://www.opengis.net/cat/csw/csdgm'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{layer_id}/fgdc.xml"
-      refs['http://www.w3.org/1999/xhtml'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{layer_id}/fgdc.html"
+      refs['http://www.opengis.net/cat/csw/csdgm'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{URI::encode(layer_id)}/fgdc.xml"
+      begin
+        _f = open(refs['http://www.opengis.net/cat/csw/csdgm'])
+      rescue OpenURI::HTTPError => e
+        refs['http://www.opengis.net/cat/csw/csdgm'] = nil
+      rescue URI::InvalidURIError => e
+        raise ArgumentError, "ERROR: #{id} has bad LayerId: #{layer['layer_id']}"
+      end unless skip_ogm_check
+      refs['http://www.w3.org/1999/xhtml'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{URI::encode(layer_id)}/fgdc.html"
     end
     
     # Make the conversion from OGP to GeoBlacklight
@@ -200,7 +214,7 @@ class TransformOgp
       :dct_references_s   => refs.to_json.to_s,
       :dct_spatial_sm     => string2array(layer['PlaceKeywords'], true),
       :dct_temporal_sm    => [dt.year.to_s],
-      :dct_issued_s       => pub_dt.year.to_s,
+      # :dct_issued_s       => pub_dt.year.to_s,
       :dct_provenance_s   => layer['Institution'],
 
      #
@@ -222,7 +236,7 @@ class TransformOgp
       # :solr_sw_pt => "#{s},#{w}",
       :solr_geom  => "ENVELOPE(#{w}, #{e}, #{n}, #{s})",
       :solr_year_i => dt.year,
-      :solr_issued_dt => pub_dt.strftime('%FT%TZ') # Solr requires 1995-12-31T23:59:59Z
+      # :solr_issued_dt => pub_dt.strftime('%FT%TZ') # Solr requires 1995-12-31T23:59:59Z
       # :solr_wms_url => location['wms'],
       # :solr_wfs_url => location['wfs'],
       # :solr_wcs_url => location['wcs']
