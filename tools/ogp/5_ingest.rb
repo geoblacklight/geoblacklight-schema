@@ -3,8 +3,10 @@
 require 'json'
 require 'rsolr'
 
+
 class IngestOgp
-  def initialize(collection, url)
+  def initialize(collection, url, skip = 0)
+    @skip = skip
     raise ArgumentError, 'Collection not defined' unless collection.is_a? String
     @solr = RSolr.connect(:url => (url + '/' + collection))
     yield self
@@ -24,7 +26,7 @@ class IngestOgp
         @solr.add doc      
       rescue Exception => e
         puts e
-      end
+      end unless n < @skip
       
       n += 1
       if n % 100 == 0
@@ -46,7 +48,7 @@ end
 
 
 # __MAIN__
-IngestOgp.new(ARGV[0], (ARGV[1].nil?? 'http://localhost:8080/solr' : ARGV[1])) do |ogp|
+IngestOgp.new(ARGV[0], (ARGV[1].nil?? 'http://localhost:8080/solr' : ARGV[1]), ARGV[2].nil?? 0 : ARGV[2].to_i) do |ogp|
   Dir.glob("transformed*.json") do |fn|
     ogp.ingest(fn)
   end
