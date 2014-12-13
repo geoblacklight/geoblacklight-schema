@@ -132,7 +132,7 @@ class TransformOgp
     slug = to_slug(id, layer)
     
     layer_geom_type = layer['DataType'].to_s.strip
-    if layer_geom_type.downcase == 'raster'
+    if layer_geom_type.downcase == 'raster' || layer['LayerDisplayName'] =~ /\(Raster Image\)/
       format = 'GeoTIFF'
       layer_geom_type = 'Raster'
     elsif %w{Point Line Polygon}.include?(layer_geom_type)
