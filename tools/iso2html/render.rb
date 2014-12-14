@@ -19,5 +19,6 @@ end
 # __MAIN__
 cli = RenderCLI.new
 ARGV.each do |fn|
+  puts "Processing #{fn}"
   cli.run(fn)
 end
