@@ -35,16 +35,12 @@ h3:hover {
 }
 
 h3:before {
-    font-family: 'Glyphicons Halflings';
-    content: "\e081";
-    font-size: 75%;
+    content: "+";
     margin-right: 10px;
 }
 
 h3.expanded:before {
-    font-family: 'Glyphicons Halflings';
-    content: "\e082";
-    font-size: 75%;
+    content: '\2013';
     margin-right: 10px;
 }
 
