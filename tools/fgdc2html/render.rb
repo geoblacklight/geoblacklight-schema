@@ -11,9 +11,11 @@ class RenderCLI
     doc = Nokogiri::XML(File.read(xmlfn))
     htmlfn = xmlfn.gsub(/\.xml$/, '.html')
     File.open(htmlfn, 'wb') do |f|
-      f << '<html><head><style>'
-      f << File.read(File.join(File.dirname(__FILE__), 'fgdc2html.css'))
-      f << '</style></head><body>'
+      f << '<html><head>'
+      f << '<style>' + File.read(File.join(File.dirname(__FILE__), 'fgdc2html.css')) + '</style>'
+      f << '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>'
+      f << '<script>' + File.read(File.join(File.dirname(__FILE__), 'fgdc2html.js')) + '</script>'
+      f << '</head><body>'
       f << @@xslt.transform(doc)
       f << '</body></html>'
     end
