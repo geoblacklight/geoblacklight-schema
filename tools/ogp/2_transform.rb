@@ -56,7 +56,7 @@ class TransformOgp
 
   # Transforms a single OGP record into a GeoBlacklight record
   # @param [Hash] layer an OGP hash for a given layer
-  def transform(layer, layers_json, skip_fgdc = false, skip_geoblacklight = false, skip_ogm_check = true)
+  def transform(layer, layers_json, skip_fgdc = false, skip_geoblacklight = false, skip_ogm_check = false)
     id = layer['LayerId'].to_s.strip
     puts "Tranforming #{id}"
 
@@ -181,12 +181,17 @@ class TransformOgp
       refs['http://www.opengis.net/cat/csw/csdgm'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{URI::encode(layer_id)}/fgdc.xml"
       begin
         _f = open(refs['http://www.opengis.net/cat/csw/csdgm'])
+        refs['http://www.w3.org/1999/xhtml'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{URI::encode(layer_id)}/fgdc.html"
       rescue OpenURI::HTTPError => e
         refs['http://www.opengis.net/cat/csw/csdgm'] = nil
       rescue URI::InvalidURIError => e
         raise ArgumentError, "ERROR: #{id} has bad LayerId: #{layer['layer_id']}"
       end unless skip_ogm_check
-      refs['http://www.w3.org/1999/xhtml'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{URI::encode(layer_id)}/fgdc.html"
+    end
+    
+    # If there's no homepage, use the HTML version of the Metadata if available
+    if refs['http://schema.org/url'].nil? && !refs['http://www.w3.org/1999/xhtml'].nil?
+      refs['http://schema.org/url'] = refs['http://www.w3.org/1999/xhtml']
     end
     
     # Make the conversion from OGP to GeoBlacklight
