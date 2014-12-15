@@ -1,0 +1,75 @@
+/* From Mike Graves:
+   https://github.com/gravesm/kendallite/blob/master/kendallite/static/css/layer.css
+ */
+
+html, body {
+    height: 100%;
+    font-family: serif;
+}
+
+.metadata-detail dl {
+    margin-left: 15px;
+    padding-left: 10px;
+}
+
+.metadata-detail dt {
+    width: 260px;
+}
+
+.metadata-detail dd {
+    margin-left: 275px;
+}
+
+.layer-info dd {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+
+h3 {
+    border-bottom: 1px solid #eee;
+}
+
+h3:hover {
+    cursor: pointer;
+}
+
+h3:before {
+    font-family: 'Glyphicons Halflings';
+    content: "\e081";
+    font-size: 75%;
+    margin-right: 10px;
+}
+
+h3.expanded:before {
+    font-family: 'Glyphicons Halflings';
+    content: "\e082";
+    font-size: 75%;
+    margin-right: 10px;
+}
+
+h3:hover:before {
+    color: #428bce;
+}
+
+h4 {
+    margin-left: 10px;
+}
+
+h5 {
+    border-bottom: 1px solid #ddd;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 10px;
+}
+
+section {
+    margin-left: 15px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+section > div {
+    padding: 10px;
+}
