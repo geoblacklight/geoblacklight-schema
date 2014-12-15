@@ -8,17 +8,19 @@
 
      Example usage:
 
-     xsltproc -stringparam geoserver_root 'http://kurma-podd1.stanford.edu/geoserver'
+     xsltproc -stringparam geoserver_root 'http://example.com/geoserver'
+              -stringparam wxs_geoserver_root 'http://example.com/geoserver'
               -stringparam now '2014-04-30T21:17:41Z'
               -stringparam rights 'Public'
-              -stringparam stacks_root 'http://stacks.stanford.edu'
+              -stringparam stacks_root 'http://stacks.example.com'
               -output '/var/geomdtk/current/workspace/fw/920/bc/5473/fw920bc5473/temp/geoblacklightSolr.xml'
               '/home/geostaff/geomdtk/current/lib/geomdtk/mods2geoblacklight.xsl'
               '/var/geomdtk/current/workspace/fw/920/bc/5473/fw920bc5473/metadata/descMetadata.xml'
 
      Requires parameters:
 
-       - geoserver_root - URL prefix to the geoserver
+       - geoserver_root - URL prefix to the geoserver for WMS
+       - wxs_geoserver_root - URL prefix to the geoserver for WFS/WCS
        - stacks_root - URL prefix to the download server
        - now - the current date/time
        - rights - the rights for the object
@@ -76,12 +78,12 @@
           <xsl:text>/default.html",</xsl:text>
           <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='Shapefile'">
             <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wfs":"</xsl:text>
-            <xsl:value-of select="$geoserver_root"/>
+            <xsl:value-of select="$wxs_geoserver_root"/>
             <xsl:text>/wfs",</xsl:text>
           </xsl:if>
           <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='GeoTIFF'">
             <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wcs":"</xsl:text>
-            <xsl:value-of select="$geoserver_root"/>
+            <xsl:value-of select="$wxs_geoserver_root"/>
             <xsl:text>/wcs",</xsl:text>
             <!-- <xsl:text>"http://iiif.io/api/image":"</xsl:text>
             <xsl:value-of select="$purl"/>
@@ -89,7 +91,7 @@
           </xsl:if>
           <xsl:if test="substring-after(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:format/text(), 'format=')='ArcGRID'">
             <xsl:text>"http://www.opengis.net/def/serviceType/ogc/wcs":"</xsl:text>
-            <xsl:value-of select="$geoserver_root"/>
+            <xsl:value-of select="$wxs_geoserver_root"/>
             <xsl:text>/wcs",</xsl:text>
             <!-- <xsl:text>"http://iiif.io/api/image":"</xsl:text>
             <xsl:value-of select="$purl"/>
