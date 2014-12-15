@@ -100,7 +100,7 @@ class TransformOgp
     # Parse out the ContentDate date/time
     begin
       dt = DateTime.rfc3339(layer['ContentDate']) 
-    rescue Exception => e
+    rescue => e2
       raise ArgumentError, "ERROR: #{id} has bad ContentDate: #{layer['ContentDate']}"
     end
     
@@ -132,7 +132,8 @@ class TransformOgp
     slug = to_slug(id, layer)
     
     layer_geom_type = layer['DataType'].to_s.strip
-    if layer_geom_type.downcase == 'raster' || layer['LayerDisplayName'] =~ /\(Raster Image\)/
+    if (layer_geom_type.downcase == 'raster' || layer['LayerDisplayName'] =~ /\(Raster Image\)/) ||
+       (layer['Institution'] == 'Harvard' && layer_geom_type.downcase == 'paper map')
       format = 'GeoTIFF'
       layer_geom_type = 'Raster'
     elsif %w{Point Line Polygon}.include?(layer_geom_type)
