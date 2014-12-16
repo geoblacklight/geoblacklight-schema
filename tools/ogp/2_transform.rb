@@ -184,7 +184,7 @@ class TransformOgp
         _f = open(refs['http://www.opengis.net/cat/csw/csdgm'])
         refs['http://www.w3.org/1999/xhtml'] = "http://opengeometadata.stanford.edu/metadata/org.opengeoportal/#{URI::encode(layer_id)}/fgdc.html"
       rescue OpenURI::HTTPError => e2
-        refs['http://www.opengis.net/cat/csw/csdgm'] = nil
+        refs.delete('http://www.opengis.net/cat/csw/csdgm')
       rescue URI::InvalidURIError => e2
         raise ArgumentError, "ERROR: #{id} has bad LayerId: #{layer['layer_id']}"
       end unless skip_ogm_check
