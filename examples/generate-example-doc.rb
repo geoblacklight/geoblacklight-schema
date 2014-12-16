@@ -1,4 +1,11 @@
 #!/usr/bin/env ruby
+#
+# Example Ruby code to generate a GeoBlacklight Solr document in JSON format.
+#
+# See here for full description of the schema:
+#
+#   http://journal.code4lib.org/articles/9710
+#
 require 'json'
 
 uri = {
