@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # 
-# Usage: purge.rb my-collection http://localhost:8080/solr
+# Usage: purge.rb my-collection http://localhost:8080/solr query
 #
 require 'rsolr'
 
@@ -12,8 +12,8 @@ class SolrPurger
     close
   end
   
-  def purge
-    @solr.delete_by_query("*:*")
+  def purge q
+    @solr.delete_by_query(q)
   end
   
   def close
@@ -29,5 +29,5 @@ if ARGV[0] == '--help' || ARGV.size != 2
   exit -1
 end
 SolrPurger.new(ARGV[0], ARGV[1]) do |sp|
-  sp.purge
+  sp.purge ARGV[2]
 end
