@@ -24,8 +24,8 @@ class SolrPurger
 end
 
 # __MAIN__
-if ARGV[0] == '--help' || ARGV.size != 2
-  puts 'Usage: purge.rb my-collection http://localhost:8080/solr'
+if ARGV[0] == '--help' || ARGV.size != 3
+  puts 'Usage: purge.rb my-collection http://localhost:8080/solr query'
   exit -1
 end
 SolrPurger.new(ARGV[0], ARGV[1]) do |sp|
