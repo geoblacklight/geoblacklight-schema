@@ -21,12 +21,8 @@ format conversions (e.g., FGDC -> MODS, OGP -> GeoBlacklight, etc.).
 #### Example
 
 The `examples` folder has some Solr documents that uses this schema. First,
-install the schema into a Solr 4 instance, then upload the documents.
-
-```bash
-% cd examples
-% ruby upload-to-solr.rb your-collection-name http://localhost:8080/solr
-```
+install the schema into a Solr 4 instance, then upload documents using
+`tools/solr/upload.rb`.
 
 ## Requirements
 
