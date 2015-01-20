@@ -12,6 +12,7 @@
               -stringparam wxs_geoserver_root 'http://example.com/geoserver'
               -stringparam now '2014-04-30T21:17:41Z'
               -stringparam rights 'Public'
+              -stringparam rights_metadata '<rightsMetadata...>'
               -stringparam stacks_root 'http://stacks.example.com'
               -output '/var/geomdtk/current/workspace/fw/920/bc/5473/fw920bc5473/temp/geoblacklightSolr.xml'
               '/home/geostaff/geomdtk/current/lib/geomdtk/mods2geoblacklight.xsl'
@@ -261,6 +262,10 @@
             <xsl:value-of select="substring(mods:subject/mods:temporal[1]/text(), 1, 4)"/>
           </field>
         </xsl:if>
+        <!-- Include the rightsMetadata XML datastream as-is -->
+        <field name="stanford_rights_metadata_ss">
+          <xsl:value-of select="$rights_metadata"/>
+        </field>
       </doc>
     </add>
   </xsl:template>
