@@ -263,7 +263,7 @@
           </field>
         </xsl:if>
         <!-- Include the rightsMetadata XML datastream as-is -->
-        <field name="stanford_rights_metadata_ss">
+        <field name="stanford_rights_metadata_s">
           <xsl:value-of select="$rights_metadata"/>
         </field>
       </doc>
