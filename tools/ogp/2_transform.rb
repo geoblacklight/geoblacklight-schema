@@ -153,6 +153,10 @@ class TransformOgp
     #   format = 'Paper'
     # end
     
+    if layer_geom_type == 'Paper Map'
+      raise ArgumentError, "WARNING: Skipping Paper Map"
+    end
+    
     layer_id = layer['WorkspaceName'] + ':' + layer['Name']
     
     # @see https://github.com/OSGeo/Cat-Interop
