@@ -24,6 +24,12 @@ The `examples` folder has some Solr documents that uses this schema. First,
 install the schema into a Solr 4 instance, then upload documents using
 `tools/solr/upload.rb`.
 
+#### Documentation
+
+[Preview GeoBlacklight-Schema](docs/geoblacklight-schema.markdown)
+
+`dct_references_s` [features and functionality](docs/dct_references_schema.markdown)
+
 ## Requirements
 
 * Saxon-HE v9, the Home Edition from http://saxon.sourceforge.net installed as
