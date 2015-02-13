@@ -237,7 +237,7 @@ class TransformOgp
       :layer_modified_dt  => Time.now.utc.strftime('%FT%TZ'),
       
       # derived fields used only by solr, for which copyField is insufficient
-      :solr_bbox  => "#{w} #{s} #{e} #{n}", # minX minY maxX maxY
+      :solr_rpt  => "#{w} #{s} #{e} #{n}", # minX minY maxX maxY
       # :solr_ne_pt => "#{n},#{e}",
       # :solr_sw_pt => "#{s},#{w}",
       :solr_geom  => "ENVELOPE(#{w}, #{e}, #{n}, #{s})",

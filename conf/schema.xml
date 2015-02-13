@@ -55,9 +55,10 @@
 
       -->
     <dynamicField name="*_pt"   type="location"     stored="true" indexed="true"/>
-    <dynamicField name="*_bbox" type="location_rpt" stored="true" indexed="true"/>
     <dynamicField name="*_geom" type="location_rpt" stored="true" indexed="true"/>
-    <!-- <dynamicField name="*_jts"  type="location_jts" stored="true" indexed="true"/> -->
+    <dynamicField name="*_rpt" type="location_rpt" stored="true" indexed="true"/>
+    <dynamicField name="*_bbox" type="bbox" stored="true" indexed="true"/>
+
   </fields>
 
   <types>
@@ -115,19 +116,32 @@
     <!-- Spatial field types -->
     <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_d"/>
 
+    <!--
+      RPT incorporates the basic features of LatLonType and PointType, such 
+      as lat-lon bounding boxes and circles, in addition to supporting geofilt,
+      bbox, geodist, and a range-queries.
+      See https://cwiki.apache.org/confluence/display/solr/Spatial+Search#SpatialSearch-SpatialRecursivePrefixTreeFieldType(abbreviatedasRPT)
+    -->
     <fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
                distErrPct="0.025"
                maxDistErr="0.000009"
                units="degrees"
             />
 
-    <!-- JTS-enabled spatial predicates; requires JTS installation -->
-    <!-- <fieldType name="location_jts" class="solr.SpatialRecursivePrefixTreeFieldType"
-               spatialContextFactory="com.spatial4j.core.context.jts.JtsSpatialContextFactory"
-               distErrPct="0.025"
-               maxDistErr="0.000009"
-               units="degrees"
-            /> -->
+    <!--
+      The BBoxField field type indexes a single rectangle (bounding box) per
+      document field and supports searching via a bounding box.  It supports
+      most spatial search predicates, it has enhanced relevancy modes based on the
+      overlap or area between the search rectangle and the indexed rectangle.
+      See https://cwiki.apache.org/confluence/display/solr/Spatial+Search#SpatialSearch-BBoxField
+    -->
+    <fieldType name="bbox" class="solr.BBoxField" geo="true" 
+               units="degrees" numberType="_bbox_coord"
+            />
+
+    <fieldType name="_bbox_coord" class="solr.TrieDoubleField" precisionStep="8"
+               docValues="true" stored="false"
+            />
   </types>
 
   <!-- for scoring formula -->
