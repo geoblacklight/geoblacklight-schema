@@ -237,7 +237,7 @@
             <xsl:value-of select="$y1"/>
             <xsl:text>)</xsl:text>
           </field>
-          <field name="solr_bbox">
+          <field name="solr_rpt">
             <xsl:value-of select="$x1"/>
             <xsl:text> </xsl:text>
             <xsl:value-of select="$y1"/>
