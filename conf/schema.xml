@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<schema name="geoblacklight-schema" version="1.5">
+<schema name="geoblacklight-schema" version="1.6">
   <uniqueKey>uuid</uniqueKey>
   <fields>
     <field name="_version_" type="long"   stored="true" indexed="true"/>
@@ -42,22 +42,22 @@
            <field name="my_pt">83.1,-117.312</field>
              as (y,x)
 
-         Solr4:
+         Solr 4.10:
 
-           <field name="my_bbox">-117.312 83.1 -115.39 84.31</field>
-             as (W S E N)
+           <field name="my_bbox">ENVELOPE(-117.312, -115.39, 84.31, 83.1)</field>
+             as (W E N S)
 
            <field name="my_geom">ENVELOPE(-117.312, -115.39, 84.31, 83.1)</field>
              as (W E N S)
-
-           <field name="my_jts">POLYGON((1 8, 1 9, 2 9, 2 8, 1 8))</field>
-             as WKT for point, linestring, polygon
-
       -->
     <dynamicField name="*_pt"   type="location"     stored="true" indexed="true"/>
-    <dynamicField name="*_bbox" type="location_rpt" stored="true" indexed="true"/>
     <dynamicField name="*_geom" type="location_rpt" stored="true" indexed="true"/>
-    <!-- <dynamicField name="*_jts"  type="location_jts" stored="true" indexed="true"/> -->
+    <dynamicField name="*_bbox" type="bbox"         stored="true" indexed="true"/>
+    <dynamicField name="*_bbox__minX" type="double" stored="true" indexed="true"/>
+    <dynamicField name="*_bbox__minY" type="double" stored="true" indexed="true"/>
+    <dynamicField name="*_bbox__maxX" type="double" stored="true" indexed="true"/>
+    <dynamicField name="*_bbox__maxY" type="double" stored="true" indexed="true"/>
+
   </fields>
 
   <types>
@@ -115,19 +115,30 @@
     <!-- Spatial field types -->
     <fieldType name="location" class="solr.LatLonType" subFieldSuffix="_d"/>
 
+    <!--
+      RPT incorporates the basic features of LatLonType and PointType, such 
+      as lat-lon bounding boxes and circles, in addition to supporting geofilt,
+      bbox, geodist, and a range-queries.
+      See https://cwiki.apache.org/confluence/display/solr/Spatial+Search#SpatialSearch-SpatialRecursivePrefixTreeFieldType(abbreviatedasRPT)
+    -->
     <fieldType name="location_rpt" class="solr.SpatialRecursivePrefixTreeFieldType"
                distErrPct="0.025"
                maxDistErr="0.000009"
                units="degrees"
             />
 
-    <!-- JTS-enabled spatial predicates; requires JTS installation -->
-    <!-- <fieldType name="location_jts" class="solr.SpatialRecursivePrefixTreeFieldType"
-               spatialContextFactory="com.spatial4j.core.context.jts.JtsSpatialContextFactory"
-               distErrPct="0.025"
-               maxDistErr="0.000009"
-               units="degrees"
-            /> -->
+    <!--
+      Requires 4.10. The BBoxField field type indexes a single rectangle (bounding box) per
+      document field and supports searching via a bounding box.  It supports
+      most spatial search predicates, it has enhanced relevancy modes based on the
+      overlap or area between the search rectangle and the indexed rectangle.
+      It creates 4 fields with each of minX, minY, etc.
+      See https://cwiki.apache.org/confluence/display/solr/Spatial+Search#SpatialSearch-BBoxField
+    -->
+    <fieldType name="bbox" class="solr.BBoxField" geo="true" 
+               units="degrees" numberType="double"
+            />
+
   </types>
 
   <!-- for scoring formula -->
