@@ -28,8 +28,8 @@ layer = {
   :dc_format_s      => 'Shapefile',
   :layer_geom_type_s=> 'Polygon',
   :georss_box_s     => "#{s} #{w} #{n} #{e}", # SW NE in WGS84
-  :solr_bbox        => "#{w} #{s} #{e} #{n}", # minX minY maxX maxY
-  :solr_geom        => "ENVELOPE(#{w}, #{e}, #{n}, #{s})"
+  :solr_bbox        => "ENVELOPE(#{w}, #{e}, #{n}, #{s})" # derived from georss_box_s
+  :solr_geom        => "ENVELOPE(#{w}, #{e}, #{n}, #{s})" # derived from georss_box_s
 }
 
 layer[:dct_references_s] = {

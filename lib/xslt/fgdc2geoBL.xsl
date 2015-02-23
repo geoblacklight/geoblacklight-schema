@@ -504,8 +504,33 @@
           <xsl:value-of select="$x1"/>
         </field>
         
+        <field name="solr_bbox">
+          <xsl:text>ENVELOPE(</xsl:text>
+          <xsl:value-of select="$x1"/>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="$y1"/>
+          <xsl:text>, </xsl:text>
+          <xsl:value-of select="$x2"/>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="$y1"/>
+          <xsl:text>, </xsl:text>
+          <xsl:value-of select="$x2"/>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="$y2"/>
+          <xsl:text>, </xsl:text>
+          <xsl:value-of select="$x1"/>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="$y2"/>
+          <xsl:text>, </xsl:text>
+          <xsl:value-of select="$x1"/>
+          <xsl:text> </xsl:text>
+          <xsl:value-of select="$y1"/>
+          <xsl:text>)</xsl:text>
+        </field>
+        
+        
         <field name="solr_geom">
-          <xsl:text>ENVELOPE((</xsl:text>
+          <xsl:text>ENVELOPE(</xsl:text>
           <xsl:value-of select="$x1"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="$y1"/>
@@ -525,7 +550,7 @@
           <xsl:value-of select="$x1"/>
           <xsl:text> </xsl:text>
           <xsl:value-of select="$y1"/>
-          <xsl:text>))</xsl:text>
+          <xsl:text>)</xsl:text>
         </field>
         
         <field name="georss_box_s">
@@ -535,29 +560,6 @@
           <xsl:text> </xsl:text>
           <xsl:value-of select="$y2"/>
           <xsl:text> </xsl:text>
-          <xsl:value-of select="$x2"/>
-        </field>
-      
-     
-        <field name="solr_bbox">
-          <xsl:value-of select="$x1"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y1"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$x2"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y2"/>
-        </field>
-        
-        <field name="solr_sw_pt">
-          <xsl:value-of select="$y1"/>
-          <xsl:text>,</xsl:text>
-          <xsl:value-of select="$x1"/>
-        </field>
-        
-        <field name="solr_ne_pt">
-          <xsl:value-of select="$y2"/>
-          <xsl:text>,</xsl:text>
           <xsl:value-of select="$x2"/>
         </field>
         
