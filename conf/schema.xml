@@ -55,7 +55,7 @@
 
       -->
     <dynamicField name="*_pt"   type="location"     stored="true" indexed="true"/>
-    <dynamicField name="*_bbox" type="location_rpt" stored="true" indexed="true"/>
+    <dynamicField name="*_bbox" type="location_rpt" stored="true" indexed="true"/><!-- DEPRECATED -->
     <dynamicField name="*_geom" type="location_rpt" stored="true" indexed="true"/>
     <!-- <dynamicField name="*_jts"  type="location_jts" stored="true" indexed="true"/> -->
   </fields>
