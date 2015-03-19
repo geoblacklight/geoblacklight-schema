@@ -8,13 +8,12 @@
      
     * An institution variable needs to be mapped for each proivder.
      *Values for UUIDs and Identifiers need to be mapped for each institution. Best practice is to use a universally unique identifier, which can be expressed as a URI.
-     *Conditions for the Rights statements ('Public' vs. 'Restricted') need work.
+     *Conditions for the Rights statements ('Public' vs. 'Restricted') need work, default is to restricted if undetermined.
      *Currently, the only mapping for languages is English
      
      *Metadata elements are auto-generated for these fields:
     
      -geometry type
-     -format
      -references
           
 -->
@@ -26,7 +25,7 @@
   xmlns:gmd="http://www.isotc211.org/2005/gmd" 
   xmlns:gml="http://www.opengis.net/gml"
   xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-  version="1.0" exclude-result-prefixes="gml gmd gco gmi xsl">
+  version="2.0" exclude-result-prefixes="gml gmd gco gmi xsl">
   <xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
   <xsl:strip-space elements="*"/>
 
@@ -71,33 +70,37 @@
   <xsl:variable name="y2" select="substring-after($upperCorner/text(), ' ')"/><!-- N -->
   <xsl:variable name="y1" select="substring-after($lowerCorner/text(), ' ')"/><!-- S -->
 
-  <!-- auto-generated
+
   <xsl:variable name="format">
     <xsl:choose>
-    <xsl:when test="contains(gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Raster Dataset')">
-      <xsl:text>ArcGrid</xsl:text>
-    </xsl:when>
       <xsl:when test="contains(gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'GeoTIFF')">
         <xsl:text>GeoTIFF</xsl:text>
       </xsl:when>
+    <xsl:when test="contains(gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Raster Dataset')">
+      <xsl:text>ArcGRID</xsl:text>
+    </xsl:when>
       <xsl:when test="contains(gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Shapefile')">
         <xsl:text>Shapefile</xsl:text>
       </xsl:when>
       <xsl:when test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType/gmd:MD_SpatialRepresentationTypeCode/@codeListValue='vector'">
         <xsl:text>Shapefile</xsl:text>
       </xsl:when>
+      <xsl:when test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:spatialRepresentationType/gmd:MD_SpatialRepresentationTypeCode/@codeListValue='grid'">
+        <xsl:text>ArcGRID</xsl:text>
+      </xsl:when>
     </xsl:choose>
-  </xsl:variable> -->
+  </xsl:variable>
   
   <!-- TODO: need to handle other institution uuids -->
   <xsl:variable name="uuid">
     <xsl:choose>
-      <xsl:when test="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code">
+      <xsl:when test="contains($institution, 'Stanford')">
         <xsl:value-of select="gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:citation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code"/>
       </xsl:when>
-      <xsl:when test="gmd:MD_Metadata/gmd:dataSetURI">
-        <xsl:value-of select="gmd:MD_Metadata/gmd:dataSetURI"/>
-      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:transferOptions/gmd:MD_DigitalTransferOptions/gmd:onLine/gmd:CI_OnlineResource/gmd:name"/>
+      </xsl:otherwise>
+
     </xsl:choose>
   </xsl:variable>
   
@@ -107,7 +110,7 @@
       
    <!-- for Stanford URIs -->
 
-        <xsl:when test="contains($uuid, 'purl')">
+      <xsl:when test="contains($uuid, 'purl')">
         <xsl:value-of select="substring($uuid, string-length($uuid)-10)"/>
       </xsl:when>
       
@@ -164,11 +167,11 @@
             <xsl:when test="contains(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:resourceConstraints/gmd:MD_LegalConstraints/gmd:otherConstraints, $institution)">
               <xsl:text>Restricted</xsl:text>
             </xsl:when>
+            <xsl:otherwise>
+              <xsl:text>Restricted</xsl:text>
+            </xsl:otherwise>
           </xsl:choose>
          </xsl:when>
-         <xsl:otherwise>
-              <xsl:text>Public</xsl:text>
-         </xsl:otherwise>
        </xsl:choose>
      </field>
      
@@ -280,17 +283,15 @@
                 </field>
               </xsl:for-each>
             </xsl:if>
-          
         </xsl:for-each>
         
-        <!-- auto-generated
-          <field name="dc_format_s">
+         <field name="dc_format_s">
           <xsl:value-of select="$format"/>
-        </field> -->
+        </field> 
         
         <!-- TODO: add inputs for other languages -->
         <field name="dc_language_s">
-          <xsl:if test="contains(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:language | gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:language/gmd:LanguageCode, 'eng')">
+          <xsl:if test="contains(gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:language | gmd:MD_Metadata/gmd:identificationInfo/gmd:MD_DataIdentification/gmd:language/gmd:LanguageCode[0], 'eng')">
             <xsl:text>English</xsl:text>
           </xsl:if>
        </field>
