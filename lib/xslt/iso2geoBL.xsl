@@ -243,14 +243,15 @@
           <xsl:choose>
             <xsl:when test="contains(gmd:MD_Metadata/gmd:dateStamp, 'T')">
               <field name="layer_modified_dt">
-             <xsl:value-of select="substring-before(gmd:MD_Metadata/gmd:dateStamp, 'T')"/>
+             <xsl:value-of select="gmd:MD_Metadata/gmd:dateStamp"/>
               </field>
             </xsl:when>
-            <xsl:when test="gmd:MD_Metadata/gmd:dateStamp">
+            <xsl:otherwise>
               <field name="layer_modified_dt">
               <xsl:value-of select="gmd:MD_Metadata/gmd:dateStamp"/>
+                <xsl:text>T00:00:00Z</xsl:text>
               </field>
-            </xsl:when>
+            </xsl:otherwise>
           </xsl:choose>
         
         
@@ -516,23 +517,11 @@
         <field name="solr_geom">
           <xsl:text>ENVELOPE(</xsl:text>
           <xsl:value-of select="$x1"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y1"/>
           <xsl:text>, </xsl:text>
           <xsl:value-of select="$x2"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y1"/>
           <xsl:text>, </xsl:text>
-          <xsl:value-of select="$x2"/>
-          <xsl:text> </xsl:text>
           <xsl:value-of select="$y2"/>
           <xsl:text>, </xsl:text>
-          <xsl:value-of select="$x1"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y2"/>
-          <xsl:text>, </xsl:text>
-          <xsl:value-of select="$x1"/>
-          <xsl:text> </xsl:text>
           <xsl:value-of select="$y1"/>
           <xsl:text>)</xsl:text>
         </field>
