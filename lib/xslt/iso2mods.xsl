@@ -763,6 +763,9 @@
                   <xsl:when test="contains(.,'elevation')">
                     <xsl:value-of select="."/>
                   </xsl:when>
+                  <xsl:when test="contains(.,'economy')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>
                   <xsl:when test="contains(.,'environment')">
                     <xsl:value-of select="."/>
                   </xsl:when>
@@ -814,6 +817,9 @@
                 </xsl:when>
                 <xsl:when test="contains(.,'boundaries')">
                   <xsl:text>Boundaries</xsl:text>
+                </xsl:when>
+                <xsl:when test="contains(.,'economy')">
+                  <xsl:text>Economy</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'elevation')">
                   <xsl:text>Elevation</xsl:text>
