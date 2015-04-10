@@ -10,7 +10,6 @@
         "dc_description_s",
         "dc_rights_s",
         "dct_provenance_s",
-        "dct_references_s",
         "georss_box_s",
         "layer_id_s",
         "layer_geom_type_s",
