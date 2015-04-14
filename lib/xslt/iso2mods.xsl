@@ -616,6 +616,27 @@
                   </originInfo>
               </relatedItem>
           </xsl:for-each>
+          
+          <xsl:for-each select="gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage">
+              <xsl:if test="contains(gmd:LI_Lineage/gmd:source/gmd:LI_Source/gmd:description, 'map')">
+              <relatedItem>
+                  <xsl:attribute name="type">otherFormat</xsl:attribute>
+                  <xsl:attribute name="displayLabel">Digitized map</xsl:attribute>
+                  <titleInfo>
+                      <title>
+                          <xsl:value-of select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:title"/>
+                      </title>
+                  </titleInfo>
+                  <xsl:if test="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code">
+                      <location>
+                          <url>
+                              <xsl:value-of select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code"/>
+                          </url>
+                      </location>
+                  </xsl:if>
+                 </relatedItem>
+              </xsl:if>
+          </xsl:for-each>
     
     <!-- subjects: topic, geographic, temporal, ISO19115TopicCategory -->
         <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords">
@@ -742,6 +763,9 @@
                   <xsl:when test="contains(.,'elevation')">
                     <xsl:value-of select="."/>
                   </xsl:when>
+                  <xsl:when test="contains(.,'economy')">
+                    <xsl:value-of select="."/>
+                  </xsl:when>
                   <xsl:when test="contains(.,'environment')">
                     <xsl:value-of select="."/>
                   </xsl:when>
@@ -793,6 +817,9 @@
                 </xsl:when>
                 <xsl:when test="contains(.,'boundaries')">
                   <xsl:text>Boundaries</xsl:text>
+                </xsl:when>
+                <xsl:when test="contains(.,'economy')">
+                  <xsl:text>Economy</xsl:text>
                 </xsl:when>
                 <xsl:when test="contains(.,'elevation')">
                   <xsl:text>Elevation</xsl:text>
