@@ -24,7 +24,7 @@ class TransformOgp
     yield self
     self.close
   end
-  
+
   # @param [String|Array] s the URI to clean up
   # @return [String] a normalized URI
   def clean_uri(s)
@@ -86,29 +86,29 @@ class TransformOgp
       raise ArgumentError, 'ERROR: Skipping urn:UNKNOWN:'
     end
     uuid = prefix + URI.encode(id)
-    
+
     # Parse out the Location to get the WMS/WFS/WCS URLs, if available
     location = JSON::parse(layer['Location'])
     raise ArgumentError, "ERROR: #{id} has malformed location" unless location.is_a? Hash
-    
+
     # Parse out the bounding box
     s = layer['MinY'].to_f
     w = layer['MinX'].to_f
     n = layer['MaxY'].to_f
     e = layer['MaxX'].to_f
-    
+
     # Parse out the ContentDate date/time
     begin
-      dt = DateTime.rfc3339(layer['ContentDate']) 
+      dt = DateTime.rfc3339(layer['ContentDate'])
     rescue => e2
       raise ArgumentError, "ERROR: #{id} has bad ContentDate: #{layer['ContentDate']}"
     end
-    
+
     # pub_dt = DateTime.rfc3339('2000-01-01T00:00:00Z') # XXX fake data, get from MODS
-    
+
     access = layer['Access']
     collection = nil
-    
+
     # Parse out the PURL and other metadata for Stanford
     if layer['Institution'] == 'Stanford'
       purl = location['purl']
@@ -128,9 +128,9 @@ class TransformOgp
         # end
       end
     end
-    
+
     slug = to_slug(id, layer)
-    
+
     layer_geom_type = layer['DataType'].to_s.strip
     if (layer_geom_type.downcase == 'raster' || layer['LayerDisplayName'] =~ /\(Raster Image\)/) ||
        (layer['Institution'] == 'Harvard' && layer_geom_type.downcase == 'paper map')
@@ -139,22 +139,23 @@ class TransformOgp
     elsif %w{Point Line Polygon}.include?(layer_geom_type)
       format = 'Shapefile'
     elsif layer_geom_type.downcase == 'paper map'
-      format = 'Paper'
-      layer_geom_type = 'Paper Map'
+      #format = 'Paper'
+      #layer_geom_type = 'Paper Map'
+      raise ArgumentError, "WARNING: Skipping Paper Maps..."
     elsif layer_geom_type.downcase =~ /-rom$/
       format = layer_geom_type
       layer_geom_type = 'Mixed'
     else
       raise ArgumentError, "ERROR: Invalid layer_geom_type: #{layer_geom_type}"
     end
-    
+
     # if layer['LayerDisplayName'] =~ /Scanned Map/
     #   layer_geom_type = 'Scanned Map'
     #   format = 'Paper'
     # end
-    
+
     layer_id = layer['WorkspaceName'] + ':' + layer['Name']
-    
+
     # @see https://github.com/OSGeo/Cat-Interop
     %w{wcs wfs wms}.each do |k|
       location[k] = location[k].first if location[k].is_a? Array
@@ -189,12 +190,12 @@ class TransformOgp
         raise ArgumentError, "ERROR: #{id} has bad LayerId: #{layer['layer_id']}"
       end unless skip_ogm_check
     end
-    
+
     # If there's no homepage, use the HTML version of the Metadata if available
     if refs['http://schema.org/url'].nil? && !refs['http://www.w3.org/1999/xhtml'].nil?
       refs['http://schema.org/url'] = refs['http://www.w3.org/1999/xhtml']
     end
-    
+
     # Make the conversion from OGP to GeoBlacklight
     #
     # @see http://dublincore.org/documents/dcmi-terms/
@@ -202,7 +203,7 @@ class TransformOgp
     # @see http://www.ietf.org/rfc/rfc5013.txt
     new_layer = {
       :uuid               => uuid,
-      
+
       # Dublin Core elements
       :dc_creator_sm      => string2array(layer['Originator']),
       :dc_description_s   => layer['Abstract'],
@@ -213,7 +214,7 @@ class TransformOgp
       :dc_rights_s        => access,
       :dc_subject_sm      => string2array(layer['ThemeKeywords'], true),
       :dc_title_s         => layer['LayerDisplayName'],
-      :dc_type_s          => 'Dataset',  # or 'Image' for non-georectified, 
+      :dc_type_s          => 'Dataset',  # or 'Image' for non-georectified,
                                          # or 'PhysicalObject' for non-digitized maps
       # Dublin Core terms
       :dct_isPartOf_sm    => collection.nil?? nil : [collection],
@@ -228,14 +229,14 @@ class TransformOgp
      # A bounding box is a rectangular region, often used to define the extents of a map or a rough area of interest. A box contains two space seperate latitude-longitude pairs, with each pair separated by whitespace. The first pair is the lower corner, the second is the upper corner.
       :georss_box_s       => "#{s} #{w} #{n} #{e}",
       :georss_polygon_s   => "#{n} #{w} #{n} #{e} #{s} #{e} #{s} #{w} #{n} #{w}",
-     
+
       # Layer-specific schema
       :layer_slug_s       => slug,
       :layer_id_s         => layer_id,
       # :layer_srs_s        => 'EPSG:4326', # XXX: fake data
       :layer_geom_type_s  => layer_geom_type,
       :layer_modified_dt  => Time.now.utc.strftime('%FT%TZ'),
-      
+
       # derived fields used only by solr, for which copyField is insufficient
       # :solr_bbox  => "#{w} #{s} #{e} #{n}", # minX minY maxX maxY
       # :solr_ne_pt => "#{n},#{e}",
@@ -246,7 +247,7 @@ class TransformOgp
       # :solr_wms_url => location['wms'],
       # :solr_wfs_url => location['wfs'],
       # :solr_wcs_url => location['wcs']
-      
+
       # :layer_year_i       => dt.year#, # XXX: migrate to copyField
       # :ogp_area_f         => layer['Area'],
       # :ogp_center_x_f     => layer['CenterX'],
@@ -259,16 +260,16 @@ class TransformOgp
       # :ogp_location_s     => layer['Location'],
       # :ogp_workspace_s    => layer['WorkspaceName']
     }
-    
+
     # Remove any fields that are blank
-    new_layer.each do |k, v| 
+    new_layer.each do |k, v|
       new_layer.delete(k) if v.nil? or (v.respond_to?(:empty?) and v.empty?)
     end
-    
+
     # Write the JSON record for the GeoBlacklight layer
     @output.write JSON::pretty_generate(new_layer)
     @output.write "\n,\n"
-    
+
     # export into OGM
     ogm_dir = new_layer[:dct_provenance_s] + '/' + new_layer[:layer_id_s][-2,2].downcase.gsub(/[^a-z0-9]/, '_') + '/' + new_layer[:layer_id_s]
     unless skip_fgdc or layer['FgdcText'].nil? or layer['FgdcText'].empty?
@@ -295,7 +296,7 @@ class TransformOgp
     @output.write "\n {} \n]\n"
     @output.close
   end
-    
+
   # @param [String] s has semi-colon/comma/gt delimited array
   # @return [Array] results as array
   def string2array(s, clean_only = false)
@@ -316,24 +317,24 @@ class TransformOgp
       end
     end
   end
-  
+
   @@slugs = {}
   def to_slug(id, layer)
     # strip out schema and usernames
     name = layer['Name'].sub('SDE_DATA.', '').sub('SDE.', '').sub('SDE2.', '').sub('GISPORTAL.GISOWNER01.', '').sub('GISDATA.', '').sub('MORIS.', '')
-    unless name.size > 1 
+    unless name.size > 1
       # use first word of title is empty name
-      name = layer['LayerDisplayName'].split.first 
+      name = layer['LayerDisplayName'].split.first
     end
     slug = layer['Institution'] + '-' + name
-    
+
     # slugs should only have a-z, A-Z, 0-9, and -
     slug.gsub!(/[^a-zA-Z0-9\-]/, '-')
     slug.gsub!(/[\-]+/, '-')
-    
+
     # only lowercase
     slug.downcase!
-    
+
     # ensure slugs are unique for this pass
     if @@slugs.include?(slug)
       slug += '-' + sprintf("%06d", Random.rand(999999))
@@ -346,18 +347,18 @@ class TransformOgp
   # Ensure that the WMS/WFS/WCS location values are as expected
   def validate_location(id, location)
     begin
-      x = JSON::parse(location)      
+      x = JSON::parse(location)
       %w{download url wms wcs wfs}.each do |protocol|
         begin
           unless x[protocol].nil?
             if x[protocol].is_a? String
               x[protocol] = [x[protocol]]
             end
-            
+
             unless x[protocol].is_a? Array
               raise ArgumentError, "ERROR: #{id}: Unknown #{protocol} value: #{x}"
             end
-            
+
             x[protocol].each do |url|
               uri = clean_uri.parse(url)
               raise ArgumentError, "ERROR: #{id}: Invalid URL: #{uri}" unless uri.kind_of?(clean_uri::HTTP) or uri.kind_of?(clean_uri::HTTPS)
@@ -366,20 +367,20 @@ class TransformOgp
           end
         rescue Exception => e
           raise ArgumentError, "ERROR: #{id}: Invalid #{k}: #{x}"
-        end        
+        end
       end
-      
+
       return x.to_json
     rescue JSON::ParserError => e
       raise ArgumentError, "ERROR: #{id}: Invalid JSON: #{location}"
     end
     nil
   end
-  
+
   def lon? lon
     lon >= -180 and lon <= 180
   end
-  
+
   def lat? lat
     lat >= -90 and lat <= 90
   end
@@ -391,17 +392,17 @@ end
 TransformOgp.new(ARGV[0].nil?? 'transformed.json' : ARGV[0]) do |ogp|
   stats = { :accepted => 0, :rejected => 0 }
   layers_json = {}
-  
+
   Dir.glob('valid*.json') do |fn|
     s = ogp.transform_file(fn, layers_json)
     stats[:accepted] += s[:accepted]
     stats[:rejected] += s[:rejected]
   end
-  
+
   File.open('opengeometadata/org.opengeoportal/layers.json', 'wb') do |f|
     f << JSON::pretty_generate(layers_json)
   end
-  
+
   ap({:statistics => stats})
 end
 
