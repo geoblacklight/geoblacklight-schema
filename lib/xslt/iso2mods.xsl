@@ -473,8 +473,6 @@
           <note displayLabel="Preferred citation">
             <xsl:attribute name="lang">eng</xsl:attribute>
             <xsl:value-of select="gco:CharacterString"/>
-            <xsl:text> Available at: </xsl:text> 
-            <xsl:value-of select="$purl"/>  
           </note>
         </xsl:for-each>
         <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:supplementalInformation">
