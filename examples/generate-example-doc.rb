@@ -15,20 +15,23 @@ uri = {
   wms:      'http://www.opengis.net/def/serviceType/ogc/wms'
 }
 
-s, w, n, e = [-5, -30, 15, 45] # south, west, north, east
+s = -5
+w = -30
+n = 15
+e = 45 # south, west, north, east
 layer = {
-  :uuid             => "my-uuid",
-  :dc_identifier_s  => "my-uuid",
-  :dc_title_s       => 'My Layer',
-  :dc_description_s => "Lorem ipsum dolor sit amet...",
-  :dc_rights_s      => 'Public', # or 'Restricted'
-  :dct_provenance_s => 'My Institution',
-  :layer_slug_s     => "my-layer-name",
-  :layer_modified_dt=> Time.now.utc.strftime('%FT%TZ'),
-  :dc_format_s      => 'Shapefile',
-  :layer_geom_type_s=> 'Polygon',
-  :georss_box_s     => "#{s} #{w} #{n} #{e}", # SW NE in WGS84
-  :solr_geom        => "ENVELOPE(#{w}, #{e}, #{n}, #{s})"
+  uuid: 'my-uuid',
+  dc_identifier_s: 'my-uuid',
+  dc_title_s: 'My Layer',
+  dc_description_s: 'Lorem ipsum dolor sit amet...',
+  dc_rights_s: 'Public', # or 'Restricted'
+  dct_provenance_s: 'My Institution',
+  layer_slug_s: 'my-layer-name',
+  layer_modified_dt: Time.now.utc.strftime('%FT%TZ'),
+  dc_format_s: 'Shapefile',
+  layer_geom_type_s: 'Polygon',
+  georss_box_s: "#{s} #{w} #{n} #{e}", # SW NE in WGS84
+  solr_geom: "ENVELOPE(#{w}, #{e}, #{n}, #{s})"
 }
 
 layer[:dct_references_s] = {

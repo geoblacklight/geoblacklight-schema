@@ -6,7 +6,7 @@ require 'nokogiri'
 
 class RenderCLI
   @@xslt = Nokogiri::XSLT(File.read(File.join(File.dirname(__FILE__), 'iso-html.xsl')))
-  
+
   def run(xmlfn)
     doc = Nokogiri::XML(File.read(xmlfn))
     htmlfn = xmlfn.gsub(/\.xml$/, '.html')
