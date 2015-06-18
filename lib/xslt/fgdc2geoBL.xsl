@@ -281,9 +281,16 @@ Created by Kim Durante and Darren Hardy, Stanford University Libraries
              </xsl:choose>
        
             <xsl:choose>
+              <xsl:when test="contains(metainfo/metd, 'T')">
+                <field name="layer_modified_dt">
+                  <xsl:value-of select="metainfo/metd"/>
+                </field>
+              </xsl:when>
+              
               <xsl:when test="string-length(metainfo/metd)=4">
                 <field name="layer_modified_dt">
-                <xsl:value-of select="metainfo/metd"/>  
+                 <xsl:value-of select="metainfo/metd"/>  
+                 <xsl:text>-01-01T00:00:00Z</xsl:text> 
                 </field>   
               </xsl:when>
                
@@ -292,6 +299,7 @@ Created by Kim Durante and Darren Hardy, Stanford University Libraries
                  <xsl:value-of select="substring(metainfo/metd,1,4)"/>  
                  <xsl:text>-</xsl:text>
                  <xsl:value-of select="substring(metainfo/metd,5,2)"/>
+                 <xsl:text>-01T00:00:00Z</xsl:text>
                  </field>  
                </xsl:when>
                
@@ -302,8 +310,15 @@ Created by Kim Durante and Darren Hardy, Stanford University Libraries
                  <xsl:value-of select="substring(metainfo/metd,5,2)"/>  
                  <xsl:text>-</xsl:text>
                  <xsl:value-of select="substring(metainfo/metd,7,2)"/>
+                  <xsl:text>T00:00:00Z</xsl:text> 
                  </field>  
                </xsl:when>
+               
+               <xsl:when test="metainfo/metd">
+                  <field name="layer_modified_dt">
+                    <xsl:value-of select="metainfo/metd"/>
+                </field>
+              </xsl:when>
              </xsl:choose>
         
         
@@ -582,35 +597,13 @@ Created by Kim Durante and Darren Hardy, Stanford University Libraries
         <field name="solr_geom">
           <xsl:text>ENVELOPE(</xsl:text>
           <xsl:value-of select="$x1"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y1"/>
           <xsl:text>, </xsl:text>
           <xsl:value-of select="$x2"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y1"/>
           <xsl:text>, </xsl:text>
-          <xsl:value-of select="$x2"/>
-          <xsl:text> </xsl:text>
           <xsl:value-of select="$y2"/>
           <xsl:text>, </xsl:text>
-          <xsl:value-of select="$x1"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y2"/>
-          <xsl:text>, </xsl:text>
-          <xsl:value-of select="$x1"/>
-          <xsl:text> </xsl:text>
           <xsl:value-of select="$y1"/>
           <xsl:text>)</xsl:text>
-        </field>
-        
-        <field name="georss_box_s">
-          <xsl:value-of select="$y1"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$x1"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$y2"/>
-          <xsl:text> </xsl:text>
-          <xsl:value-of select="$x2"/>
         </field>
       
         <!-- content date for solr year: choose singular, or beginning date of range: YYYY -->
