@@ -4,19 +4,23 @@ The `dct_references_s` in GeoBlacklight-Schema contain an escaped JSON string of
 
 A GeoBlacklight-Schema example for `dct_references_s`:
 
-  ```xml
-<field name="dct_references_s">
-    {
-        "http://schema.org/url":"http://purl.stanford.edu/bb509gh7292",
-        "http://schema.org/downloadUrl":"http://stacks.stanford.edu/file/druid:bb509gh7292/data.zip",
-        "http://www.loc.gov/mods/v3":"http://purl.stanford.edu/bb509gh7292.mods",
-        "http://www.isotc211.org/schemas/2005/gmd/":"http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/druid:bb509gh7292/iso19139.xml",
-        "http://www.w3.org/1999/xhtml":"http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/druid:bb509gh7292/default.html",
-        "http://www.opengis.net/def/serviceType/ogc/wfs":"https://geowebservices-restricted.stanford.edu/geoserver/wfs",
-        "http://www.opengis.net/def/serviceType/ogc/wms":"https://geowebservices-restricted.stanford.edu/geoserver/wms"
-    }
-</field>
-
+  ```js
+{
+  // A URL to access further descriptive information 
+  "http://schema.org/url":"http://purl.stanford.edu/bb509gh7292",
+  // A direct file download
+  "http://schema.org/downloadUrl":"http://stacks.stanford.edu/file/druid:bb509gh7292/data.zip",
+  // A MODS metadata document
+  "http://www.loc.gov/mods/v3":"http://purl.stanford.edu/bb509gh7292.mods",
+  // An ISO19139 metadata document
+  "http://www.isotc211.org/schemas/2005/gmd/":"http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/druid:bb509gh7292/iso19139.xml",
+  // An HTML metadata document
+  "http://www.w3.org/1999/xhtml":"http://opengeometadata.stanford.edu/metadata/edu.stanford.purl/druid:bb509gh7292/default.html",
+  // A WFS Service
+  "http://www.opengis.net/def/serviceType/ogc/wfs":"https://geowebservices-restricted.stanford.edu/geoserver/wfs",
+  // A WMS Service
+  "http://www.opengis.net/def/serviceType/ogc/wms":"https://geowebservices-restricted.stanford.edu/geoserver/wms"
+}
   ```
 ## Table of reference keys
 
