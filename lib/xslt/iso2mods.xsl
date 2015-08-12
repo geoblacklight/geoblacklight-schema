@@ -26,7 +26,7 @@
      http://www.schemacentral.com/sc/niem21/t-gml32_GeometryPropertyType.html
      * purl - e.g., http://purl.stanford.edu/aa111bb2222
      * zipName - e.g., data.zip
-     * fileFormat - e.g., Shapefile, GeoTIFF, ArcGRID
+     * fileFormat - e.g., Shapefile, GeoTIFF, ArcGRID, ASCIIGRID
      
      TODO:
      * Series statements may need work?
@@ -61,6 +61,12 @@
       </xsl:when>
       <xsl:when test="contains(rdf:RDF/rdf:Description/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Shapefile')">
         <xsl:text>application/x-esri-shapefile</xsl:text>
+      </xsl:when>
+      <xsl:when test="contains(rdf:RDF/rdf:Description/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Arc/Info Binary Grid')">
+        <xsl:text>application/x-esri-arc-grid</xsl:text>
+      </xsl:when>
+      <xsl:when test="contains(rdf:RDF/rdf:Description/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Arc/Info ASCII Grid')">
+        <xsl:text>application/x-esri-arc-ascii-grid</xsl:text>
       </xsl:when>
     </xsl:choose>
   </xsl:variable>
