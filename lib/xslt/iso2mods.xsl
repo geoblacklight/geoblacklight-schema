@@ -51,19 +51,31 @@
        -->
   <xsl:param name="geoformat" select="'MARC255'"/>
   <xsl:param name="fileIdentifier" select="''"/>
-  <xsl:variable name="format">
-    <xsl:choose>
-      <xsl:when test="contains(rdf:RDF/rdf:Description/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Raster Dataset')">
-      <xsl:text>image/tiff</xsl:text>
-    </xsl:when>
-      <xsl:when test="contains(rdf:RDF/rdf:Description/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'GeoTIFF')">
-        <xsl:text>image/tiff</xsl:text>
-      </xsl:when>
-      <xsl:when test="contains(rdf:RDF/rdf:Description/gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Shapefile')">
-        <xsl:text>application/x-esri-shapefile</xsl:text>
-      </xsl:when>
-    </xsl:choose>
-  </xsl:variable>
+    <xsl:variable name="format">
+        <xsl:choose>
+            <xsl:when test="contains(//gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'GeoTIFF')">
+                <xsl:text>image/tiff</xsl:text>
+            </xsl:when>
+            <xsl:when test="contains(//gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Shapefile')">
+                <xsl:text>application/x-esri-shapefile</xsl:text>
+            </xsl:when>
+            <xsl:when test="contains(//gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Arc/Info Binary Grid')">
+                <xsl:text>application/x-ogc-aig</xsl:text>
+            </xsl:when>
+            <xsl:when test="contains(//gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Arc/Info ASCII Grid')">
+                <xsl:text>application/x-ogc-aaigrid</xsl:text>
+            </xsl:when>
+            <xsl:when test="contains(//gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'ERDAS IMAGINE image file format')">
+                <xsl:text>application/x-erdas-hfa</xsl:text>
+            </xsl:when>
+            <xsl:when test="contains(//gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Enhanced Compressed Wavelet')">
+                <xsl:text>application/x-ImageWebServer-ecw</xsl:text>
+            </xsl:when>
+            <xsl:when test="contains(//gmd:MD_Metadata/gmd:distributionInfo/gmd:MD_Distribution/gmd:distributionFormat/gmd:MD_Format/gmd:name, 'Raster Dataset')">
+                <xsl:text>image/tiff</xsl:text>
+            </xsl:when>
+        </xsl:choose>
+    </xsl:variable>
   <xsl:template match="/">
     <mods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xmlns:xlink="http://www.w3.org/1999/xlink" version="3.4" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-4.xsd">
       <xsl:for-each select="/gmi:MI_Metadata|/gmd:MD_Metadata|//gmd:MD_Metadata">
@@ -615,25 +627,26 @@
               </relatedItem>
           </xsl:for-each>
           
-          <xsl:for-each select="gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage">
-              <xsl:if test="contains(gmd:LI_Lineage/gmd:source/gmd:LI_Source/gmd:description, 'map')">
+         
+        <xsl:for-each select="gmd:dataQualityInfo/gmd:DQ_DataQuality/gmd:lineage/gmd:LI_Lineage/gmd:source/gmd:LI_Source">
+          <xsl:if test="contains(gmd:description, 'TIFF')">
               <relatedItem>
                   <xsl:attribute name="type">otherFormat</xsl:attribute>
                   <xsl:attribute name="displayLabel">Digitized map</xsl:attribute>
                   <titleInfo>
                       <title>
-                          <xsl:value-of select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:title"/>
+                        <xsl:value-of select="ancestor-or-self::*/gmd:sourceCitation/gmd:CI_Citation/gmd:title"/>
                       </title>
                   </titleInfo>
-                  <xsl:if test="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code">
+                <xsl:if test="ancestor-or-self::*/gmd:sourceCitation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code">
                       <location>
                           <url>
-                              <xsl:value-of select="ancestor-or-self::*/gmd:aggregateDataSetName/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code"/>
+                            <xsl:value-of select="ancestor-or-self::*/gmd:sourceCitation/gmd:CI_Citation/gmd:identifier/gmd:MD_Identifier/gmd:code"/>
                           </url>
                       </location>
                   </xsl:if>
                  </relatedItem>
-              </xsl:if>
+          </xsl:if>
           </xsl:for-each>
     
     <!-- subjects: topic, geographic, temporal, ISO19115TopicCategory -->
@@ -685,53 +698,44 @@
           </xsl:if>
         </xsl:for-each>
           
-       <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords">
-          <xsl:if test="gmd:type/gmd:MD_KeywordTypeCode[@codeListValue='temporal']">
-            <xsl:for-each select="gmd:keyword">
-                   
-                <xsl:choose>
-                    
-                <!-- 4 digit year -->
-                            <xsl:when test="string-length()=4">
-                                <subject>
-                                    <temporal>
-                                        <xsl:attribute name="encoding">w3cdtf</xsl:attribute>
-                                            <xsl:value-of select="."/>
-                                    </temporal>
-                                </subject>
-                            </xsl:when>
-                  
-                 <!-- range of dates in YYYY-YYYY format -->
-                  
-                            <xsl:when test="contains(./*,'-')">
-                                <subject>
-                                    <temporal>
-                                        <xsl:attribute name="encoding">w3cdtf</xsl:attribute>
-                                 <xsl:attribute name="point">start</xsl:attribute>
-                                     <xsl:value-of select="substring-before(*,'-')"/>
-                                    </temporal>
-                                    <temporal>
-                                        <xsl:attribute name="encoding">w3cdtf</xsl:attribute>
-                                        <xsl:attribute name="point">end</xsl:attribute>
-                                        <xsl:value-of select="substring-after(*,'-')"/>
-                                    </temporal>
-                                </subject>
-                            </xsl:when> 
-                        
-                 <!-- other -->
-                    
-                    <xsl:otherwise>
-                        <subject>
-                            <temporal>
-                                <xsl:value-of select="."/>
-                            </temporal>
-                        </subject>
-                    </xsl:otherwise>
-                        
-                    </xsl:choose>
-              </xsl:for-each>
-          </xsl:if>     
-        </xsl:for-each> 
+      <xsl:choose>
+           <xsl:when test="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimeInstant">
+               <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimeInstant">
+               <subject>
+                   <temporal>
+                       <xsl:attribute name="encoding">w3cdtf</xsl:attribute>
+                       <xsl:value-of select="substring(gml:timePosition,1,4)"/>
+                   </temporal>
+               </subject>
+               </xsl:for-each>
+           </xsl:when>
+           <xsl:when test="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod">
+               <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:temporalElement/gmd:EX_TemporalExtent/gmd:extent/gml:TimePeriod">
+               <subject>
+                   <temporal>
+                       <xsl:attribute name="encoding">w3cdtf</xsl:attribute>
+                       <xsl:value-of select="substring(gml:beginPosition,1,4)"/>
+                       <xsl:if test="substring(gml:beginPosition,1,4) != substring(gml:endPosition,1,4)">
+                       <xsl:text>-</xsl:text>
+                       <xsl:value-of select="substring(gml:endPosition,1,4)"/>
+                       </xsl:if>
+                   </temporal>
+               </subject>
+               </xsl:for-each>
+           </xsl:when>
+           <xsl:when test="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:type/gmd:MD_KeywordTypeCode[@codeListValue='temporal']">
+            <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/gmd:MD_Keywords/gmd:type/gmd:MD_KeywordTypeCode[@codeListValue='temporal']">
+                <xsl:for-each select="ancestor-or-self::*/gmd:keyword">
+                  <subject>
+                      <temporal>
+                        <xsl:attribute name="encoding">w3cdtf</xsl:attribute>
+                            <xsl:value-of select="."/>
+                      </temporal>
+                 </subject>
+               </xsl:for-each>
+          </xsl:for-each>
+         </xsl:when>
+       </xsl:choose>
        
                
             
