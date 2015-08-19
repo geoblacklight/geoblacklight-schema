@@ -3,7 +3,7 @@
 require 'json'
 require 'rsolr'
 
-slugs = %w{
+slugs = %w(
   mit-sf-wc-g46leaseareas-1998
   mit-sz-e29vac-2002
   mit-us-f7mpo-2006
@@ -128,20 +128,19 @@ slugs = %w{
   tufts-cambridgestairs03
   tufts-cambridgetaxingdistfy11
   princeton-02870w62c
-}
-
+)
 
 # fetch all the slugs
-solr = RSolr.connect :url => ARGV[0]
+solr = RSolr.connect url: ARGV[0]
 
 selected = []
 slugs.each do |slug|
-  response = solr.get 'select', :params => {
-    :q => "layer_slug_s:\"#{slug}\"",
-    :rows => 1
+  response = solr.get 'select', params: {
+    q: "layer_slug_s:\"#{slug}\"",
+    rows: 1
   }
   response['response']['docs'].each do |doc|
-    %w{_version_ timestamp score}.each do |k|
+    %w(_version_ timestamp score).each do |k|
       doc.delete(k)
     end
     selected << doc
@@ -149,5 +148,3 @@ slugs.each do |slug|
 end
 
 puts JSON.pretty_generate(selected)
-
-

@@ -1,15 +1,13 @@
 #!/usr/bin/env ruby
 
-require "json"
-require "json_schema"
+require 'json'
+require 'json_schema'
 
 # validate some data - raise ValidationError if it doesn't conform
 def validate(schema, v)
-  begin
-    schema.validate!(v)
-  rescue JsonSchema::ValidationError, RuntimeError => e
-    puts "UUID: #{v['uuid']}: #{e}"
-  end
+  schema.validate!(v)
+rescue JsonSchema::ValidationError, RuntimeError => e
+  puts "UUID: #{v['uuid']}: #{e}"
 end
 
 # parse the schema - raise SchemaError if it's invalid
