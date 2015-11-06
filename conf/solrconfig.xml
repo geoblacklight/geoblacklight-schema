@@ -150,6 +150,16 @@
     </lst>
   </requestHandler>
 
+  <!-- for requests to get a single document; use layer_slug_s=666 instead of q=layer_slug_s:666 -->
+  <requestHandler name="document" class="solr.SearchHandler" >
+    <lst name="defaults">
+      <str name="echoParams">all</str>
+      <str name="fl">*</str>
+      <str name="rows">1</str>
+      <str name="q">{!term f=layer_slug_s v=$id}</str> <!-- use layer_slug_s=666 instead of q=layer_slug_s:666 -->
+    </lst>
+  </requestHandler>
+
   <requestHandler name="/update" class="solr.UpdateRequestHandler"/>
   <requestHandler name="/admin/" class="solr.admin.AdminHandlers"/>
 
