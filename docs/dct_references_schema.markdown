@@ -34,3 +34,7 @@ Full layer description | http://schema.org/url | Further descriptive information
 Metadata in ISO 19139 | http://www.isotc211.org/schemas/2005/gmd/ | Structured metadata in ISO format
 Metadata in MODS | http://www.loc.gov/mods/v3 | Structured metadata in MODS format
 Metadata in HTML | http://www.w3.org/1999/xhtml | Structured metadata in HTML format
+ArcGIS FeatureLayer | urn:x-esri:serviceType:ArcGIS#FeatureLayer| Previewing of ArcGIS FeatureLayer Service
+ArcGIS TiledMapLayer | urn:x-esri:serviceType:ArcGIS#TiledMapLayer | Previewing of ArcGIS TiledMapLayer Service
+ArcGIS DynamicMapLayer | urn:x-esri:serviceType:ArcGIS#DynamicMapLayer | Previewing of ArcGIS DynamicMapLayer Service
+ArcGIS ImageMapLayer | urn:x-esri:serviceType:ArcGIS#ImageMapLayer | Previewing of ArcGIS ImageMapLayer Service
