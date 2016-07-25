@@ -96,7 +96,7 @@ module GeoBlacklightSchema
 
     def _get(k, i)
       return nil unless @registry.include?(k.strip)
-      fail ArgumentError unless i.is_a? Symbol
+      raise ArgumentError unless i.is_a? Symbol
       @registry[k.strip].nil? ? nil : @registry[k.strip][i]
     end
   end

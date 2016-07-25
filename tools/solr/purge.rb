@@ -7,7 +7,7 @@ require 'rsolr'
 # Purges documents by query
 class SolrPurger
   def initialize(collection, url)
-    fail ArgumentError, 'Collection not defined' unless collection.is_a? String
+    raise ArgumentError, 'Collection not defined' unless collection.is_a? String
     @solr = RSolr.connect(url: (url + '/' + collection))
     yield self
     close
