@@ -1,4 +1,8 @@
 #!/usr/bin/env ruby
+#
+# generate-selected.rb - Generates the `selected.json` data file with example test data
+#
+ARGV << 'http://localhost:8983/solr/blacklight-core' if ARGV.empty?
 
 require 'json'
 require 'rsolr'
