@@ -20,7 +20,7 @@
      this file, see http://wiki.apache.org/solr/SolrConfigXml. 
 -->
 <config>
-  <luceneMatchVersion>4.7</luceneMatchVersion>
+  <luceneMatchVersion>6.1.0</luceneMatchVersion>
   <dataDir>${solr.data.dir:}</dataDir>
   <directoryFactory name="DirectoryFactory" class="${solr.directoryFactory:solr.NRTCachingDirectoryFactory}"/>
   <codecFactory class="solr.SchemaCodecFactory"/>
@@ -39,17 +39,6 @@
       <openSearcher>false</openSearcher>
     </autoCommit>
   </updateHandler>
-
-  <!-- realtime get handler, guaranteed to return the latest stored fields 
-    of any document, without the need to commit or open a new searcher. The current 
-    implementation relies on the updateLog feature being enabled. -->
-  <requestHandler name="/get" class="solr.RealTimeGetHandler">
-    <lst name="defaults">
-      <str name="omitHeader">true</str>
-    </lst>
-  </requestHandler>  
-  
-  <requestHandler name="/replication" class="solr.ReplicationHandler" startup="lazy" /> 
 
   <!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
        Query section - these settings control query time things like caches
@@ -80,7 +69,7 @@
   </query>
 
   <requestDispatcher handleSelect="false">
-    <requestParsers enableRemoteStreaming="true" multipartUploadLimitInKB="2048000" formdataUploadLimitInKB="2048"/>
+    <requestParsers enableRemoteStreaming="true" multipartUploadLimitInKB="2048000" formdataUploadLimitInKB="2048" addHttpRequestToContext="false"/>
     <httpCaching never304="true"/>
    </requestDispatcher>
 
@@ -150,9 +139,6 @@
     </lst>
   </requestHandler>
 
-  <requestHandler name="/update" class="solr.UpdateRequestHandler"/>
-  <requestHandler name="/admin/" class="solr.admin.AdminHandlers"/>
-
   <!-- ping/healthcheck -->
   <requestHandler name="/admin/ping" class="solr.PingRequestHandler">
     <lst name="invariants">
@@ -172,9 +158,4 @@
   <requestHandler name="/analysis/field" 
                   startup="lazy"
                   class="solr.FieldAnalysisRequestHandler" />
-                  
-  <!-- Legacy config for the admin interface -->
-  <admin>
-    <defaultQuery>*:*</defaultQuery>
-  </admin>
 </config>
