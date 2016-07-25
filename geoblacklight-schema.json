@@ -1,6 +1,6 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
-    "description": "Schema for GeoBlacklight as implemented for Solr 4.10+. See http://journal.code4lib.org/articles/9710 for more details. Note that the Solr schema uses dynamic typing based on the suffix of the field name. For example, _s denotes a string where _sm denotes a multi-valued string (array of strings).",
+    "$schema": "http://json-schema.org/draft-04/hyper-schema",
+    "description": "Schema for GeoBlacklight",
     "id": "http://geoblacklight.org/schema",
     "title": "GeoBlacklight Schema",
     "required": [
@@ -20,148 +20,172 @@
     ],
     "type": "object",
     "properties": {
-        "uuid": { 
-            "type": "string", 
+        "uuid": {
+            "type": "string",
+            "title": "uuid",
             "description": "Unique identifier for layer that is globally unique."
-
         },
         "dc_identifier_s": {
             "type": "string",
-            "description": "Unique identifier for layer. May be same as UUID but may be an alternate identifier."
+            "description": "Unique identifier for layer. May be same as UUID but may be an alternate identifier.",
+            "title": "dc_identifier_s"
         },
-        "dc_title_s": { 
-            "type": "string", 
-            "description": "Title for the layer."
+        "dc_title_s": {
+            "type": "string",
+            "description": "Title for the layer.",
+            "title": "dc_title_s"
 
         },
-        "dc_description_s": { 
-            "type": "string", 
+        "dc_description_s": {
+            "type": "string",
+            "title": "dc_description_s",
             "description": "Description for the layer."
 
         },
-        "dc_rights_s": { 
+        "dc_rights_s": {
             "type": "string",
-            "enum": ["Public", "Restricted"], 
-            "description": "Access rights for the layer."
+            "enum": ["Public", "Restricted"],
+            "description": "Access rights for the layer.",
+            "title": "dc_rights_s"
 
         },
-        "dct_provenance_s": { 
-            "type": "string", 
-            "description": "Institution who holds the layer."
+        "dct_provenance_s": {
+            "type": "string",
+            "description": "Institution who holds the layer.",
+            "title": "dct_provenance_s"
 
         },
-        "dct_references_s": { 
-            "type": "string", 
-            "description": "JSON hash for external resources, where each key is a URI for the protocol or format and the value is the URL to the resource."
+        "dct_references_s": {
+            "type": "string",
+            "description": "JSON hash for external resources, where each key is a URI for the protocol or format and the value is the URL to the resource.",
+            "title": "dct_references_s"
 
         },
-        "georss_box_s": { 
-            "type": "string", 
-            "description": "Bounding box as maximum values for S W N E. Example: 12.6 -119.4 19.9 84.8."
+        "georss_box_s": {
+            "type": "string",
+            "description": "Bounding box as maximum values for S W N E. Example: 12.6 -119.4 19.9 84.8",
+            "title": "georss_box_s"
 
         },
-        "layer_id_s": { 
-            "type": "string", 
-            "description": "The complete identifier for the layer via WMS/WFS/WCS protocol. Example: druid:vr593vj7147."
+        "layer_id_s": {
+            "type": "string",
+            "description": "The complete identifier for the layer via WMS/WFS/WCS protocol. Example: druid:vr593vj7147",
+            "title": "layer_id_s"
 
         },
-        "layer_geom_type_s": { 
+        "layer_geom_type_s": {
             "type": "string",
             "enum": ["Point", "Line", "Polygon", "Raster", "Scanned Map", "Mixed"],
-            "description": "Geometry type for layer data, using controlled vocabulary."
+            "description": "Geometry type for layer data, using controlled vocabulary.",
+            "title": "layer_geom_type_s"
         },
-        "layer_modified_dt": { 
-            "type": "string", 
+        "layer_modified_dt": {
+            "type": "string",
             "format": "date-time",
-            "description": "Last modification date for the metadata record, using XML Schema dateTime format (YYYY-MM-DDThh:mm:ssZ)."
+            "description": "Last modification date for the metadata record, using XML Schema dateTime format (YYYY-MM-DDThh:mm:ssZ).",
+            "title": "layer_modified_dt"
         },
-        "layer_slug_s": { 
-            "type": "string", 
-            "description": "Unique identifier visible to the user, used for Permalinks. Example: stanford-vr593vj7147."
-
+        "layer_slug_s": {
+            "type": "string",
+            "description": "Unique identifier visible to the user, used for Permalinks. Example: stanford-vr593vj7147",
+            "title": "layer_slug_s"
         },
-        "solr_geom": { 
+        "solr_geom": {
             "type": "string",
             "pattern": "ENVELOPE(.*,.*,.*,.*)",
-            "description": "Derived from georss_polygon_s or georss_box_s. Shape of the layer as a ENVELOPE WKT using W E N S. Example: ENVELOPE(76.76, 84.76, 19.91, 12.62). Note that this field is indexed as a Solr spatial (RPT) field."
-
+            "description": "Derived from georss_polygon_s or georss_box_s. Shape of the layer as a ENVELOPE WKT using W E N S. Note that this field is indexed as a Solr spatial (RPT) field. Example: ENVELOPE(76.76, 84.76, 19.91, 12.62)",
+            "title": "solr_geom"
         },
-        "solr_year_i": { 
+        "solr_year_i": {
             "type": "integer",
-            "description": "Derived from dct_temporal_sm. Year for which layer is valid and only a single value. Example: 1989. Note that this field is indexed as a Solr numeric field."
-
+            "description": "Derived from dct_temporal_sm. Year for which layer is valid and only a single value. Note that this field is indexed as a Solr numeric field. Example: 1989",
+            "title": "solr_year_i"
         },
-        "dc_creator_sm": { 
+        "dc_creator_sm": {
             "type": "array",
             "items": {
                  "type": "string"
              },
-            "description": "Author(s). Example: George Washington, Thomas Jefferson."
+            "title": "dc_creator_sm",
+            "description": "Author(s). Example: George Washington, Thomas Jefferson"
 
         },
-        "dc_format_s": { 
-            "type": "string", 
+        "dc_format_s": {
+            "type": "string",
             "enum": ["Shapefile", "GeoTIFF", "ArcGRID"],
-            "description": "File format for the layer, using a controlled vocabulary."
+            "description": "File format for the layer, using a controlled vocabulary.",
+            "title": "dc_format_s"
 
         },
-        "dc_language_s": { 
-            "type": "string", 
-            "description": "Language for the layer. Example: English."
+        "dc_language_s": {
+            "type": "string",
+            "description": "Language for the layer. Example: English.",
+            "title": "dc_language_s"
 
         },
-        "dc_publisher_s": { 
-            "type": "string", 
-            "description": "Publisher. Example: ML InfoMap."
+        "dc_publisher_s": {
+            "type": "string",
+            "description": "Publisher. Example: ML InfoMap.",
+            "title": "dc_publisher_s"
 
         },
-        "dc_subject_sm": { 
+        "dc_subject_sm": {
             "type": "array",
             "items": {
-                 "type": "string"
+                 "type": "string",
+                 "description": "Subject"
              },
-            "description": "Subjects, preferrably in a controlled vocabulary. Examples: Census, Human settlements."
+            "description": "Subjects, preferrably in a controlled vocabulary. Examples: Census, Human settlements.",
+            "title": "dc_subject_sm"
 
         },
-        "dc_type_s": { 
+        "dc_type_s": {
             "type": "string",
             "enum": ["Dataset", "Image", "PhysicalObject"],
-            "description": "Resource type, using DCMI Type Vocabulary."
-
+            "description": "Resource type, using DCMI Type Vocabulary.",
+            "title": "dc_type_s"
         },
-        "dct_spatial_sm": { 
+        "dct_spatial_sm": {
             "type": "array",
             "items": {
-                 "type": "string"
+                 "type": "string",
+                 "description": "Place name"
              },
-            "description": "Spatial coverage and place names, preferrably in a controlled vocabulary. Example: 'Paris, France'."
+            "description": "Spatial coverage and place names, preferrably in a controlled vocabulary. Example: 'Paris, France'.",
+            "title": "dct_spatial_sm"
 
         },
-        "dct_temporal_sm": { 
-            "type": "array", 
+        "dct_temporal_sm": {
+            "type": "array",
             "items": {
-                 "type": "string"
+                 "type": "string",
+                 "description": "Year or date"
              },
-            "description": "Temporal coverage, typically years or dates. Example: 1989, circa 2010, 2007-2009. Note that this field is not in a specific date format."
+            "description": "Temporal coverage, typically years or dates. Example: 1989, circa 2010, 2007-2009. Note that this field is not in a specific date format.",
+            "title": "dct_temporal_sm"
 
         },
-        "dct_issued_dt": { 
+        "dct_issued_dt": {
             "type": "string",
             "format": "date-time",
-            "description": "Issued date for the layer, using XML Schema dateTime format (YYYY-MM-DDThh:mm:ssZ)."
+            "description": "Issued date for the layer, using XML Schema dateTime format (YYYY-MM-DDThh:mm:ssZ).",
+            "title": "dct_issued_dt"
 
         },
-        "dct_isPartOf_sm": { 
+        "dct_isPartOf_sm": {
             "type": "array",
             "items": {
-                 "type": "string"
+                 "type": "string",
+                 "description": "Parent dataset"
              },
-            "description": "Holding dataset for the layer, such as the name of a collection. Example: Village Maps of India."
+            "description": "Holding dataset for the layer, such as the name of a collection. Example: Village Maps of India.",
+            "title": "dct_isPartOf_sm"
 
         },
-        "georss_point_s": { 
-            "type": "string", 
-            "description": "Point representation for layer as y, x - i.e., centroid. Example: 12.6 -119.4."
+        "georss_point_s": {
+            "type": "string",
+            "description": "Point representation for layer as y, x - i.e., centroid. Example: 12.6 -119.4.",
+            "title": "georss_point_s"
 
         }
     }

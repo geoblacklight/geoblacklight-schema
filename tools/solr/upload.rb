@@ -24,7 +24,7 @@ ARGV.each do |fn|
       doc = JSON.parse(File.open(fn, 'rb').read)
       solr.add doc
     else
-      fail "Unknown file type: #{fn}"
+      raise "Unknown file type: #{fn}"
     end
   rescue => e
     puts "ERROR: #{e}: #{e.backtrace}"
