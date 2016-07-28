@@ -13,8 +13,7 @@ Github:
 
   http://github.com/geoblacklight/geoblacklight-schema
 
-The conf/ folder has everything you need to implement the schema in Solr 6,
-and the examples/ folder has 100 example Solr documents that you can use. The
+The examples/ folder has 100 example Solr documents that you can use. The
 lib/ folder has some initial, but incomplete, implementations for metadata
 format conversions (e.g., FGDC -> MODS, OGP -> GeoBlacklight, etc.).
 
