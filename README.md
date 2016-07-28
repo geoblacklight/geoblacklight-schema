@@ -11,7 +11,7 @@ traditional portal applications.
 The source code for the Solr implementation and the design document are on
 Github:
 
-  http://github.com/geoblacklight/geoblacklight-schema
+  http://github.com/geoblacklight/geoblacklight/tree/master/schema
 
 The conf/ folder has everything you need to implement the schema in Solr 6,
 and the examples/ folder has 100 example Solr documents that you can use. The
@@ -26,7 +26,7 @@ install the schema into a Solr 6 instance, then upload documents using
 
 #### Documentation
 
-[Preview GeoBlacklight-Schema](geoblacklight-schema.md)
+[Preview GeoBlacklight-Schema](http://github.com/geoblacklight/geoblacklight/tree/master/schema/geoblacklight-schema.md)
 
 [External references](http://geoblacklight.org/tutorial/2015/02/09/geoblacklight-overview.html)
 
