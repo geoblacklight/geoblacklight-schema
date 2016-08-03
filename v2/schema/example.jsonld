@@ -14,7 +14,7 @@
       "accessURL": "https://maps-public.geo.nyu.edu/geoserver/sdr/wms",
       "layerId": "sdr:nyu_2451_34502",
       "describedBy": "https://archive.nyu.edu/retrieve/74755/nyu_2451_34502_doc.zip",
-      "describedByType": "application/pdf",
+      "describedByType": "application/zip+pdf",
       "description": "2015 New York City Subway Complexes and Ridership WMS Service"
     },
     {
@@ -23,7 +23,7 @@
       "accessURL": "https://maps-public.geo.nyu.edu/geoserver/sdr/wfs",
       "layerId": "sdr:nyu_2451_34502",
       "describedBy": "https://archive.nyu.edu/retrieve/74755/nyu_2451_34502_doc.zip",
-      "describedByType": "application/pdf",
+      "describedByType": "application/zip+pdf",
       "description": "2015 New York City Subway Complexes and Ridership WFS Service"
     },
     {
@@ -31,7 +31,7 @@
       "conformsTo": "http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf",
       "downloadURL": "https://archive.nyu.edu/retrieve/74701/nyu_2451_34502.zip",
       "describedBy": "https://archive.nyu.edu/retrieve/74755/nyu_2451_34502_doc.zip",
-      "describedByType": "application/pdf",
+      "describedByType": "application/zip+pdf",
       "format": "ESRI Shapefile",
       "mediaType": "application/zip; ogr-format=\"ESRI Shapefile\"",
       "description": "2015 New York City Subway Complexes and Ridership Shapefile",
