@@ -1,11 +1,12 @@
 {
   "@context": {
     "dcat": "http://www.w3.org/ns/dcat#",
-    "dcterms": "http://purl.org/dc/terms/",
+    "@vocab": "http://www.w3.org/ns/dcat#",
+    "dc": "http://purl.org/dc/terms/",
     "dctypes": "http://purl.org/dc/dcmitype/",
-    "gbl": "http://geoblacklight.org#schema",
-    "ogc": "http://www.opengis.net/ogc",
-    "pod": "https://project-open-data.cio.gov/v1.1/schema/catalog.jsonld",
+    "gbl": "http://geoblacklight.org/v2/schema#",
+    "ogc": "http://www.opengis.net/ogc#",
+    "pod": "https://project-open-data.cio.gov/v1.1/schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "accrualPeriodicity": {
       "@type": "@id",
@@ -21,11 +22,11 @@
     },
     "conformsTo": {
       "@type": "@id",
-      "@id": "dcterms:conformsTo"
+      "@id": "dc:conformsTo"
     },
     "creator": {
       "@type": "@id",
-      "@id": "dcterms:creator"
+      "@id": "dc:creator"
     },
     "describedBy": {
       "@id": "http://www.w3.org/2007/05/powder#describedby",
@@ -37,7 +38,7 @@
     },
     "description": {
       "@type": "@id",
-      "@id": "dcterms:description"
+      "@id": "dc:description"
     },
     "downloadURL": {
       "@type": "@id",
@@ -57,7 +58,7 @@
     },
     "isPartOf": {
       "@type": "@id",
-      "@id": "dcterms:isPartOf"
+      "@id": "dc:isPartOf"
     },
     "issued": {
       "@type": "@id",
@@ -65,15 +66,15 @@
     },
     "language": {
       "@type": "@id",
-      "@id": "dcterms:language"
+      "@id": "dc:language"
     },
     "layerId": {
       "@type": "@id",
-      "@id": "dcterms:identifier"
+      "@id": "dc:identifier"
     },
     "license": {
       "@type": "@id",
-      "@id": "dcterms:license"
+      "@id": "dc:license"
     },
     "mediaType": {
       "@type": "@id",
@@ -85,19 +86,19 @@
     },
     "publisher": {
       "@type": "@id",
-      "@id": "dcterms:publisher"
+      "@id": "dc:publisher"
     },
     "provenance": {
       "@type": "@id",
-      "@id": "dcterms:provenance"
+      "@id": "dc:provenance"
     },
     "resourceType": {
       "@type": "http://purl.org/dc/dcmitype/",
-      "@id": "dcterms:type"
+      "@id": "dc:type"
     },
     "rights": {
       "@type": "@id",
-      "@id": "dcterms:rights"
+      "@id": "dc:rights"
     },
     "slug": {
       "@type": "@id",
@@ -105,15 +106,15 @@
     },
     "spatial": {
       "@type": "@id",
-      "@id": "dcterms:spatial"
+      "@id": "dc:spatial"
     },
     "subject": {
       "@type": "@id",
-      "@id": "dcterms:subject"
+      "@id": "dc:subject"
     },
     "temporal": {
       "@type": "@id",
-      "@id": "dcterms:temporal"
+      "@id": "dc:temporal"
     },
     "theme": {
       "@type": "@id",
@@ -121,7 +122,7 @@
     },
     "title": {
       "@type": "@id",
-      "@id": "dcterms:title"
+      "@id": "dc:title"
     },
     "year": {
       "@type": "@id",
