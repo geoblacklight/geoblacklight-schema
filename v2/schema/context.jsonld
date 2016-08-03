@@ -25,7 +25,6 @@
       "@id": "dc:conformsTo"
     },
     "creator": {
-      "@type": "@id",
       "@id": "dc:creator"
     },
     "describedBy": {
@@ -37,7 +36,6 @@
       "@id": "pod:describedByType"
     },
     "description": {
-      "@type": "@id",
       "@id": "dc:description"
     },
     "downloadURL": {
@@ -45,15 +43,13 @@
       "@id": "dcat:downloadURL"
     },
     "format": {
-      "@type": "@id",
+      "@type": "gbl:format",
       "@id": "dctypes:format"
     },
     "geom": {
-      "@type": "@id",
       "@id": "ogc:envelope"
     },
     "geomType": {
-      "@type": "@id",
       "@id": "gbl:geomType"
     },
     "isPartOf": {
@@ -61,35 +57,27 @@
       "@id": "dc:isPartOf"
     },
     "issued": {
-      "@type": "@id",
       "@id": "pod:issued"
     },
     "language": {
-      "@type": "@id",
       "@id": "dc:language"
     },
     "layerId": {
-      "@type": "@id",
       "@id": "dc:identifier"
     },
     "license": {
-      "@type": "@id",
       "@id": "dc:license"
     },
     "mediaType": {
-      "@type": "@id",
       "@id": "dcat:mediaType"
     },
     "modified": {
-      "@type": "@id",
       "@id": "pod:modified"
     },
     "publisher": {
-      "@type": "@id",
       "@id": "dc:publisher"
     },
     "provenance": {
-      "@type": "@id",
       "@id": "dc:provenance"
     },
     "resourceType": {
@@ -97,35 +85,27 @@
       "@id": "dc:type"
     },
     "rights": {
-      "@type": "@id",
       "@id": "dc:rights"
     },
     "slug": {
-      "@type": "@id",
       "@id": "gbl:slug"
     },
     "spatial": {
-      "@type": "@id",
       "@id": "dc:spatial"
     },
     "subject": {
-      "@type": "@id",
       "@id": "dc:subject"
     },
     "temporal": {
-      "@type": "@id",
       "@id": "dc:temporal"
     },
     "theme": {
-      "@type": "@id",
       "@id": "dcat:theme"
     },
     "title": {
-      "@type": "@id",
       "@id": "dc:title"
     },
     "year": {
-      "@type": "@id",
       "@id": "xsd:gYear"
     }
   }
