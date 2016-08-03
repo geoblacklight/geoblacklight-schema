@@ -1,0 +1,89 @@
+{
+  "@context": "https://raw.githubusercontent.com/geoblacklight/geoblacklight-schema/json-ld-schema/v2/schema/context.jsonld",
+  "@id": "http://hdl.handle.net/2451/34502",
+  "@type": "dcat:Dataset",
+  "accessLevel": "public",
+  "creator": [
+    "GIS Lab, Newman Library, Baruch CUNY"
+  ],
+  "description": "The subway complexes layer was created to represent ridership data for the NYC subway system (Metropolitan Transportation Authority, or MTA).",
+  "distribution": [
+    {
+      "@type": "dcat:Distribution",
+      "conformsTo": "http://www.opengis.net/def/serviceType/ogc/wms",
+      "accessURL": "https://maps-public.geo.nyu.edu/geoserver/sdr/wms",
+      "layerId": "sdr:nyu_2451_34502",
+      "describedBy": "https://archive.nyu.edu/retrieve/74755/nyu_2451_34502_doc.zip",
+      "describedByType": "application/pdf",
+      "description": "2015 New York City Subway Complexes and Ridership WMS Service"
+    },
+    {
+      "@type": "dcat:Distribution",
+      "conformsTo": "http://www.opengis.net/def/serviceType/ogc/wfs",
+      "accessURL": "https://maps-public.geo.nyu.edu/geoserver/sdr/wfs",
+      "layerId": "sdr:nyu_2451_34502",
+      "describedBy": "https://archive.nyu.edu/retrieve/74755/nyu_2451_34502_doc.zip",
+      "describedByType": "application/pdf",
+      "description": "2015 New York City Subway Complexes and Ridership WFS Service"
+    },
+    {
+      "@type": "dcat:Distribution",
+      "conformsTo": "http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf",
+      "downloadURL": "https://archive.nyu.edu/retrieve/74701/nyu_2451_34502.zip",
+      "describedBy": "https://archive.nyu.edu/retrieve/74755/nyu_2451_34502_doc.zip",
+      "describedByType": "application/pdf",
+      "format": "ESRI Shapefile",
+      "mediaType": "application/zip; ogr-format=\"ESRI Shapefile\"",
+      "description": "2015 New York City Subway Complexes and Ridership Shapefile",
+      "title": "Original Shapefile"
+    },
+    {
+      "@type": "dcat:Distribution",
+      "conformsTo": "http://www.isotc211.org/schemas/2005/gmd/",
+      "downloadURL": "http://metadata.geo.nyu.edu/records/edu.nyu/handle/2451/34502/iso19139.xml",
+      "format": "ISO19139",
+      "mediaType": "application/xml; schema=iso19139",
+      "description": "ISO19139 metadata for 2015 New York City Subway Complexes and Ridership"
+    }
+  ],
+  "geom": "ENVELOPE(-74.030876, -73.755405, 40.9031249999998, 40.5761269999998)",
+  "geomType": "Point",
+  "isPartOf": "http://hdl.handle.net/2451/34635",
+  "issued": "2016-1-15",
+  "language": "en",
+  "modified": "2016-5-2T18:21:5Z",
+  "provenance": "Baruch CUNY",
+  "publisher": [
+    "Newman Library (Bernard M. Baruch College)"
+  ],
+  "resourceType": "Dataset",
+  "rights": "The database and associated documentation are licensed under a Creative Commons Attribution-NonCommercial- ShareAlike license CC BY-NC-SA http://creativecommons.org/licenses/by-nc-sa/4.0/. You are free to share and to adapt the work as long as you cite the source, do not use it for commercial purposes, and release adaptations under the same license.",
+  "slug": "nyu_2451_34502",
+  "source": [
+    "http://hdl.handle.net/2451/34635",
+    "http://hdl.handle.net/2451/34636"
+  ],
+  "spatial": [
+    "New York, New York, United States",
+    "Bronx County, New York, United States",
+    "Kings County, New York, United States",
+    "New York County, New York, United States",
+    "Queens County, New York, United States",
+    "Borough of Bronx, New York, United States",
+    "Borough of Brooklyn, New York, United States",
+    "Borough of Manhattan, New York, United States",
+    "Borough of Queens, New York, United States"
+  ],
+  "subject": [
+    "Subway stations",
+    "Transportation",
+    "Urban transportation",
+    "Local transit",
+    "Commuting"
+  ],
+  "temporal": [
+    "2015"
+  ],
+  "title": "2015 New York City Subway Complexes and Ridership",
+  "year": 2015
+}
