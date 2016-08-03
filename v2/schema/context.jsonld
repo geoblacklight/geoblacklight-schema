@@ -4,8 +4,8 @@
     "@vocab": "http://www.w3.org/ns/dcat#",
     "dc": "http://purl.org/dc/terms/",
     "dctypes": "http://purl.org/dc/dcmitype/",
-    "gbl": "http://geoblacklight.org/v2/schema#",
-    "ogc": "http://www.opengis.net/ogc#",
+    "gbl": "http://geoblacklight.org/schema/2.0#",
+    "cql": "http://www.opengis.net/def/serviceType/ogc/csw/2.0.2/cql#envelope#",
     "pod": "https://project-open-data.cio.gov/v1.1/schema#",
     "xsd": "http://www.w3.org/2001/XMLSchema#",
     "accrualPeriodicity": {
@@ -47,7 +47,7 @@
       "@id": "dctypes:format"
     },
     "geom": {
-      "@id": "ogc:envelope"
+      "@id": "cql:envelope"
     },
     "geomType": {
       "@id": "gbl:geomType"
