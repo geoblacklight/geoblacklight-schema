@@ -266,9 +266,17 @@
             </xsl:choose>
             <projection>
               <!-- Use '::' since the spec requires a version here (e.g., :7.4:) but it's generally left blank -->
+                <xsl:choose>
+                  <xsl:when test="contains(gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier, '0')">
+                      <xsl:text>Custom projection</xsl:text>
+                  </xsl:when>
+             <xsl:otherwise>
+              <!-- Use '::' since the spec requires a version here (e.g., :7.4:) but it's generally left blank -->
               <xsl:value-of select="gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier/gmd:codeSpace/gco:CharacterString"/>
               <xsl:text>::</xsl:text>
               <xsl:value-of select="gmd:referenceSystemInfo/gmd:MD_ReferenceSystem/gmd:referenceSystemIdentifier/gmd:RS_Identifier/gmd:code/gco:CharacterString"/>
+             </xsl:otherwise>
+              </xsl:choose>
             </projection>
             <xsl:for-each select="gmd:identificationInfo/gmd:MD_DataIdentification/gmd:extent/gmd:EX_Extent/gmd:geographicElement/gmd:EX_GeographicBoundingBox">
               <coordinates>
