@@ -20,7 +20,7 @@ A GIS data layer. See [this example](https://github.com/OpenGeoMetadata/edu.stan
 | **dct_isPartOf_sm** | *array* | Holding dataset for the layer, such as the name of a collection. *OPTIONAL* | `"Village Maps of India"` |
 | **dct_issued_dt** | *date-time* | Issued date for the layer, using XML Schema dateTime format (YYYY-MM-DDThh:mm:ssZ). *OPTIONAL* | `"2015-01-01T12:00:00Z"` |
 | **dct_provenance_s** | *string* | Institution who holds the layer. | `"Stanford"` |
-| **dct_references_s** | *string* | JSON hash for external resources, where each key is a URI for the protocol or format and the value is the URL to the resource. See `dct_references_s` [detailed documentation](http://geoblacklight.org/tutorial/2015/02/09/geoblacklight-overview.html) | `"{ ... }"` |
+| **dct_references_s** | *string* | JSON hash for external resources, where each key is a URI for the protocol or format and the value is the URL to the resource. See `dct_references_s` [detailed documentation](https://github.com/geoblacklight/geoblacklight/wiki/Schema#external-services) | `"{ ... }"` |
 | **dct_spatial_sm** | *array* | Spatial coverage and place names, preferrably in a controlled vocabulary. *OPTIONAL* | `"Paris, San Francisco"` |
 | **dct_temporal_sm** | *array* | Temporal coverage, typically years or dates. Note that this field is not in a specific date format. *OPTIONAL* | `"1989, circa 2010, 2007-2009"` |
 | **georss_box_s** | *string* | Bounding box as maximum values for S W N E. | `"12.6 -119.4 19.9 84.8"` |
