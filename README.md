@@ -28,7 +28,7 @@ install the schema into a Solr 6 instance, then upload documents using
 
 [Preview GeoBlacklight-Schema](geoblacklight-schema.md)
 
-[External references](http://geoblacklight.org/tutorial/2015/02/09/geoblacklight-overview.html)
+[External references](https://github.com/geoblacklight/geoblacklight/wiki/Schema#external-services)
 
 ## Requirements
 
