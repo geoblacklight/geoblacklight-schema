@@ -14,8 +14,8 @@ class SolrQuery
   end
 
   def query(q)
-    response = @solr.get 'select', params: { q: q, fl: 'uuid', rows: '10000' }
-    response['response']['docs'].each { |doc| puts doc['uuid'] }
+    response = @solr.get 'select', params: { q: q, fl: 'dc_identifier_s', rows: '10000' }
+    response['response']['docs'].each { |doc| puts doc['dc_identifier_s'] }
   end
 
   def close
