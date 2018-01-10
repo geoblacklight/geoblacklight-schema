@@ -136,14 +136,18 @@
         <field name="dc_type_s">
           <xsl:value-of select="substring-before(mods:extension[@displayLabel='geo']/rdf:RDF/rdf:Description/dc:type/text(),'#')"/>
         </field>
+        <xsl:if test="mods:originInfo/mods:publisher">   
         <field name="dc_publisher_s">
           <xsl:value-of select="mods:originInfo/mods:publisher"/>
         </field>
+        </xsl:if>     
+        <xsl:if test="mods:name">    
         <xsl:for-each select="mods:name">
           <field name="dc_creator_sm">
             <xsl:value-of select="mods:namePart"/>
           </field>
         </xsl:for-each>
+        </xsl:if>     
         <xsl:for-each select="mods:subject/mods:topic">
             <xsl:choose>
               <xsl:when test="@authority='ISO19115topicCategory'">
